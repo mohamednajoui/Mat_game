@@ -37,12 +37,10 @@
             z-index: 500; background-size: 100% 3px, 3px 100%; pointer-events: none;
         }
 
-        /* Scrollbar personalizada para Host */
         ::-webkit-scrollbar { width: 10px; }
         ::-webkit-scrollbar-track { background: rgba(0,0,0,0.5); border-radius: 5px; }
         ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 5px; }
 
-        /* Pantallazos flash */
         #flash-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #fff; z-index: 999999; opacity: 0; pointer-events: none; }
         .flash-anim { animation: flashScreen 0.8s ease-out; }
         .flash-blood { animation: flashBlood 0.5s ease-out; background: var(--blood) !important; }
@@ -103,9 +101,7 @@
         .log-final { background: var(--gold); color: #000; text-align: center; font-weight: bold; font-size: 2.2rem; border-radius: 5px; padding: 15px; margin-top: 15px; box-shadow: 0 0 20px var(--gold); }
         @keyframes slideInLeft { 0% { transform: translateX(-50px); opacity: 0; } 100% { transform: translateX(0); opacity: 1; } }
 
-        /* =========================================
-           DADOS GIGANTES 3D 
-           ========================================= */
+        /* DADOS GIGANTES */
         #giant-dice-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.95) 100%); z-index: 400; display: none; flex-direction: column; justify-content: center; align-items: center; backdrop-filter: blur(8px); perspective: 1200px; }
         #giant-dice-label { font-size: 5rem; color: var(--gold); font-weight: bold; margin-bottom: 60px; text-shadow: 0 5px 15px #000, 0 0 20px var(--gold); text-align: center; letter-spacing: 2px; transition: 0.2s;}
         
@@ -149,33 +145,22 @@
         .floating-text.extra { color: #e74c3c; font-size: 3.5rem; text-shadow: 0 0 15px #e74c3c, 2px 2px 0 #000; }
         @keyframes floatUp { 0% { transform: translateY(0) scale(0.5); opacity: 1; } 20% { transform: translateY(-15px) scale(1.2); } 100% { transform: translateY(-60px) scale(1); opacity: 0; } }
 
-        .shake-apocalyptic { animation: shakeApoc 0.8s cubic-bezier(.36,.07,.19,.97) both; filter: blur(2px); }
-        @keyframes shakeApoc { 0%, 100% { transform: translate(0,0) rotate(0deg); } 10%, 30%, 50%, 70%, 90% { transform: translate(-20px, -15px) rotate(-2deg); } 20%, 40%, 60%, 80% { transform: translate(20px, 15px) rotate(2deg); } }
         .shake-small { animation: shakeSmall 0.15s; }
         @keyframes shakeSmall { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(3px, 5px); } }
         .shake-heavy { animation: shakeHeavy 0.4s; filter: blur(1px); }
         @keyframes shakeHeavy { 0%, 100% { transform: translate(0,0); } 25% { transform: translate(-12px, -10px); } 50% { transform: translate(12px, 10px); } 75% { transform: translate(-10px, 12px); } }
+        .shake-apocalyptic { animation: shakeApoc 0.8s cubic-bezier(.36,.07,.19,.97) both; filter: blur(2px); }
+        @keyframes shakeApoc { 0%, 100% { transform: translate(0,0) rotate(0deg); } 10%, 30%, 50%, 70%, 90% { transform: translate(-20px, -15px) rotate(-2deg); } 20%, 40%, 60%, 80% { transform: translate(20px, 15px) rotate(2deg); } }
 
         /* =========================================
            PODIO Y CLASIFICACIÓN (Z-INDEX ALTO)
            ========================================= */
         #winner-banner { 
-            position: fixed; 
-            top: 50%; left: 50%; 
-            transform: translate(-50%, -50%); 
-            background: rgba(10,10,15,0.98); 
-            border: 4px double var(--gold); 
-            padding: 40px; 
-            text-align: center; 
-            z-index: 99999; /* Garantiza estar por encima de los dados y mazmorra */
-            display: none; 
-            width: 90vw;
-            max-width: 800px; 
-            box-shadow: 0 0 80px rgba(0,0,0,1), inset 0 0 50px rgba(255,204,0,0.1); 
-            border-radius: 20px; 
-            max-height: 90vh; /* Scroll si hay demasiados elementos */
-            overflow-y: auto; 
-            animation: dropIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+            background: rgba(10,10,15,0.98); border: 4px double var(--gold); padding: 40px; text-align: center; 
+            z-index: 99999; display: none; width: 90vw; max-width: 800px; 
+            box-shadow: 0 0 80px rgba(0,0,0,1), inset 0 0 50px rgba(255,204,0,0.1); border-radius: 20px; 
+            max-height: 90vh; overflow-y: auto; animation: dropIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         @keyframes dropIn { 0% { transform: translate(-50%, -60%) scale(0.8); opacity: 0; } 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; } }
         
@@ -199,7 +184,7 @@
 
         #bet-timer { color: #e74c3c; font-size: 1.6rem; font-weight: bold; margin-top: 5px; height: 25px; letter-spacing: 1px;}
 
-        /* CONFETI JUGOSO */
+        /* CONFETI */
         .confetti-particle { position: fixed; z-index: 999999; font-size: 2rem; pointer-events: none; animation: fall linear forwards; }
         @keyframes fall { to { transform: translateY(100vh) rotate(720deg); } }
 
@@ -252,7 +237,7 @@
 
 <script>
     // ==========================================
-    // AUDIO ENGINE PROCEDURAL (JUICY SOUNDS)
+    // AUDIO ENGINE PROCEDURAL
     // ==========================================
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     let audioCtx = new AudioContext();
@@ -293,7 +278,6 @@
         }
     }
 
-    // Identificar si somos Host o Jugador
     const IS_HOST = new URLSearchParams(window.location.search).get('host') === 'true';
     if (IS_HOST) document.body.classList.add('is-host');
     else document.body.classList.add('is-player');
@@ -432,7 +416,7 @@
     </div>
 
     <div id="screen-bet" class="player-screen">
-        <h2 class="player-title" style="font-size:2.2rem; line-height:1.2; margin-bottom: 5px;">SEMILLA REVELADA</h2>
+        <h2 class="player-title" id="p-bet-main-title" style="font-size:2.2rem; line-height:1.2; margin-bottom: 5px;">SEMILLA REVELADA</h2>
         <p style="color:#aaa; text-align:center; font-size:1.3rem; margin-top:0;">Se lanzarán los siguientes dados:</p>
         
         <div id="mobile-dice-display" class="mobile-dice-row"></div>
@@ -502,6 +486,7 @@
     let globalScores = {}; 
     let currentRoundBets = {}; 
     let connectedPlayers = {}; 
+    let isBettingOpen = false; // FLAG DE SEGURIDAD PARA BLOQUEAR APUESTAS
 
     window.onload = () => {
         if (IS_HOST) {
@@ -510,7 +495,6 @@
             document.getElementById('display-room-code').innerText = currentRoomCode;
             document.getElementById('hud-room-code').innerText = currentRoomCode;
             
-            // Host activa la escucha de Base de Datos y WebSockets
             escucharBaseDatosHost();
             conectarCanalHost();
         } else {
@@ -537,9 +521,9 @@
         
         if (savedName && savedAvatar && savedRoom) {
             playerAvatar = savedAvatar;
-            document.getElementById('tag-name').innerText = savedName;
+            document.getElementById('tag-name').innerText = savedName.replace(/\|/g, '');
             document.getElementById('tag-avatar').innerText = playerAvatar;
-            document.getElementById('p-name').value = savedName;
+            document.getElementById('p-name').value = savedName.replace(/\|/g, '');
             document.getElementById('p-room').value = savedRoom;
             conectarSalaJugador(); 
         } else {
@@ -561,7 +545,7 @@
     }
 
     function savePlayerProfile() {
-        const name = document.getElementById('p-name').value.trim();
+        const name = document.getElementById('p-name').value.trim().replace(/\|/g, ''); // SANITIZAR NOMBRE
         const room = document.getElementById('p-room').value.toUpperCase().trim();
         let valid = true;
         
@@ -590,11 +574,12 @@
         currentRoomCode = localStorage.getItem('dl_playerRoom');
         document.getElementById('lobby-room-code').innerText = currentRoomCode;
         
-        // 1. Enviar ingreso a la Base de Datos (Seguro y fiable)
-        const joinPayload = `${currentRoomCode}|JOIN|${playerAvatar}|${localStorage.getItem('dl_playerName')}`;
+        // Ingreso por DB
+        let safeName = localStorage.getItem('dl_playerName').replace(/\|/g, '');
+        const joinPayload = `${currentRoomCode}|JOIN|${playerAvatar}|${safeName}`;
         await miSupabase.from('apuestas').insert([{ name: joinPayload, cantidad: -1 }]);
 
-        // 2. Conectarse a WebSockets para escuchar al Host
+        // Conexión WebSockets
         if(roomChannel) roomChannel.unsubscribe();
         roomChannel = miSupabase.channel('room-' + currentRoomCode);
         
@@ -610,11 +595,18 @@
 
     function handleGameState(payload) {
         if (payload.state === 'lobby') {
+            document.getElementById('p-bet-main-title').innerText = "SEMILLA REVELADA";
+            document.getElementById('bet-number-display').style.color = "var(--gold)";
             showScreen('screen-lobby');
-            myCurrentPact = ''; // Resetear pacto
+            myCurrentPact = ''; 
         } 
         else if (payload.state === 'betting') {
-            document.getElementById('btn-blood').disabled = false; document.getElementById('btn-ghost').disabled = false;
+            document.getElementById('btn-blood').disabled = false; 
+            document.getElementById('btn-ghost').disabled = false;
+            document.getElementById('p-bet-main-title').innerText = "SEMILLA REVELADA";
+            document.getElementById('p-bet-main-title').style.color = "var(--gold)";
+            document.getElementById('bet-number-display').style.color = "var(--gold)";
+            updateBetDisplay();
             myCurrentPact = '';
             
             let diceHtml = "";
@@ -625,7 +617,18 @@
             }
             document.getElementById('mobile-dice-display').innerHTML = diceHtml;
             playJuicySound('coin'); showScreen('screen-bet');
-        } 
+        }
+        else if (payload.state === 'time_up') {
+            // BLOQUEO VISUAL CUANDO SE ACABA EL TIEMPO
+            document.getElementById('btn-blood').disabled = true; 
+            document.getElementById('btn-ghost').disabled = true;
+            document.getElementById('p-bet-main-title').innerText = "¡TIEMPO AGOTADO!";
+            document.getElementById('p-bet-main-title').style.color = "#e74c3c";
+            document.getElementById('bet-number-display').innerText = "🔒";
+            document.getElementById('bet-number-display').style.color = "#555";
+            if(navigator.vibrate) navigator.vibrate([200, 50, 200]);
+            playJuicySound('lock');
+        }
         else if (payload.state === 'forging') {
             showScreen('screen-forging');
         } 
@@ -645,11 +648,12 @@
 
     function renderPlayerResultCard(total, scores, exactSangre, minDiffSangre) {
         if(!myCurrentPact) {
-            document.getElementById('p-res-title').innerText = "💤 AUSENTE"; document.getElementById('p-res-sub').innerText = "No apostaste nada.";
+            document.getElementById('p-res-title').innerText = "💤 AUSENTE"; document.getElementById('p-res-sub').innerText = "No apostaste o llegaste tarde.";
             document.getElementById('screen-results').style.background = "linear-gradient(180deg, #333, #111)"; return;
         }
 
-        let myKey = `${playerAvatar}|${localStorage.getItem('dl_playerName')}`;
+        let safeName = localStorage.getItem('dl_playerName').replace(/\|/g, '');
+        let myKey = `${playerAvatar}|${safeName}`;
         let myScore = scores[myKey] || 0;
         let diff = Math.abs(currentBet - total);
 
@@ -683,8 +687,8 @@
         document.getElementById('btn-blood').disabled = true; document.getElementById('btn-ghost').disabled = true;
         myCurrentPact = tipo;
 
-        // Enviar por DB (Fiable)
-        const finalName = `${currentRoomCode}|BET|${playerAvatar}|${localStorage.getItem('dl_playerName')}|${tipo}`;
+        let safeName = localStorage.getItem('dl_playerName').replace(/\|/g, '');
+        const finalName = `${currentRoomCode}|BET|${playerAvatar}|${safeName}|${tipo}`;
         const { error } = await miSupabase.from('apuestas').insert([{ name: finalName, cantidad: currentBet }]);
         
         if(!error) {
@@ -705,16 +709,14 @@
     }
 
     // ==========================================
-    // LÓGICA DEL HOST (HÍBRIDA)
+    // LÓGICA DEL HOST
     // ==========================================
     let roomsData = []; const tileSize = 55; let timerIntervalHost; let globalRoomCount = 0; let currentRound = 0; let maxRounds = 5;
 
     async function limpiarBD() {
         if(confirm("¿Estás seguro? Esto borrará TODAS las apuestas de Supabase y el ranking local.")) {
             await miSupabase.from('apuestas').delete().neq('id', 0);
-            localStorage.clear(); 
-            alert("Base de datos limpia. Recarga la página.");
-            window.location.reload();
+            localStorage.clear(); alert("Base de datos limpia. Recarga la página."); window.location.reload();
         }
     }
 
@@ -726,7 +728,6 @@
 
     function broadcastState(stateName, payload = {}) {
         if(!IS_HOST || !roomChannel) return;
-        // Host usa WebSockets para cambiar pantallas de los móviles al instante
         roomChannel.send({ type: 'broadcast', event: 'gameState', payload: { state: stateName, ...payload } });
     }
 
@@ -734,27 +735,36 @@
         if(!IS_HOST) return;
         miSupabase.channel('l').on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'apuestas' }, p => {
             let parts = p.new.name.split('|');
-            if(parts[0] !== currentRoomCode) return; // Aislar sala
+            if(parts[0] !== currentRoomCode) return; 
 
             let action = parts[1];
+            let av = parts[2]; 
+            // Extraer de forma segura ignorando separadores mal puestos
+            let nm = parts.slice(3, parts.length - (action==='BET'?1:0)).join(' ') || "Héroe"; 
+            let key = `${av}|${nm}`;
+
+            // FORZAR INICIALIZACIÓN DE SCORE SIEMPRE (Evita el NaN)
+            if (typeof globalScores[key] === 'undefined' || isNaN(globalScores[key])) {
+                globalScores[key] = 0;
+            }
 
             if (action === 'JOIN') {
-                let av = parts[2]; let nm = parts[3];
-                let key = `${av}|${nm}`;
                 if(!connectedPlayers[key]) {
                     connectedPlayers[key] = { avatar: av, name: nm };
-                    if(!globalScores[key]) globalScores[key] = 0; // Iniciar score si es nuevo
                     let lobbyGrid = document.getElementById('lobby-players-grid');
                     lobbyGrid.innerHTML += `<div class="lobby-player-card"><span class="av">${av}</span> ${nm}</div>`;
                     playJuicySound('coin');
                 }
             }
             else if (action === 'BET') {
-                let av = parts[2]; let nm = parts[3]; let pact = parts[4];
-                let key = `${av}|${nm}`;
-                
-                // Guardamos en memoria RAM para procesar rápido al final
-                currentRoundBets[key] = { bet: parseInt(p.new.cantidad), pact: pact }; 
+                // BUG 1 SOLUCIONADO: Si se acabó el tiempo, la apuesta es rechazada.
+                if(!isBettingOpen) return; 
+
+                // BUG 3 SOLUCIONADO: Asegurar la extracción correcta del Pacto ('S' o 'A')
+                let pact = parts[parts.length - 1]; 
+                if (pact !== 'S' && pact !== 'A') pact = 'S'; // Fallback por si acaso
+
+                currentRoundBets[key] = { bet: parseInt(p.new.cantidad), pact: pact, avatar: av, name: nm }; 
 
                 let icon = pact === 'S' ? '🩸' : '🛡️';
                 const li = document.createElement('li'); li.style.padding = "8px 5px"; li.style.borderBottom = "1px solid #333";
@@ -769,7 +779,7 @@
 
     function iniciarTorneo() {
         maxRounds = parseInt(document.getElementById('host-rounds').value) || 5;
-        currentRound = 0; globalScores = {}; connectedPlayers = {}; currentRoundBets = {};
+        currentRound = 0; globalScores = {}; connectedPlayers = {}; currentRoundBets = {}; isBettingOpen = false;
         localStorage.setItem('dl_roomCode', currentRoomCode);
         playJuicySound('start');
         
@@ -794,8 +804,9 @@
         if(currentRound >= maxRounds) { alert("El Torneo ha terminado."); return; }
         
         currentRound++; actualizarHUDTorneo();
-        currentRoundBets = {}; // Limpiamos apuestas en memoria RAM de esta ronda
-        document.getElementById('list-bets').innerHTML = ""; // Limpiamos lista UI
+        currentRoundBets = {}; 
+        isBettingOpen = false;
+        document.getElementById('list-bets').innerHTML = ""; 
 
         document.getElementById('btn-seed').disabled = true;
         if(audioCtx.state === 'suspended') audioCtx.resume();
@@ -839,6 +850,8 @@
         }
 
         document.getElementById('btn-reveal').style.display = 'block'; document.getElementById('btn-seed').style.display = 'none'; document.getElementById('btn-seed').disabled = false;
+        
+        isBettingOpen = true; // SE ABREN LAS APUESTAS AL SERVIDOR
         iniciarTemporizadorHost();
     }
 
@@ -847,7 +860,13 @@
         timerIntervalHost = setInterval(() => {
             timeLeft--; document.getElementById('bet-timer').innerText = "⏱️ TIEMPO: " + timeLeft + "s";
             if(timeLeft <= 5 && timeLeft > 0) playJuicySound('tick');
-            if(timeLeft <= 0) { clearInterval(timerIntervalHost); document.getElementById('bet-timer').innerText = "¡APUESTAS CERRADAS!"; playJuicySound('lock'); }
+            if(timeLeft <= 0) { 
+                clearInterval(timerIntervalHost); 
+                document.getElementById('bet-timer').innerText = "¡APUESTAS CERRADAS!"; 
+                isBettingOpen = false; // SE CIERRAN LAS APUESTAS AL SERVIDOR
+                broadcastState('time_up'); // SE CIERRAN LAS APUESTAS EN LOS MÓVILES
+                playJuicySound('lock'); 
+            }
         }, 1000);
     }
 
@@ -864,6 +883,7 @@
     async function forjarMazmorraEnVivo() {
         if(!IS_HOST) return;
         clearInterval(timerIntervalHost); document.getElementById('bet-timer').innerText = ""; document.getElementById('btn-reveal').style.display = 'none';
+        isBettingOpen = false; // Bloqueo extra de seguridad
         
         broadcastState('forging');
 
@@ -961,7 +981,7 @@
     function colocarPasillo(x1, y1, x2, y2) { const corr = document.createElement('div'); corr.className = 'corridor'; const p = 24; if(x1 === x2) { corr.style.width = '8px'; corr.style.height = tileSize + 'px'; corr.style.left = (x1 + p) + 'px'; corr.style.top = Math.min(y1, y2) + p + 'px'; } else { corr.style.height = '8px'; corr.style.width = tileSize + 'px'; corr.style.top = (y1 + p) + 'px'; corr.style.left = Math.min(x1, x2) + p + 'px'; } document.getElementById('dungeon-canvas').appendChild(corr); }
 
     // ==========================================
-    // SISTEMA DE PUNTOS Y RESULTADOS (EN RAM)
+    // SISTEMA DE PUNTOS Y RESULTADOS (CORREGIDO NaN Y PACTOS)
     // ==========================================
     function processWinnersHost(total) {
         const banner = document.getElementById('winner-banner');
@@ -976,7 +996,7 @@
 
         let minDiffSangre = Infinity; let exactSangre = false;
         
-        // PASO 1: Analizar desde la memoria RAM (Super Rápido)
+        // PASO 1: Calcular la diferencia mínima solo para Pactos de Sangre (S)
         Object.keys(currentRoundBets).forEach(key => {
             let p = currentRoundBets[key];
             if (p.pact === 'S') {
@@ -986,11 +1006,16 @@
             }
         });
 
-        // PASO 2: Repartir puntos
+        // PASO 2: Repartir puntos estrictamente
         Object.keys(currentRoundBets).forEach(key => {
-            let parts = key.split('|'); let av = parts[0]; let nm = parts[1];
-            let p = currentRoundBets[key]; let val = p.bet;
+            let p = currentRoundBets[key];
+            let val = p.bet; let av = p.avatar; let nm = p.name;
             let diff = Math.abs(val - total);
+
+            // DOBLE SEGURIDAD ANTI-NaN ANTES DE SUMAR
+            if (typeof globalScores[key] === 'undefined' || isNaN(globalScores[key])) {
+                globalScores[key] = 0;
+            }
 
             if(p.pact === 'S') {
                 if(diff === 0) { winnersSangreExact.push({av, nm, val}); globalScores[key] += 1; someoneWon = true; } 
@@ -1000,13 +1025,16 @@
                 if(diff === 0) { winnersAlmasExact.push({av, nm, val}); globalScores[key] += 0.5; someoneWon = true; }
                 else if(diff === 1) { winnersAlmasAprox.push({av, nm, val}); globalScores[key] += 0.25; someoneWon = true; }
             }
+            
+            // REDONDEO PERFECTO PARA EVITAR DECIMALES ROTOS DE JAVASCRIPT (ej: 0.500000001)
+            globalScores[key] = parseFloat(globalScores[key].toFixed(2));
         });
 
         pSub.innerHTML = `LA MAZMORRA GENERÓ EXACTAMENTE <strong style="color:var(--gold)">${total}</strong> SALAS`;
 
         if(someoneWon) {
             playJuicySound('win'); pTitle.innerText = "🏆 GLORIA EN LA SALA 🏆"; pTitle.style.color = "#2ecc71";
-            if(exactSangre) dispararConfeti(); // Confeti super pro
+            if(exactSangre) dispararConfeti(); 
 
             winnersSangreExact.forEach(w => { podium.innerHTML += `<div class="winner-card"><div class="avatar">${w.av}</div><div class="name">${w.nm}</div><div class="pts" style="font-size: 1.5rem; color: var(--blood); background: #000; padding: 2px 10px; border-radius: 10px; margin-top: 5px; font-weight:bold;">+1 PT (Exacto)</div></div>`; });
             winnersSangreAprox.forEach(w => { podium.innerHTML += `<div class="winner-card"><div class="avatar">${w.av}</div><div class="name">${w.nm}</div><div class="pts" style="font-size: 1.5rem; color: #ff9900; background: #000; padding: 2px 10px; border-radius: 10px; margin-top: 5px; font-weight:bold;">+0.5 PT (Cercano)</div></div>`; });
@@ -1063,9 +1091,8 @@
             document.getElementById('lobby-players-grid').innerHTML = ""; 
             conectarCanalHost(); 
         } else {
-            // EL BUG ESTABA AQUÍ ANTES: Solo preparamos la mesa, no borramos a los jugadores de RAM
             document.getElementById('btn-seed').style.display = 'block'; document.getElementById('btn-seed').disabled = false;
-            broadcastState('lobby'); // Esto avisa a los móviles para que esperen a la nueva semilla
+            broadcastState('lobby');
         }
     }
 </script>
