@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Dungeon Lotto: ESPORTS EDITION 🏆</title>
+    <title>Dungeon Master: KAHOOT EDITION 🏆</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
@@ -12,135 +12,83 @@
             --gold: #ffcc00; 
             --stone: #1a1a1a; 
             --wall: #333; 
-            --corridor: #555; 
             --bg: #0a0a0c; 
             --blood: #e74c3c; 
             --ghost: #3498db; 
         }
 
         body {
-            background-color: var(--bg); 
-            color: #eee; 
-            font-family: 'VT323', monospace;
-            margin: 0; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center;
-            min-height: 100vh; 
-            overflow: hidden; 
-            touch-action: manipulation;
+            background-color: var(--bg); color: #eee; font-family: 'VT323', monospace;
+            margin: 0; display: flex; justify-content: center; align-items: center;
+            min-height: 100vh; overflow: hidden; touch-action: manipulation;
         }
 
         body::after {
-            content: ""; 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 200vw; 
-            height: 200vh;
-            background-image: 
-                linear-gradient(rgba(255, 204, 0, 0.05) 2px, transparent 2px),
-                linear-gradient(90deg, rgba(255, 204, 0, 0.05) 2px, transparent 2px);
-            background-size: 60px 60px; 
-            z-index: -1;
-            animation: moveGrid 30s linear infinite; 
-            pointer-events: none;
+            content: ""; position: fixed; top: 0; left: 0; width: 200vw; height: 200vh;
+            background-image: linear-gradient(rgba(255, 204, 0, 0.05) 2px, transparent 2px), linear-gradient(90deg, rgba(255, 204, 0, 0.05) 2px, transparent 2px);
+            background-size: 60px 60px; z-index: -1; animation: moveGrid 30s linear infinite; pointer-events: none;
         }
-
-        @keyframes moveGrid { 
-            0% { transform: translate(0, 0); } 
-            100% { transform: translate(-60px, -60px); } 
-        }
+        @keyframes moveGrid { 0% { transform: translate(0, 0); } 100% { transform: translate(-60px, -60px); } }
 
         body::before {
-            content: " "; 
-            display: block; 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            bottom: 0; 
-            right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
-            z-index: 500; 
-            background-size: 100% 3px, 3px 100%; 
-            pointer-events: none;
+            content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            z-index: 500; background-size: 100% 3px, 3px 100%; pointer-events: none;
         }
 
-        #flash-overlay { 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100vw; 
-            height: 100vh; 
-            background: #fff; 
-            z-index: 9999; 
-            opacity: 0; 
-            pointer-events: none; 
-        }
-
+        #flash-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #fff; z-index: 9999; opacity: 0; pointer-events: none; }
         .flash-anim { animation: flashScreen 0.8s ease-out; }
         .flash-blood { animation: flashBlood 0.5s ease-out; background: var(--blood) !important; }
         .flash-ghost { animation: flashBlood 0.5s ease-out; background: var(--ghost) !important; }
-
         @keyframes flashScreen { 0% { opacity: 1; } 100% { opacity: 0; } }
         @keyframes flashBlood { 0% { opacity: 0.8; } 100% { opacity: 0; } }
 
         body.is-host #view-player { display: none !important; }
-        body.is-player #view-host { display: none !important; }
-        body.is-player #host-setup { display: none !important; }
+        body.is-player #view-host, body.is-player #host-setup, body.is-player #host-lobby { display: none !important; }
         body.is-player { align-items: flex-start; padding-top: 20px; }
 
         /* =========================================
-           VISTA HOST (LOBBY Y CONFIGURACIÓN)
+           COMPONENTES COMUNES Y BOTONES
            ========================================= */
-        #host-setup {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(10, 10, 15, 0.98); z-index: 5000;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-        }
+        button { font-family: 'VT323'; cursor: pointer; transition: 0.2s; text-transform: uppercase; }
+        button:active { transform: translateY(4px) scale(0.98); }
+        
+        .btn-gold { background: linear-gradient(180deg, #ffd700 0%, #d4af37 100%); color: #000; border: 2px solid #aa8c2c; box-shadow: 0 8px 0 #806921, 0 15px 20px rgba(0,0,0,0.4); }
+        .btn-gold:active { box-shadow: 0 0 0 #806921, 0 5px 10px rgba(0,0,0,0.4); transform: translateY(8px); }
 
-        .setup-box {
-            background: #000; border: 4px solid var(--gold); padding: 50px;
-            text-align: center; border-radius: 10px; box-shadow: 0 0 50px rgba(255, 204, 0, 0.2);
-        }
-
-        .setup-input {
-            background: #111; color: var(--gold); border: 2px solid var(--gold);
-            font-size: 3rem; text-align: center; width: 100px; padding: 10px; font-family: 'VT323'; margin: 20px 0;
-        }
-
-        .room-code-display {
-            font-size: 8rem; color: #2ecc71; font-weight: bold; letter-spacing: 10px;
-            text-shadow: 0 0 30px rgba(46, 204, 113, 0.5); margin: 20px 0;
-        }
+        .btn-host-action { background: #111; color: var(--gold); border: 2px solid var(--gold); padding: 15px 30px; font-size: 1.8rem; border-radius: 5px; letter-spacing: 2px; }
+        .btn-host-action:hover { background: var(--gold); color: #000; box-shadow: 0 0 20px var(--gold); }
 
         /* =========================================
-           VISTA HOST JUEGO
+           VISTA HOST: SETUP & LOBBY REAL
            ========================================= */
-        #game-container { 
-            width: 95vw; height: 92vh; background: rgba(10,10,12,0.9); border: 4px solid var(--gold); 
-            display: flex; flex-direction: column; position: relative; box-shadow: 0 0 30px rgba(0,0,0,0.8), inset 0 0 50px rgba(0,0,0,0.8); border-radius: 10px; overflow: hidden; 
-        }
+        #host-setup, #host-lobby { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10, 10, 15, 0.98); z-index: 5000; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        
+        .setup-box { background: #000; border: 4px solid var(--gold); padding: 50px; text-align: center; border-radius: 10px; box-shadow: 0 0 50px rgba(255, 204, 0, 0.2); }
+        .setup-input { background: #111; color: var(--gold); border: 2px solid var(--gold); font-size: 3rem; text-align: center; width: 120px; padding: 10px; font-family: 'VT323'; margin: 20px 0; }
 
-        header { 
-            padding: 15px 30px; border-bottom: 2px solid var(--gold); display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.8); position: relative; z-index: 10; box-shadow: 0 5px 15px rgba(0,0,0,0.5); 
-        }
+        .room-code-display { font-size: 10rem; color: #2ecc71; font-weight: bold; letter-spacing: 15px; text-shadow: 0 0 40px rgba(46, 204, 113, 0.6); margin: 10px 0; }
+        
+        /* Grid de Jugadores en el Lobby */
+        #lobby-players-grid { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; max-width: 80vw; margin: 30px 0; min-height: 100px;}
+        .lobby-player-card { background: rgba(255,204,0,0.1); border: 2px solid var(--gold); padding: 10px 20px; border-radius: 8px; font-size: 2rem; color: #fff; display: flex; align-items: center; gap: 10px; animation: popText 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .lobby-player-card .av { font-size: 3rem; }
 
-        h1 { 
-            margin: 0; color: var(--gold); font-size: 2.8rem; text-shadow: 2px 2px 0px #000, 0 0 15px var(--gold); letter-spacing: 2px;
-            display: flex; flex-direction: column;
-        }
-
-        #round-display { color: #fff; font-size: 1.6rem; letter-spacing: 1px; text-shadow: none; background: #222; padding: 2px 10px; border-radius: 5px; border: 1px solid #555; width: fit-content; margin-top: 5px; }
+        /* =========================================
+           VISTA HOST: JUEGO
+           ========================================= */
+        #game-container { width: 95vw; height: 92vh; background: rgba(10,10,12,0.9); border: 4px solid var(--gold); display: flex; flex-direction: column; position: relative; box-shadow: 0 0 30px rgba(0,0,0,0.8), inset 0 0 50px rgba(0,0,0,0.8); border-radius: 10px; overflow: hidden; }
+        header { padding: 15px 30px; border-bottom: 2px solid var(--gold); display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.8); position: relative; z-index: 10; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+        h1 { margin: 0; color: var(--gold); font-size: 2.8rem; text-shadow: 2px 2px 0px #000, 0 0 15px var(--gold); letter-spacing: 2px; display: flex; flex-direction: column;}
+        #round-display { color: #fff; font-size: 1.6rem; letter-spacing: 1px; background: #222; padding: 2px 10px; border-radius: 5px; border: 1px solid #555; width: fit-content; margin-top: 5px; }
         
         #room-counter { font-size: 3rem; color: #fff; border: 3px solid var(--gold); padding: 5px 25px; background: #000; font-weight: bold; border-radius: 8px; box-shadow: inset 0 0 10px rgba(255,204,0,0.3); transition: 0.2s;}
         .counter-bump { transform: scale(1.1); color: var(--gold) !important; border-color: #fff !important; box-shadow: 0 0 20px var(--gold) !important; }
         
-        #view-host { flex-grow: 1; display: flex; position: relative; overflow: hidden; flex-direction: column; perspective: 1000px; }
+        #view-host { flex-grow: 1; display: flex; position: relative; overflow: hidden; flex-direction: column; perspective: 1200px; }
         #dungeon-canvas { flex-grow: 1; position: relative; }
         
-        #side-panel { position: absolute; right: 20px; top: 20px; width: 280px; background: rgba(0,0,0,0.85); border: 2px solid var(--gold); padding: 15px; max-height: 60%; overflow-y: auto; z-index: 100; border-radius: 10px; box-shadow: -5px 5px 20px rgba(0,0,0,0.5); backdrop-filter: blur(5px); }
+        #side-panel { position: absolute; right: 20px; top: 20px; width: 260px; background: rgba(0,0,0,0.85); border: 2px solid var(--gold); padding: 15px; max-height: 60%; overflow-y: auto; z-index: 100; border-radius: 10px; box-shadow: -5px 5px 20px rgba(0,0,0,0.5); backdrop-filter: blur(5px); }
         
         #live-log { position: absolute; left: 20px; top: 20px; width: 360px; height: 60%; background: rgba(10,10,15,0.95); border: 2px solid #555; border-left: 5px solid var(--gold); padding: 15px; z-index: 100; display: none; flex-direction: column; box-shadow: 5px 5px 25px rgba(0,0,0,0.9); border-radius: 5px; overflow: hidden; }
         #log-content { flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding-right: 5px; }
@@ -148,35 +96,38 @@
         .log-d4 { border-left-color: #2ecc71; background: linear-gradient(90deg, rgba(46, 204, 113, 0.15) 0%, transparent 100%); }
         .log-d6 { border-left-color: #3498db; background: linear-gradient(90deg, rgba(52, 152, 219, 0.15) 0%, transparent 100%); }
         .log-d8 { border-left-color: #9b59b6; background: linear-gradient(90deg, rgba(155, 89, 182, 0.15) 0%, transparent 100%); }
-        .log-system { text-align: center; color: #ccc; font-style: italic; background: none; border: none; font-size: 1.4rem; padding: 15px 0;}
+        .log-system { text-align: center; color: #ccc; font-style: italic; font-size: 1.4rem; padding: 15px 0;}
         .log-highlight { color: var(--gold); font-weight: bold; }
         .log-explode-text { color: #e74c3c; font-weight: bold; font-size: 2rem; text-shadow: 0 0 15px #e74c3c; display: inline-block; animation: popText 0.3s; }
         .log-final { background: var(--gold); color: #000; text-align: center; font-weight: bold; font-size: 2.2rem; border-radius: 5px; padding: 15px; margin-top: 15px; box-shadow: 0 0 20px var(--gold); }
         @keyframes slideInLeft { 0% { transform: translateX(-50px); opacity: 0; } 100% { transform: translateX(0); opacity: 1; } }
 
         /* =========================================
-           EL DADO GIGANTE 3D HYPER-REALISTA
+           DADOS GIGANTES 3D 
            ========================================= */
         #giant-dice-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.95) 100%); z-index: 400; display: none; flex-direction: column; justify-content: center; align-items: center; backdrop-filter: blur(8px); perspective: 1200px; }
-        #giant-dice-label { font-size: 5rem; color: var(--gold); font-weight: bold; margin-bottom: 60px; text-shadow: 0 5px 15px #000, 0 0 20px var(--gold); text-align: center; letter-spacing: 2px; transition: 0.2s; z-index: 401;}
+        #giant-dice-label { font-size: 5rem; color: var(--gold); font-weight: bold; margin-bottom: 60px; text-shadow: 0 5px 15px #000, 0 0 20px var(--gold); text-align: center; letter-spacing: 2px; transition: 0.2s;}
+        
         .rpg-dice-container { width: 250px; height: 250px; display: flex; justify-content: center; align-items: center; }
         .rpg-dice-volumetric { position: relative; width: 200px; height: 200px; transform-style: preserve-3d; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .dice-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; font-size: 10rem; font-weight: bold; color: transparent; transform-origin: center center; }
         .front-face { color: #fff; text-shadow: 0 5px 15px rgba(0,0,0,0.8); }
+
         .shape-d4 { clip-path: polygon(50% 0%, 0% 100%, 100% 100%); align-items: flex-end; padding-bottom: 25px; }
         .shape-d6 { border-radius: 20px; }
         .shape-d8 { clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); }
+
         .dice-rolling { animation: rollVolumetric 0.8s linear infinite; filter: drop-shadow(0 30px 20px rgba(0,0,0,0.8));}
         @keyframes rollVolumetric { 0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(0.8); } 100% { transform: rotateX(360deg) rotateY(720deg) rotateZ(360deg) scale(0.8); } }
         .dice-land { animation: diceThudVolumetric 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
         @keyframes diceThudVolumetric { 0% { transform: translateZ(400px) rotateX(45deg) rotateY(45deg); opacity: 0;} 50% { transform: translateZ(-50px) rotateX(0) rotateY(0); opacity: 1;} 100% { transform: translateZ(0) rotateX(0) rotateY(0); filter: drop-shadow(0 20px 30px rgba(0,0,0,0.9));} }
+
         .dice-explode { position: fixed !important; top: 50% !important; left: 50% !important; transform: translate(-50%, -50%) !important; width: 250px !important; height: 250px !important; animation: supernova 1.2s cubic-bezier(0.2, 1, 0.3, 1) forwards !important; z-index: 999999 !important; pointer-events: none; }
         .dice-explode .dice-layer { clip-path: none !important; border-radius: 50% !important; background: radial-gradient(circle, #fff 0%, #ff4d4d 40%, #990000 100%) !important; color: transparent !important; border: none !important; }
         @keyframes supernova { 0% { transform: translate(-50%, -50%) scale(1); filter: brightness(1) drop-shadow(0 0 50px #ff0000); opacity: 1;} 20% { transform: translate(-50%, -50%) scale(3); filter: brightness(2) drop-shadow(0 0 100px #ff0000); opacity: 1;} 100% { transform: translate(-50%, -50%) scale(12); filter: brightness(5) blur(15px); opacity: 0; } }
 
+        /* TRAGAPERRAS Y MAZMORRA */
         .controls { padding: 20px; background: rgba(0,0,0,0.8); display: flex; justify-content: center; gap: 30px; border-top: 2px solid var(--gold); z-index: 10; }
-        
-        /* TRAGAPERRAS HOST */
         #seed-tag { display: flex; flex-direction: column; align-items: center; min-width: 280px; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 10px; border: 1px solid #444; }
         .slot-machine { display: flex; gap: 15px; margin-bottom: 5px; }
         .slot-box { width: 60px; height: 75px; background: #050505; border: 3px solid #555; display: flex; justify-content: center; align-items: center; font-size: 5rem; font-weight: bold; color: #fff; box-shadow: inset 0 0 20px rgba(0,0,0,1), 0 5px 10px rgba(0,0,0,0.5); border-radius: 8px; transition: 0.3s; }
@@ -186,6 +137,7 @@
         .slot-box.jackpot { border-color: #e74c3c; color: #e74c3c; text-shadow: 0 0 30px #e74c3c; animation: jackpotPulse 0.5s infinite alternate; }
         .slot-box.bonus { border-color: var(--gold); color: var(--gold); text-shadow: 0 0 25px var(--gold); }
         @keyframes lockImpact { 0% { transform: scale(1.5) translateY(-20px); color: #fff; text-shadow: 0 0 30px #fff; } 100% { transform: scale(1) translateY(0); border-color: #555; box-shadow: none; } }
+        @keyframes jackpotPulse { 0% { transform: scale(1); box-shadow: inset 0 0 20px rgba(231, 76, 60, 0.4); } 100% { transform: scale(1.1); box-shadow: inset 0 0 50px rgba(231, 76, 60, 0.9); } }
         
         .room { position: absolute; width: 45px; height: 45px; background: linear-gradient(135deg, #3a3a3a, #1a1a1a); border: 2px solid #666; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 20px; z-index: 10; animation: roomPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; box-shadow: 2px 2px 10px rgba(0,0,0,0.8); }
         .room.gold-room { border-color: var(--gold); background: linear-gradient(135deg, #5a4a00, #1a1a00); box-shadow: 0 0 15px rgba(255,204,0,0.5); }
@@ -203,8 +155,9 @@
         .shake-heavy { animation: shakeHeavy 0.4s; filter: blur(1px); }
         @keyframes shakeHeavy { 0%, 100% { transform: translate(0,0); } 25% { transform: translate(-12px, -10px); } 50% { transform: translate(12px, 10px); } 75% { transform: translate(-10px, 12px); } }
 
-        /* PODIO Y LEADERBOARD HOST */
+        /* PODIO Y CLASIFICACIÓN */
         #winner-banner { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(10,10,15,0.95); border: 4px double var(--gold); padding: 40px; text-align: center; z-index: 1000; display: none; min-width: 650px; box-shadow: 0 0 80px rgba(0,0,0,1), inset 0 0 50px rgba(255,204,0,0.1); border-radius: 20px; max-height: 85vh; overflow-y: auto;}
+        
         .podium-container { display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; margin: 25px 0; }
         .winner-card { background: rgba(255,204,0,0.1); border: 2px solid var(--gold); padding: 15px; border-radius: 10px; display: flex; flex-direction: column; align-items: center; box-shadow: 0 0 20px rgba(255,204,0,0.3); animation: popText 0.5s; width: 140px;}
         .winner-card.ghost { background: rgba(52, 152, 219, 0.1); border-color: var(--ghost); box-shadow: 0 0 20px rgba(52, 152, 219, 0.3); }
@@ -223,26 +176,22 @@
         .lb-row.top-3 { border-left-color: #cd7f32; background: rgba(205, 127, 50, 0.1); }
 
         #bet-timer { color: #e74c3c; font-size: 1.6rem; font-weight: bold; margin-top: 5px; height: 25px; letter-spacing: 1px;}
-        button.host-btn { background: #111; color: var(--gold); border: 2px solid var(--gold); padding: 15px 30px; font-family: 'VT323'; font-size: 1.8rem; cursor: pointer; transition: 0.2s; border-radius: 5px; text-transform: uppercase; letter-spacing: 2px; }
-        button.host-btn:hover { background: var(--gold); color: #000; box-shadow: 0 0 20px var(--gold); transform: translateY(-2px); }
-        button.host-btn:active { transform: translateY(2px); }
 
         /* =========================================
-           VISTA JUGADOR (MÓVIL) - EXPERIENCE DYNAMICS
+           VISTA JUGADOR (MÓVIL)
            ========================================= */
-        #view-player { width: 95vw; max-width: 420px; display: flex; flex-direction: column; align-items: center; z-index: 10; margin: 0 auto; position: relative; }
+        #view-player { width: 95vw; max-width: 420px; display: flex; flex-direction: column; align-items: center; z-index: 10; margin: 0 auto; position: relative;}
         .player-screen { display: none; flex-direction: column; align-items: center; width: 100%; background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%); border: 2px solid #444; border-top: 2px solid var(--gold); padding: 30px 20px; box-sizing: border-box; border-radius: 15px; box-shadow: 0 15px 40px rgba(0,0,0,0.9); position: relative; }
         .player-screen.active { display: flex; animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         @keyframes slideUp { 0% { transform: translateY(40px) scale(0.95); opacity: 0; } 100% { transform: translateY(0) scale(1); opacity: 1; } }
 
         .player-title { color: var(--gold); font-size: 2.6rem; margin: 0 0 10px 0; text-align: center; text-shadow: 0 5px 10px rgba(0,0,0,0.5); }
-        
         .avatar-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 25px; width: 100%; padding: 0 10px; box-sizing: border-box;}
         .avatar-btn { font-size: 2.5rem; background: #111; border: 2px solid #333; border-radius: 15px; width: 100%; aspect-ratio: 1; cursor: pointer; transition: 0.2s; display:flex; justify-content:center; align-items:center; box-shadow: inset 0 -5px 10px rgba(0,0,0,0.5);}
         .avatar-btn.selected { border-color: var(--gold); background: rgba(255,204,0,0.15); transform: scale(1.05) translateY(-5px); box-shadow: 0 10px 15px rgba(0,0,0,0.5), inset 0 0 15px var(--gold); }
         
-        input.player-input { width: 100%; background: #000; border: 2px solid #444; border-radius: 10px; color: #fff; padding: 20px; font-family: 'VT323'; font-size: 1.8rem; text-align: center; margin-bottom: 25px; box-sizing: border-box; transition: 0.2s; box-shadow: inset 0 5px 10px rgba(0,0,0,0.5);}
-        input.player-input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 15px rgba(255,204,0,0.3), inset 0 5px 10px rgba(0,0,0,0.5); }
+        .player-input { width: 100%; background: #000; border: 2px solid #444; border-radius: 10px; color: #fff; padding: 20px; font-family: 'VT323'; font-size: 1.8rem; text-align: center; margin-bottom: 15px; box-sizing: border-box; transition: 0.2s; box-shadow: inset 0 5px 10px rgba(0,0,0,0.5);}
+        .player-input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 15px rgba(255,204,0,0.3), inset 0 5px 10px rgba(0,0,0,0.5); }
         
         #player-info-tag { display: flex; align-items: center; justify-content: space-between; width: 100%; background: #000; border: 1px solid #444; padding: 10px 20px; border-radius: 10px; margin-bottom: 20px; box-sizing: border-box; box-shadow: inset 0 0 10px rgba(0,0,0,0.5);}
         
@@ -260,9 +209,7 @@
         .action-btn:active { transform: translateY(8px); box-shadow: 0 0 0 #000, 0 5px 10px rgba(0,0,0,0.4); }
         .btn-blood { background: linear-gradient(180deg, #ff5e62 0%, #c0392b 100%); border-color: #e74c3c; }
         .btn-ghost { background: linear-gradient(180deg, #5dade2 0%, #154360 100%); border-color: #3498db; }
-        .btn-gold { width: 100%; background: linear-gradient(180deg, #ffd700 0%, #d4af37 100%); color: #000; border-color: #aa8c2c; box-shadow: 0 8px 0 #806921, 0 15px 20px rgba(0,0,0,0.4); text-shadow: none;}
-        .btn-gold:active { box-shadow: 0 0 0 #806921, 0 5px 10px rgba(0,0,0,0.4); transform: translateY(8px); }
-
+        
         .waiting-spinner { font-size: 5rem; margin: 20px 0; animation: floatSpin 3s infinite ease-in-out; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.5));}
         @keyframes floatSpin { 0% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-20px) rotate(10deg); } 100% { transform: translateY(0px) rotate(0deg); } }
 
@@ -273,8 +220,6 @@
         .m-d6 { background: #3498db; border-radius: 10px;}
         .m-d8 { background: #9b59b6; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); }
 
-        /* PANTALLA FORJA MÓVIL */
-        #screen-forging { text-align: center; }
         .eye-pulse { font-size: 6rem; animation: pulseExplode 1.5s infinite alternate; margin: 20px 0;}
     </style>
 </head>
@@ -282,7 +227,7 @@
 
 <script>
     // ==========================================
-    // AUDIO ENGINE PROCEDURAL
+    // AUDIO ENGINE PROCEDURAL (JUICY SOUNDS)
     // ==========================================
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     let audioCtx = new AudioContext();
@@ -298,7 +243,7 @@
             osc.type = 'sine'; osc.frequency.setValueAtTime(800, now); osc.frequency.exponentialRampToValueAtTime(1200, now + 0.05);
             gain.gain.setValueAtTime(0.05, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
             osc.start(now); osc.stop(now + 0.05);
-        } else if (type === 'click') { 
+        } else if(type === 'click') { 
             osc.type = 'square'; osc.frequency.setValueAtTime(400, now); osc.frequency.exponentialRampToValueAtTime(100, now + 0.05);
             gain.gain.setValueAtTime(0.1, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
             osc.start(now); osc.stop(now + 0.05);
@@ -343,14 +288,23 @@
 <div id="host-setup" class="host-only" style="display:none;">
     <h1 style="font-size: 5rem; margin-bottom: 0; color: var(--gold); text-shadow: 0 0 20px var(--gold);">DUNGEON LOTTO</h1>
     <h2 style="color:var(--blood); margin-top: 0; font-size: 3rem; letter-spacing: 5px;">TOURNAMENT EDITION</h2>
+    
     <div class="setup-box">
         <div style="font-size: 2.5rem; color:#fff; font-family:'VT323';">CÓDIGO DE SALA</div>
         <div id="display-room-code" class="room-code-display">----</div>
         <div style="font-size: 1.5rem; color:#aaa; margin-bottom: 20px;">Los jugadores deben introducir este código en sus móviles.</div>
+        
         <div style="font-size: 2rem; color:#fff; font-family:'VT323'; margin-top: 20px;">NÚMERO DE RONDAS</div>
         <input type="number" id="host-rounds" value="5" min="1" max="50" class="setup-input">
         <br>
-        <button class="action-btn btn-gold" style="padding: 15px 40px; font-size: 2.5rem; width: auto;" onmouseenter="playJuicySound('tick')" onclick="iniciarTorneo()">🔥 INICIAR TORNEO 🔥</button>
+        <button class="btn-gold" style="padding: 15px 40px; font-size: 2.5rem; border-radius: 10px;" onmouseenter="playJuicySound('tick')" onclick="iniciarTorneo()">🔥 INICIAR TORNEO 🔥</button>
+    </div>
+    
+    <button style="margin-top: 40px; background: transparent; border: 2px solid #e74c3c; color: #e74c3c; padding: 10px 20px; font-family: 'VT323'; font-size: 1.5rem; cursor: pointer;" onmouseenter="playJuicySound('tick')" onclick="limpiarBD()">🗑️ RESETEAR BASE DE DATOS (PELIGRO)</button>
+    
+    <div style="width: 100%; text-align: center; margin-top: 30px;">
+        <h3 style="color: var(--gold); font-size: 2rem; margin-bottom: 5px;">HÉROES CONECTADOS</h3>
+        <div id="lobby-players-grid"></div>
     </div>
 </div>
 
@@ -363,10 +317,21 @@
             </div>
             <div id="room-counter">SALAS: 0</div>
         </div>
+        
+        <div id="seed-tag" style="display:none;">
+            <div class="slot-machine">
+                <div id="slot-1" class="slot-box">?</div>
+                <div id="slot-2" class="slot-box">?</div>
+                <div id="slot-3" class="slot-box">?</div>
+            </div>
+            <span id="seed-bono" style="font-size: 1.4rem; font-weight: bold; height: 20px; margin-top:5px;"></span>
+            <span id="bet-timer"></span>
+        </div>
     </header>
 
     <div id="view-host">
         <div id="dungeon-canvas"></div>
+        
         <div id="giant-dice-overlay">
             <div id="giant-dice-label">TIRANDO...</div>
             <div id="giant-dice" class="rpg-dice-container"></div>
@@ -383,12 +348,13 @@
                 <div id="win-subtitle" style="font-size: 2rem; color: #fff; margin-bottom: 10px;"></div>
                 <div id="podium" class="podium-container"></div>
                 <div id="clown-club" class="clown-list"></div>
-                <button class="host-btn" id="btn-next-step" style="margin-top:30px;" onmouseenter="playJuicySound('tick')" onclick="playJuicySound('click'); mostrarClasificacion();">📊 VER CLASIFICACIÓN</button>
+                <button class="btn-host-action" id="btn-next-step" style="margin-top:30px;" onmouseenter="playJuicySound('tick')" onclick="playJuicySound('click'); mostrarClasificacion();">📊 VER CLASIFICACIÓN</button>
             </div>
+            
             <div id="leaderboard-view" style="display:none; width: 100%;">
                 <h2 style="color: var(--gold); margin-top: 0; font-size: 4rem; text-shadow: 0 0 20px var(--gold);">🏆 CLASIFICACIÓN GLOBAL 🏆</h2>
                 <div id="lb-content" style="display: flex; flex-direction: column; gap: 5px; margin: 20px 0;"></div>
-                <button class="host-btn" id="btn-close-banner" style="margin-top:20px;" onmouseenter="playJuicySound('tick')" onclick="playJuicySound('click'); cerrarBanner();">SIGUIENTE RONDA</button>
+                <button class="btn-host-action" id="btn-close-banner" style="margin-top:20px;" onmouseenter="playJuicySound('tick')" onclick="playJuicySound('click'); cerrarBanner();">SIGUIENTE RONDA</button>
             </div>
         </div>
 
@@ -398,8 +364,8 @@
         </div>
 
         <div class="controls">
-            <button class="host-btn" id="btn-seed" onmouseenter="playJuicySound('tick')" onclick="playJuicySound('coin'); nuevaRonda()">🎰 REVELAR SEMILLA</button>
-            <button class="host-btn" id="btn-reveal" style="display:none; background:var(--blood); border-color:#fff; color:#fff;" onmouseenter="playJuicySound('tick')" onclick="playJuicySound('start'); forjarMazmorraEnVivo()">⚔️ FORJAR MAZMORRA</button>
+            <button class="btn-host-action" id="btn-seed" onmouseenter="playJuicySound('tick')" onclick="playJuicySound('coin'); nuevaRonda()">🎰 REVELAR SEMILLA</button>
+            <button class="btn-host-action" id="btn-reveal" style="display:none; background:var(--blood); border-color:#fff; color:#fff;" onmouseenter="playJuicySound('tick')" onclick="playJuicySound('start'); forjarMazmorraEnVivo()">⚔️ FORJAR MAZMORRA</button>
         </div>
     </div>
 </div>
@@ -409,6 +375,7 @@
     <div id="screen-setup" class="player-screen active">
         <h2 class="player-title">Paso 1: CREA TU HÉROE</h2>
         <p style="color:#aaa; text-align:center; margin-top:0; font-size: 1.2rem;">Elige tu avatar y nombre.</p>
+        
         <div class="avatar-grid" id="avatar-selector">
             <button class="avatar-btn selected" onclick="selectAvatar(this, '🧙‍♂️')">🧙‍♂️</button>
             <button class="avatar-btn" onclick="selectAvatar(this, '🧝‍♀️')">🧝‍♀️</button>
@@ -417,9 +384,10 @@
             <button class="avatar-btn" onclick="selectAvatar(this, '👺')">👺</button>
             <button class="avatar-btn" onclick="selectAvatar(this, '🤖')">🤖</button>
         </div>
+        
         <input type="text" id="p-name" class="player-input" placeholder="Nombre (Ej. Gandalfo)" maxlength="15">
         <input type="text" id="p-room" class="player-input" placeholder="CÓDIGO DE SALA" maxlength="4" style="text-transform:uppercase; font-size: 2.2rem; font-weight:bold; letter-spacing:5px;">
-        <button class="action-btn btn-gold" onclick="savePlayerProfile();">CONECTAR AL TORNEO</button>
+        <button class="btn-gold" style="width:100%; padding:15px; font-size:2rem; border-radius:10px;" onclick="savePlayerProfile();">CONECTAR AL TORNEO</button>
     </div>
 
     <div id="screen-lobby" class="player-screen">
@@ -427,17 +395,17 @@
             <div><span id="tag-avatar" style="font-size:1.8rem; margin-right:5px;">🧙‍♂️</span> <span id="tag-name" style="color:var(--gold); font-size:1.6rem; font-weight:bold;">Héroe</span></div>
             <span style="font-size:1.2rem; color:#888; text-decoration:underline; cursor:pointer;" onclick="clearProfile(); playJuicySound('click');">Salir</span>
         </div>
+        
         <h2 class="player-title" style="font-size:2.5rem; margin-top: 20px;">EN LA TABERNA...</h2>
         <div class="waiting-spinner">🍺</div>
-        <p style="color:#aaa; text-align:center; font-size:1.4rem;">Esperando a que el Master inicie la ronda.</p>
+        <p style="color:#aaa; text-align:center; font-size:1.4rem;">Has entrado a la sala <span id="lobby-room-code" style="color:var(--gold); font-weight:bold;"></span>.<br><br>Esperando a que el Master inicie el torneo en la pantalla grande.</p>
     </div>
 
     <div id="screen-bet" class="player-screen">
         <h2 class="player-title" style="font-size:2.2rem; line-height:1.2; margin-bottom: 5px;">SEMILLA REVELADA</h2>
         <p style="color:#aaa; text-align:center; font-size:1.3rem; margin-top:0;">Se lanzarán los siguientes dados:</p>
         
-        <div id="mobile-dice-display" class="mobile-dice-row">
-            </div>
+        <div id="mobile-dice-display" class="mobile-dice-row"></div>
         
         <div class="bet-control-panel">
             <div class="bet-row">
@@ -462,9 +430,13 @@
     </div>
 
     <div id="screen-wait" class="player-screen">
-        <h2 class="player-title" style="color:var(--blood); font-size:3rem;">PACTO SELLADO</h2>
+        <h2 class="player-title" style="color:var(--blood); font-size:3rem; text-shadow: 0 0 20px rgba(231, 76, 60, 0.5);">PACTO SELLADO</h2>
         <div class="waiting-spinner" style="font-size:4rem;">📜</div>
-        <p style="color:#aaa; text-align:center; font-size:1.4rem;">Apostaste <strong id="wait-bet-val" style="color:var(--gold);">0</strong>.<br>Esperando al Master...</p>
+        <div style="background: rgba(0,0,0,0.5); border: 1px solid #333; padding: 20px; border-radius: 10px; width: 100%; box-sizing:border-box;">
+            <p id="wait-msg-type" style="color:#ccc; text-align:center; font-size:1.4rem; margin:0;">Apuesta enviada:</p>
+            <span id="wait-bet-val" style="color:var(--gold); font-size: 3.5rem; font-weight:bold; display:block; margin: 10px 0; text-align:center;">0</span>
+        </div>
+        <p style="color:#888; text-align:center; font-size:1.2rem; margin-top:20px;">Esperando al Master para forjar...</p>
     </div>
 
     <div id="screen-forging" class="player-screen">
@@ -486,7 +458,7 @@
 
 <script>
     // ==========================================
-    // CONFIGURACIÓN SUPABASE Y UTILIDADES
+    // CONFIGURACIÓN SUPABASE Y RED
     // ==========================================
     const SB_URL = 'https://mzlamrxvtvxbuamyfplz.supabase.co';
     const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im16bGFtcnh2dHZ4YnVhbXlmcGx6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczNTAxNjEsImV4cCI6MjA5MjkyNjE2MX0.fdebTvX68sDHUbIjCFDhfipauXap4qabWko7U8gLyxg';
@@ -495,27 +467,10 @@
 
     const IS_HOST = new URLSearchParams(window.location.search).get('host') === 'true';
 
-    // VARIABLES GLOBALES DE RED
+    // VARIABLES DE SALA
     let currentRoomCode = "";
     let roomChannel = null;
-
-    // GENERADOR DE CÓDIGO
-    function generateRoomCode() {
-        const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-        let result = '';
-        for (let i = 0; i < 4; i++) result += chars.charAt(Math.floor(Math.random() * chars.length));
-        return result;
-    }
-
-    // BROADCAST HELPER
-    function broadcastState(stateName, payload = {}) {
-        if(!IS_HOST || !roomChannel) return;
-        roomChannel.send({
-            type: 'broadcast',
-            event: 'gameState',
-            payload: { state: stateName, ...payload }
-        });
-    }
+    let playersInLobby = [];
 
     // ==========================================
     // INICIO
@@ -524,7 +479,7 @@
         if (IS_HOST) {
             document.getElementById('host-setup').style.display = 'flex';
             
-            // Generar o cargar Room Code
+            // Generar o recuperar Room Code
             let savedRoom = localStorage.getItem('dl_roomCode');
             if (savedRoom) currentRoomCode = savedRoom;
             else currentRoomCode = generateRoomCode();
@@ -532,7 +487,7 @@
             document.getElementById('display-room-code').innerText = currentRoomCode;
             document.getElementById('hud-room-code').innerText = currentRoomCode;
 
-            // Recuperar torneo
+            // Recuperar torneo activo
             let savedScores = localStorage.getItem('dl_globalScores');
             let savedRound = localStorage.getItem('dl_currentRound');
             let savedMax = localStorage.getItem('dl_maxRounds');
@@ -545,12 +500,20 @@
                     iniciarTorneo(true);
                 }
             }
-            cargarApuestasHost(); 
-            escucharApuestasHost();
+            
+            escucharBaseDatosHost();
+            conectarCanalHost();
         } else {
             initPlayerMode();
         }
     };
+
+    function generateRoomCode() {
+        const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+        let result = '';
+        for (let i = 0; i < 4; i++) result += chars.charAt(Math.floor(Math.random() * chars.length));
+        return result;
+    }
 
     // ==========================================
     // LÓGICA DEL JUGADOR (MÓVIL DINÁMICO)
@@ -570,7 +533,7 @@
             document.getElementById('tag-avatar').innerText = playerAvatar;
             document.getElementById('p-name').value = savedName;
             document.getElementById('p-room').value = savedRoom;
-            conectarSalaJugador(); // Reconecta auto
+            conectarSalaJugador(); 
         } else {
             showScreen('screen-setup');
         }
@@ -580,7 +543,7 @@
     function showScreen(screenId) {
         document.querySelectorAll('.player-screen').forEach(s => s.classList.remove('active'));
         document.getElementById(screenId).classList.add('active');
-        document.getElementById('screen-results').style.background = ""; // Reset BG
+        document.getElementById('screen-results').style.background = ""; 
     }
 
     function selectAvatar(btn, emoji) {
@@ -596,14 +559,9 @@
         const room = document.getElementById('p-room').value.toUpperCase().trim();
         let valid = true;
         
-        if (!name) { 
-            document.getElementById('p-name').style.borderColor = "var(--blood)"; valid = false; 
-            setTimeout(()=> document.getElementById('p-name').style.borderColor = "#444", 300);
-        }
-        if (!room || room.length !== 4) { 
-            document.getElementById('p-room').style.borderColor = "var(--blood)"; valid = false;
-            setTimeout(()=> document.getElementById('p-room').style.borderColor = "#444", 300);
-        }
+        if (!name) { document.getElementById('p-name').style.borderColor = "var(--blood)"; valid = false; setTimeout(()=> document.getElementById('p-name').style.borderColor = "#444", 300); }
+        if (!room || room.length !== 4) { document.getElementById('p-room').style.borderColor = "var(--blood)"; valid = false; setTimeout(()=> document.getElementById('p-room').style.borderColor = "#444", 300); }
+        
         if(!valid) { playJuicySound('fail'); return; }
 
         localStorage.setItem('dl_playerName', name); 
@@ -624,9 +582,17 @@
         showScreen('screen-setup'); 
     }
 
-    // CONEXIÓN DEL JUGADOR Y GESTIÓN DE ESTADOS DEL HOST
-    function conectarSalaJugador() {
+    // CONEXIÓN DEL JUGADOR
+    async function conectarSalaJugador() {
         currentRoomCode = localStorage.getItem('dl_playerRoom');
+        document.getElementById('lobby-room-code').innerText = currentRoomCode;
+        
+        // Registrar en BD para que el Host lo vea en el Lobby
+        const joinPayload = `${currentRoomCode}|JOIN|${playerAvatar}|${localStorage.getItem('dl_playerName')}`;
+        await miSupabase.from('apuestas').insert([{ name: joinPayload, cantidad: -1 }]);
+
+        // Conectar al Broadcast
+        if(roomChannel) roomChannel.unsubscribe();
         roomChannel = miSupabase.channel('room-' + currentRoomCode);
         
         roomChannel.on('broadcast', { event: 'gameState' }, ({ payload }) => {
@@ -634,7 +600,7 @@
         }).subscribe((status) => {
             if (status === 'SUBSCRIBED') {
                 if(navigator.vibrate) navigator.vibrate(50); 
-                showScreen('screen-lobby'); // Por defecto va al lobby a esperar
+                showScreen('screen-lobby'); 
             }
         });
     }
@@ -648,7 +614,6 @@
             document.getElementById('btn-ghost').disabled = false;
             myCurrentPact = '';
             
-            // Construir UI de dados
             let diceHtml = "";
             for(let l of payload.seed) {
                 if(l === 'A') diceHtml += `<div class="m-dice m-d4">4</div>`;
@@ -679,9 +644,8 @@
 
     function renderPlayerResultCard(total, scores) {
         if(!myCurrentPact) {
-            // No apostó
             document.getElementById('p-res-title').innerText = "💤 AUSENTE";
-            document.getElementById('p-res-sub').innerText = "No sellaste ningún pacto.";
+            document.getElementById('p-res-sub').innerText = "No apostaste nada.";
             document.getElementById('screen-results').style.background = "linear-gradient(180deg, #333, #111)";
             return;
         }
@@ -716,13 +680,12 @@
         document.getElementById('p-res-score').innerText = `TOTAL TORNEO: ${myScore} PTS`;
     }
 
-    // CONTROLES DE APUESTA
     function modifyBet(amount) {
-        playJuicySound('tick'); 
-        currentBet += amount;
+        playJuicySound('tick'); currentBet += amount;
         if (currentBet < 1) currentBet = 1; if (currentBet > 999) currentBet = 999; 
         updateBetDisplay(); if(navigator.vibrate) navigator.vibrate(20);
     }
+
     function updateBetDisplay() {
         const display = document.getElementById('bet-number-display');
         display.innerText = currentBet; display.classList.remove('pop-anim');
@@ -734,8 +697,7 @@
         document.getElementById('btn-blood').disabled = true; document.getElementById('btn-ghost').disabled = true;
         myCurrentPact = tipo;
 
-        // Inyectamos el RoomCode para que el Host filtre
-        const finalName = `${currentRoomCode}|${playerAvatar}|${localStorage.getItem('dl_playerName')}|${tipo}`;
+        const finalName = `${currentRoomCode}|BET|${playerAvatar}|${localStorage.getItem('dl_playerName')}|${tipo}`;
         const { error } = await miSupabase.from('apuestas').insert([{ name: finalName, cantidad: currentBet }]);
         
         if(!error) {
@@ -745,7 +707,9 @@
             
             setTimeout(() => {
                 flash.classList.remove('flash-blood', 'flash-ghost');
-                document.getElementById('wait-bet-val').innerText = currentBet;
+                document.getElementById('wait-msg-type').innerText = tipo === 'S' ? "PACTO SANGRE (Exacto):" : "PACTO ALMAS (Rango ±1):";
+                document.getElementById('wait-bet-val').innerText = tipo === 'S' ? currentBet : `[ ${currentBet-1} - ${currentBet} - ${currentBet+1} ]`;
+                document.getElementById('wait-bet-val').style.color = tipo === 'S' ? "var(--blood)" : "var(--ghost)";
                 showScreen('screen-wait');
             }, 300);
         } else {
@@ -754,19 +718,29 @@
         }
     }
 
-
     // ==========================================
-    // LÓGICA DEL HOST (TORNEO Y SINCRONIZACIÓN)
+    // LÓGICA DEL HOST (TORNEO Y RED)
     // ==========================================
     let roomsData = []; const tileSize = 55; let timerIntervalHost; let globalRoomCount = 0;
 
     async function limpiarBD() {
         if(confirm("¿Estás seguro? Esto borrará TODAS las apuestas de Supabase y el ranking local.")) {
             await miSupabase.from('apuestas').delete().neq('id', 0);
-            localStorage.clear(); // Limpia todo
+            localStorage.clear(); 
             alert("Base de datos limpia. Recarga la página.");
             window.location.reload();
         }
+    }
+
+    function conectarCanalHost() {
+        if(roomChannel) roomChannel.unsubscribe();
+        roomChannel = miSupabase.channel('room-' + currentRoomCode);
+        roomChannel.subscribe();
+    }
+
+    function broadcastState(stateName, payload = {}) {
+        if(!IS_HOST || !roomChannel) return;
+        roomChannel.send({ type: 'broadcast', event: 'gameState', payload: { state: stateName, ...payload } });
     }
 
     function iniciarTorneo(retomar = false) {
@@ -779,14 +753,11 @@
             playJuicySound('start');
         }
         
-        // Host se une a su propio canal para emitir
-        roomChannel = miSupabase.channel('room-' + currentRoomCode);
-        roomChannel.subscribe((status) => {
-            if(status === 'SUBSCRIBED') broadcastState('lobby');
-        });
+        broadcastState('lobby');
 
         document.getElementById('host-setup').style.display = 'none';
         document.getElementById('game-container').style.display = 'flex';
+        document.getElementById('seed-tag').style.display = 'flex';
         actualizarHUDTorneo();
     }
 
@@ -794,39 +765,37 @@
         document.getElementById('round-display').innerText = `RONDA ${currentRound} / ${maxRounds}`;
     }
 
-    function formatPlayerNameForHost(parts) {
-        // parts = [roomCode, avatar, nombre, pacto]
-        let icon = parts[3] === 'S' ? '🩸' : (parts[3] === 'A' ? '🛡️' : '');
-        return `<span style="font-size:1.6rem">${parts[1]}</span> ${parts[2]} ${icon}`;
+    function formatPlayerNameForHost(av, nm, pact) {
+        let icon = pact === 'S' ? '🩸' : (pact === 'A' ? '🛡️' : '');
+        return `<span style="font-size:1.6rem">${av}</span> ${nm} ${icon}`;
     }
 
-    async function cargarApuestasHost() {
-        if(!IS_HOST) return;
-        // Obtenemos todas y filtramos por Room Code cliente
-        const { data } = await miSupabase.from('apuestas').select('*').ilike('name', `${currentRoomCode}|%`);
-        if (data) {
-            const lista = document.getElementById('list-bets'); lista.innerHTML = "";
-            data.forEach(p => {
-                let parts = p.name.split('|');
-                const li = document.createElement('li'); li.style.padding = "8px 5px"; li.style.borderBottom = "1px solid #333";
-                li.innerHTML = `<span style="font-weight:bold; color:#ddd;">${formatPlayerNameForHost(parts)}</span>: <span style="color:var(--gold); font-weight:bold; float:right;">${p.cantidad}</span>`;
-                lista.prepend(li);
-            });
-        }
-    }
-
-    function escucharApuestasHost() {
+    function escucharBaseDatosHost() {
         if(!IS_HOST) return;
         miSupabase.channel('l').on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'apuestas' }, p => {
             let parts = p.new.name.split('|');
-            if(parts[0] !== currentRoomCode) return; // Ignorar apuestas de otras salas!
+            if(parts[0] !== currentRoomCode) return; // Aislamiento de Sala
 
-            const li = document.createElement('li'); li.style.padding = "8px 5px"; li.style.borderBottom = "1px solid #333";
-            li.innerHTML = `<span style="font-weight:bold; color:#ddd;">${formatPlayerNameForHost(parts)}</span>: <span style="color:var(--gold); font-weight:bold; float:right;">${p.new.cantidad}</span>`;
-            document.getElementById('list-bets').prepend(li);
+            let action = parts[1];
             
-            playJuicySound('tick'); li.style.background = "rgba(255,204,0,0.3)"; li.style.transition = "background 0.5s";
-            setTimeout(()=> li.style.background = "transparent", 500);
+            if (action === 'JOIN') {
+                let av = parts[2]; let nm = parts[3];
+                let lobbyGrid = document.getElementById('lobby-players-grid');
+                if(!playersInLobby.includes(nm)) {
+                    playersInLobby.push(nm);
+                    lobbyGrid.innerHTML += `<div class="lobby-player-card"><span class="av">${av}</span> ${nm}</div>`;
+                    playJuicySound('coin');
+                }
+            } 
+            else if (action === 'BET') {
+                let av = parts[2]; let nm = parts[3]; let pact = parts[4];
+                const li = document.createElement('li'); li.style.padding = "8px 5px"; li.style.borderBottom = "1px solid #333";
+                li.innerHTML = `<span style="font-weight:bold; color:#ddd;">${formatPlayerNameForHost(av, nm, pact)}</span>: <span style="color:var(--gold); font-weight:bold; float:right;">${p.new.cantidad}</span>`;
+                document.getElementById('list-bets').prepend(li);
+                
+                playJuicySound('tick'); li.style.background = "rgba(255,204,0,0.3)"; li.style.transition = "background 0.5s";
+                setTimeout(()=> li.style.background = "transparent", 500);
+            }
         }).subscribe();
     }
 
@@ -849,7 +818,6 @@
         const letras = ['A', 'B', 'C']; let seed = ""; for(let i=0; i<3; i++) seed += letras[Math.floor(Math.random() * 3)];
         window.currentSeed = seed;
         
-        // Avisar a los móviles que empieza la apuesta y darles la semilla
         broadcastState('betting', { seed: seed });
 
         document.getElementById('dungeon-canvas').innerHTML = ""; actualizarContador(0);
@@ -859,9 +827,7 @@
         let slots = [document.getElementById('slot-1'), document.getElementById('slot-2'), document.getElementById('slot-3')];
         slots.forEach(s => { s.className = "slot-box spinning"; s.innerText = "?"; });
 
-        // Ya no borramos la BD, porque filtramos por RoomCode. 
-        // Solo limpiamos la lista visual.
-        document.getElementById('list-bets').innerHTML = "";
+        document.getElementById('list-bets').innerHTML = ""; // Limpiamos lista UI
 
         const stopTimes = [2000, 4000, 6500]; 
         slots.forEach((slot, index) => {
@@ -916,7 +882,6 @@
         if(!IS_HOST) return;
         clearInterval(timerIntervalHost); document.getElementById('bet-timer').innerText = ""; document.getElementById('btn-reveal').style.display = 'none';
         
-        // Bloquear móviles
         broadcastState('forging');
 
         let giantOverlay = document.getElementById('giant-dice-overlay'); let diceContainer = document.getElementById('giant-dice'); let giantLabel = document.getElementById('giant-dice-label');
@@ -930,7 +895,7 @@
         let totalSalasFinales = 0; let basePorLetra = {A:0, B:0, C:0}; let counts = {A:0, B:0, C:0}; for(let l of seed) counts[l]++;
 
         for(let i=0; i<3; i++) {
-            let letra = seed[i]; let caras = (letra==='A') ? 4 : (letra==='B') ? 6 : 8; let claseCSS = (letra==='A') ? 'log-d4' : (letra==='B') ? 'log-d6' : 'log-d8'; let shapeClase = (letra==='A') ? 'shape-d4' : (letra==='B') ? 'shape-d6' : 'shape-d8';
+            let letra = seed[i]; let caras = (letra==='A') ? 4 : (letra==='B') ? 6 : 8; let claseCSS = (letra==='A') ? 'log-d4' : (letra==='B') ? 'log-d6' : 'log-d8';
             slots.forEach(s => s.classList.remove('active-roll')); slots[i].classList.add('active-roll');
             
             giantOverlay.style.display = 'flex'; diceContainer.innerHTML = createVolumetricDice(caras);
@@ -952,8 +917,7 @@
                     giantLabel.innerText = "¡EXPLOSIÓN CRÍTICA!"; giantLabel.style.color = "#e74c3c";
                     document.getElementById('game-container').classList.add('shake-apocalyptic'); setTimeout(()=> { document.getElementById('game-container').classList.remove('shake-apocalyptic'); }, 800);
                     
-                    playJuicySound('explode'); 
-                    broadcastState('forge_event', { action: 'explode' }); // Hace vibrar los móviles
+                    playJuicySound('explode'); broadcastState('forge_event', { action: 'explode' }); 
                     
                     logMsg(`¡Saca un <span class="log-explode-text">${tirada}</span>! Tirando de nuevo...`, claseCSS);
                     await sleep(3500); diceContainer.classList.remove('dice-explode'); giantLabel.innerText = "OTRA VEZ..."; giantLabel.style.color = "var(--gold)"; await sleep(500);
@@ -1014,29 +978,19 @@
     // SISTEMA DE PUNTOS Y RESULTADOS
     // ==========================================
     async function processWinnersHost(total) {
-        // Filtrar datos de ESTA sala
         const { data: b } = await miSupabase.from('apuestas').select('*').ilike('name', `${currentRoomCode}|%`);
-        
         const banner = document.getElementById('winner-banner');
-        document.getElementById('round-results-view').style.display = 'block';
-        document.getElementById('leaderboard-view').style.display = 'none';
+        document.getElementById('round-results-view').style.display = 'block'; document.getElementById('leaderboard-view').style.display = 'none';
+        const pTitle = document.getElementById('win-title'); const pSub = document.getElementById('win-subtitle');
+        const podium = document.getElementById('podium'); const clowns = document.getElementById('clown-club');
         
-        const pTitle = document.getElementById('win-title');
-        const pSub = document.getElementById('win-subtitle');
-        const podium = document.getElementById('podium');
-        const clowns = document.getElementById('clown-club');
-        
-        banner.style.display = 'block';
-        podium.innerHTML = ""; clowns.innerHTML = "";
-        
+        banner.style.display = 'block'; podium.innerHTML = ""; clowns.innerHTML = "";
         let winnersSangre = []; let winnersAlmas = []; let payasos = []; let someoneWon = false;
 
         b.forEach(bet => {
             let parts = bet.name.split('|');
-            let av = parts[1] || '🧙‍♂️'; let nm = parts[2] || bet.name; let pact = parts[3] || 'S';
-            let val = parseInt(bet.cantidad);
-            let key = `${av}|${nm}`;
-
+            let av = parts[2] || '🧙‍♂️'; let nm = parts[3] || bet.name; let pact = parts[4] || 'S';
+            let val = parseInt(bet.cantidad); let key = `${av}|${nm}`;
             if(!globalScores[key]) globalScores[key] = 0;
 
             if(pact === 'S') {
@@ -1064,25 +1018,18 @@
         }
 
         let nextBtn = document.getElementById('btn-next-step');
-        if(currentRound >= maxRounds) {
-            nextBtn.innerText = "🏆 VER GANADOR DEL TORNEO 🏆"; nextBtn.style.background = "var(--gold)"; nextBtn.style.color = "#000";
-        } else {
-            nextBtn.innerText = "📊 VER CLASIFICACIÓN"; nextBtn.style.background = "#111"; nextBtn.style.color = "var(--gold)";
-        }
+        if(currentRound >= maxRounds) { nextBtn.innerText = "🏆 VER GANADOR DEL TORNEO 🏆"; nextBtn.style.background = "var(--gold)"; nextBtn.style.color = "#000"; } 
+        else { nextBtn.innerText = "📊 VER CLASIFICACIÓN"; nextBtn.style.background = "#111"; nextBtn.style.color = "var(--gold)"; }
         
-        // Enviar resultados a los móviles
         broadcastState('results', { total: total, scores: globalScores });
     }
 
     function mostrarClasificacion() {
-        document.getElementById('round-results-view').style.display = 'none';
-        document.getElementById('leaderboard-view').style.display = 'block';
+        document.getElementById('round-results-view').style.display = 'none'; document.getElementById('leaderboard-view').style.display = 'block';
         playJuicySound('score');
 
         const lbContent = document.getElementById('lb-content'); lbContent.innerHTML = "";
-        
-        let sortable = [];
-        for (var key in globalScores) { sortable.push([key, globalScores[key]]); }
+        let sortable = []; for (var key in globalScores) { sortable.push([key, globalScores[key]]); }
         sortable.sort(function(a, b) { return b[1] - a[1]; }); 
 
         let maxToDisplay = Math.min(5, sortable.length);
@@ -1092,16 +1039,12 @@
             let pData = sortable[i][0].split('|'); let av = pData[0]; let nm = pData[1]; let pts = sortable[i][1];
             let topClass = i === 0 ? 'top-1' : (i === 1 ? 'top-2' : (i === 2 ? 'top-3' : ''));
             let rankStr = i === 0 ? '🥇' : (i === 1 ? '🥈' : (i === 2 ? '🥉' : `${i+1}º`));
-            
             lbContent.innerHTML += `<div class="lb-row ${topClass}"><div style="display:flex; align-items:center; gap:15px;"><span style="font-size:2.5rem; width:40px; text-align:center;">${rankStr}</span><span>${av}</span> <span style="font-weight:bold;">${nm}</span></div><div style="color:var(--gold); font-weight:bold;">${pts} PTS</div></div>`;
         }
 
         const closeBtn = document.getElementById('btn-close-banner');
-        if(currentRound >= maxRounds) {
-            closeBtn.innerText = "FINALIZAR TORNEO"; closeBtn.style.background = "var(--blood)"; closeBtn.style.color = "#fff";
-        } else {
-            closeBtn.innerText = "SIGUIENTE RONDA"; closeBtn.style.background = "#111"; closeBtn.style.color = "var(--gold)";
-        }
+        if(currentRound >= maxRounds) { closeBtn.innerText = "FINALIZAR TORNEO"; closeBtn.style.background = "var(--blood)"; closeBtn.style.color = "#fff"; } 
+        else { closeBtn.innerText = "SIGUIENTE RONDA"; closeBtn.style.background = "#111"; closeBtn.style.color = "var(--gold)"; }
     }
 
     function cerrarBanner() { 
@@ -1111,9 +1054,19 @@
         if(currentRound >= maxRounds) {
             document.getElementById('game-container').style.display = 'none';
             document.getElementById('host-setup').style.display = 'flex';
-            broadcastState('lobby');
+            
+            // Generar nuevo código para evitar colisiones
+            currentRoomCode = generateRoomCode();
+            document.getElementById('display-room-code').innerText = currentRoomCode;
+            document.getElementById('hud-room-code').innerText = currentRoomCode;
+            localStorage.setItem('dl_roomCode', currentRoomCode);
+            
+            conectarCanalHost();
         } else {
             broadcastState('lobby');
+            // Limpiamos los avatares para la nueva ronda
+            document.getElementById('lobby-players-grid').innerHTML = "";
+            playersInLobby = [];
         }
     }
 </script>
