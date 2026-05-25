@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Dungeon Lotto: TOURNAMENT EDITION 🏆</title>
+    <title>Dungeon Lotto: ESPORTS EDITION 🏆</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
@@ -95,918 +95,194 @@
            VISTA HOST (LOBBY Y CONFIGURACIÓN)
            ========================================= */
         #host-setup {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(10, 10, 15, 0.98);
-            z-index: 5000;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(10, 10, 15, 0.98); z-index: 5000;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
 
         .setup-box {
-            background: #000;
-            border: 4px solid var(--gold);
-            padding: 50px;
-            text-align: center;
-            border-radius: 10px;
-            box-shadow: 0 0 50px rgba(255, 204, 0, 0.2);
+            background: #000; border: 4px solid var(--gold); padding: 50px;
+            text-align: center; border-radius: 10px; box-shadow: 0 0 50px rgba(255, 204, 0, 0.2);
         }
 
         .setup-input {
-            background: #111;
-            color: var(--gold);
-            border: 2px solid var(--gold);
-            font-size: 3rem;
-            text-align: center;
-            width: 100px;
-            padding: 10px;
-            font-family: 'VT323';
-            margin: 20px 0;
+            background: #111; color: var(--gold); border: 2px solid var(--gold);
+            font-size: 3rem; text-align: center; width: 100px; padding: 10px; font-family: 'VT323'; margin: 20px 0;
+        }
+
+        .room-code-display {
+            font-size: 8rem; color: #2ecc71; font-weight: bold; letter-spacing: 10px;
+            text-shadow: 0 0 30px rgba(46, 204, 113, 0.5); margin: 20px 0;
         }
 
         /* =========================================
            VISTA HOST JUEGO
            ========================================= */
         #game-container { 
-            width: 95vw; 
-            height: 92vh; 
-            background: rgba(10,10,12,0.9); 
-            border: 4px solid var(--gold); 
-            display: flex; 
-            flex-direction: column; 
-            position: relative; 
-            box-shadow: 0 0 30px rgba(0,0,0,0.8), inset 0 0 50px rgba(0,0,0,0.8); 
-            border-radius: 10px; 
-            overflow: hidden; 
+            width: 95vw; height: 92vh; background: rgba(10,10,12,0.9); border: 4px solid var(--gold); 
+            display: flex; flex-direction: column; position: relative; box-shadow: 0 0 30px rgba(0,0,0,0.8), inset 0 0 50px rgba(0,0,0,0.8); border-radius: 10px; overflow: hidden; 
         }
 
         header { 
-            padding: 15px 30px; 
-            border-bottom: 2px solid var(--gold); 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            background: rgba(0,0,0,0.8); 
-            position: relative; 
-            z-index: 10; 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5); 
+            padding: 15px 30px; border-bottom: 2px solid var(--gold); display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.8); position: relative; z-index: 10; box-shadow: 0 5px 15px rgba(0,0,0,0.5); 
         }
 
         h1 { 
-            margin: 0; 
-            color: var(--gold); 
-            font-size: 2.8rem; 
-            text-shadow: 2px 2px 0px #000, 0 0 15px var(--gold); 
-            letter-spacing: 2px;
-            display: flex;
-            flex-direction: column;
+            margin: 0; color: var(--gold); font-size: 2.8rem; text-shadow: 2px 2px 0px #000, 0 0 15px var(--gold); letter-spacing: 2px;
+            display: flex; flex-direction: column;
         }
 
-        #round-display {
-            color: #fff;
-            font-size: 1.6rem;
-            letter-spacing: 1px;
-            text-shadow: none;
-            background: #222;
-            padding: 2px 10px;
-            border-radius: 5px;
-            border: 1px solid #555;
-            width: fit-content;
-            margin-top: 5px;
-        }
-
-        #room-counter { 
-            font-size: 3rem; 
-            color: #fff; 
-            border: 3px solid var(--gold); 
-            padding: 5px 25px; 
-            background: #000; 
-            font-weight: bold; 
-            border-radius: 8px; 
-            box-shadow: inset 0 0 10px rgba(255,204,0,0.3); 
-            transition: 0.2s;
-        }
-
-        .counter-bump { 
-            transform: scale(1.1); 
-            color: var(--gold) !important; 
-            border-color: #fff !important; 
-            box-shadow: 0 0 20px var(--gold) !important; 
-        }
+        #round-display { color: #fff; font-size: 1.6rem; letter-spacing: 1px; text-shadow: none; background: #222; padding: 2px 10px; border-radius: 5px; border: 1px solid #555; width: fit-content; margin-top: 5px; }
         
-        #view-host { 
-            flex-grow: 1; 
-            display: flex; 
-            position: relative; 
-            overflow: hidden; 
-            flex-direction: column; 
-            perspective: 1000px; 
-        }
-
-        #dungeon-canvas { 
-            flex-grow: 1; 
-            position: relative; 
-        }
+        #room-counter { font-size: 3rem; color: #fff; border: 3px solid var(--gold); padding: 5px 25px; background: #000; font-weight: bold; border-radius: 8px; box-shadow: inset 0 0 10px rgba(255,204,0,0.3); transition: 0.2s;}
+        .counter-bump { transform: scale(1.1); color: var(--gold) !important; border-color: #fff !important; box-shadow: 0 0 20px var(--gold) !important; }
         
-        #side-panel { 
-            position: absolute; 
-            right: 20px; 
-            top: 20px; 
-            width: 240px; 
-            background: rgba(0,0,0,0.85); 
-            border: 2px solid var(--gold); 
-            padding: 15px; 
-            max-height: 60%; 
-            overflow-y: auto; 
-            z-index: 100; 
-            border-radius: 10px; 
-            box-shadow: -5px 5px 20px rgba(0,0,0,0.5); 
-            backdrop-filter: blur(5px); 
-        }
+        #view-host { flex-grow: 1; display: flex; position: relative; overflow: hidden; flex-direction: column; perspective: 1000px; }
+        #dungeon-canvas { flex-grow: 1; position: relative; }
         
-        #live-log { 
-            position: absolute; 
-            left: 20px; 
-            top: 20px; 
-            width: 360px; 
-            height: 60%; 
-            background: rgba(10,10,15,0.95); 
-            border: 2px solid #555; 
-            border-left: 5px solid var(--gold); 
-            padding: 15px; 
-            z-index: 100; 
-            display: none; 
-            flex-direction: column; 
-            box-shadow: 5px 5px 25px rgba(0,0,0,0.9); 
-            border-radius: 5px; 
-            overflow: hidden; 
-        }
-
-        #log-content { 
-            flex-grow: 1; 
-            overflow-y: auto; 
-            display: flex; 
-            flex-direction: column; 
-            gap: 10px; 
-            padding-right: 5px; 
-        }
-
-        .log-entry { 
-            background: rgba(255,255,255,0.05); 
-            padding: 10px 14px; 
-            border-radius: 5px; 
-            font-size: 1.6rem; 
-            animation: slideInLeft 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; 
-            border-left: 4px solid transparent; 
-            line-height: 1.3;
-        }
-
+        #side-panel { position: absolute; right: 20px; top: 20px; width: 280px; background: rgba(0,0,0,0.85); border: 2px solid var(--gold); padding: 15px; max-height: 60%; overflow-y: auto; z-index: 100; border-radius: 10px; box-shadow: -5px 5px 20px rgba(0,0,0,0.5); backdrop-filter: blur(5px); }
+        
+        #live-log { position: absolute; left: 20px; top: 20px; width: 360px; height: 60%; background: rgba(10,10,15,0.95); border: 2px solid #555; border-left: 5px solid var(--gold); padding: 15px; z-index: 100; display: none; flex-direction: column; box-shadow: 5px 5px 25px rgba(0,0,0,0.9); border-radius: 5px; overflow: hidden; }
+        #log-content { flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding-right: 5px; }
+        .log-entry { background: rgba(255,255,255,0.05); padding: 10px 14px; border-radius: 5px; font-size: 1.6rem; animation: slideInLeft 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; border-left: 4px solid transparent; line-height: 1.3;}
         .log-d4 { border-left-color: #2ecc71; background: linear-gradient(90deg, rgba(46, 204, 113, 0.15) 0%, transparent 100%); }
         .log-d6 { border-left-color: #3498db; background: linear-gradient(90deg, rgba(52, 152, 219, 0.15) 0%, transparent 100%); }
         .log-d8 { border-left-color: #9b59b6; background: linear-gradient(90deg, rgba(155, 89, 182, 0.15) 0%, transparent 100%); }
-        
-        .log-system { 
-            text-align: center; 
-            color: #ccc; 
-            font-style: italic; 
-            background: none; 
-            border: none; 
-            font-size: 1.4rem; 
-            padding: 15px 0;
-        }
-
+        .log-system { text-align: center; color: #ccc; font-style: italic; background: none; border: none; font-size: 1.4rem; padding: 15px 0;}
         .log-highlight { color: var(--gold); font-weight: bold; }
-        
-        .log-explode-text { 
-            color: #e74c3c; 
-            font-weight: bold; 
-            font-size: 2rem; 
-            text-shadow: 0 0 15px #e74c3c; 
-            display: inline-block; 
-            animation: popText 0.3s; 
-        }
-
-        .log-final { 
-            background: var(--gold); 
-            color: #000; 
-            text-align: center; 
-            font-weight: bold; 
-            font-size: 2.2rem; 
-            border-radius: 5px; 
-            padding: 15px; 
-            margin-top: 15px; 
-            box-shadow: 0 0 20px var(--gold); 
-        }
-
-        @keyframes slideInLeft { 
-            0% { transform: translateX(-50px); opacity: 0; } 
-            100% { transform: translateX(0); opacity: 1; } 
-        }
+        .log-explode-text { color: #e74c3c; font-weight: bold; font-size: 2rem; text-shadow: 0 0 15px #e74c3c; display: inline-block; animation: popText 0.3s; }
+        .log-final { background: var(--gold); color: #000; text-align: center; font-weight: bold; font-size: 2.2rem; border-radius: 5px; padding: 15px; margin-top: 15px; box-shadow: 0 0 20px var(--gold); }
+        @keyframes slideInLeft { 0% { transform: translateX(-50px); opacity: 0; } 100% { transform: translateX(0); opacity: 1; } }
 
         /* =========================================
            EL DADO GIGANTE 3D HYPER-REALISTA
            ========================================= */
-        #giant-dice-overlay { 
-            position: absolute; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            background: radial-gradient(circle, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.95) 100%); 
-            z-index: 400; 
-            display: none; 
-            flex-direction: column; 
-            justify-content: center; 
-            align-items: center; 
-            backdrop-filter: blur(8px); 
-            perspective: 1200px; 
-        }
-
-        #giant-dice-label { 
-            font-size: 5rem; 
-            color: var(--gold); 
-            font-weight: bold; 
-            margin-bottom: 60px; 
-            text-shadow: 0 5px 15px #000, 0 0 20px var(--gold); 
-            text-align: center; 
-            letter-spacing: 2px; 
-            transition: 0.2s; 
-            z-index: 401;
-        }
-        
-        .rpg-dice-container {
-            width: 250px; 
-            height: 250px; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center;
-        }
-
-        .rpg-dice-volumetric {
-            position: relative; 
-            width: 200px; 
-            height: 200px;
-            transform-style: preserve-3d;
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .dice-layer {
-            position: absolute; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%;
-            display: flex; 
-            justify-content: center; 
-            align-items: center;
-            font-size: 10rem; 
-            font-weight: bold; 
-            color: transparent; 
-            transform-origin: center center;
-        }
-
-        .front-face { 
-            color: #fff; 
-            text-shadow: 0 5px 15px rgba(0,0,0,0.8); 
-        }
-
-        .shape-d4 { 
-            clip-path: polygon(50% 0%, 0% 100%, 100% 100%); 
-            align-items: flex-end; 
-            padding-bottom: 25px; 
-        }
+        #giant-dice-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.95) 100%); z-index: 400; display: none; flex-direction: column; justify-content: center; align-items: center; backdrop-filter: blur(8px); perspective: 1200px; }
+        #giant-dice-label { font-size: 5rem; color: var(--gold); font-weight: bold; margin-bottom: 60px; text-shadow: 0 5px 15px #000, 0 0 20px var(--gold); text-align: center; letter-spacing: 2px; transition: 0.2s; z-index: 401;}
+        .rpg-dice-container { width: 250px; height: 250px; display: flex; justify-content: center; align-items: center; }
+        .rpg-dice-volumetric { position: relative; width: 200px; height: 200px; transform-style: preserve-3d; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .dice-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; font-size: 10rem; font-weight: bold; color: transparent; transform-origin: center center; }
+        .front-face { color: #fff; text-shadow: 0 5px 15px rgba(0,0,0,0.8); }
+        .shape-d4 { clip-path: polygon(50% 0%, 0% 100%, 100% 100%); align-items: flex-end; padding-bottom: 25px; }
         .shape-d6 { border-radius: 20px; }
         .shape-d8 { clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); }
+        .dice-rolling { animation: rollVolumetric 0.8s linear infinite; filter: drop-shadow(0 30px 20px rgba(0,0,0,0.8));}
+        @keyframes rollVolumetric { 0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(0.8); } 100% { transform: rotateX(360deg) rotateY(720deg) rotateZ(360deg) scale(0.8); } }
+        .dice-land { animation: diceThudVolumetric 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        @keyframes diceThudVolumetric { 0% { transform: translateZ(400px) rotateX(45deg) rotateY(45deg); opacity: 0;} 50% { transform: translateZ(-50px) rotateX(0) rotateY(0); opacity: 1;} 100% { transform: translateZ(0) rotateX(0) rotateY(0); filter: drop-shadow(0 20px 30px rgba(0,0,0,0.9));} }
+        .dice-explode { position: fixed !important; top: 50% !important; left: 50% !important; transform: translate(-50%, -50%) !important; width: 250px !important; height: 250px !important; animation: supernova 1.2s cubic-bezier(0.2, 1, 0.3, 1) forwards !important; z-index: 999999 !important; pointer-events: none; }
+        .dice-explode .dice-layer { clip-path: none !important; border-radius: 50% !important; background: radial-gradient(circle, #fff 0%, #ff4d4d 40%, #990000 100%) !important; color: transparent !important; border: none !important; }
+        @keyframes supernova { 0% { transform: translate(-50%, -50%) scale(1); filter: brightness(1) drop-shadow(0 0 50px #ff0000); opacity: 1;} 20% { transform: translate(-50%, -50%) scale(3); filter: brightness(2) drop-shadow(0 0 100px #ff0000); opacity: 1;} 100% { transform: translate(-50%, -50%) scale(12); filter: brightness(5) blur(15px); opacity: 0; } }
 
-        .dice-rolling { 
-            animation: rollVolumetric 0.8s linear infinite; 
-            filter: drop-shadow(0 30px 20px rgba(0,0,0,0.8));
-        }
-
-        @keyframes rollVolumetric { 
-            0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(0.8); } 
-            100% { transform: rotateX(360deg) rotateY(720deg) rotateZ(360deg) scale(0.8); } 
-        }
-
-        .dice-land { 
-            animation: diceThudVolumetric 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; 
-        }
-
-        @keyframes diceThudVolumetric {
-            0% { transform: translateZ(400px) rotateX(45deg) rotateY(45deg); opacity: 0;}
-            50% { transform: translateZ(-50px) rotateX(0) rotateY(0); opacity: 1;}
-            100% { transform: translateZ(0) rotateX(0) rotateY(0); filter: drop-shadow(0 20px 30px rgba(0,0,0,0.9));}
-        }
-
-        .dice-explode {
-            position: fixed !important;
-            top: 50% !important; 
-            left: 50% !important;
-            transform: translate(-50%, -50%) !important;
-            width: 250px !important; 
-            height: 250px !important;
-            animation: supernova 1.2s cubic-bezier(0.2, 1, 0.3, 1) forwards !important;
-            z-index: 999999 !important;
-            pointer-events: none;
-        }
-
-        .dice-explode .dice-layer {
-            clip-path: none !important; 
-            border-radius: 50% !important;
-            background: radial-gradient(circle, #fff 0%, #ff4d4d 40%, #990000 100%) !important;
-            color: transparent !important; 
-            border: none !important;
-        }
-
-        @keyframes supernova {
-            0% { transform: translate(-50%, -50%) scale(1); filter: brightness(1) drop-shadow(0 0 50px #ff0000); opacity: 1;}
-            20% { transform: translate(-50%, -50%) scale(3); filter: brightness(2) drop-shadow(0 0 100px #ff0000); opacity: 1;}
-            100% { transform: translate(-50%, -50%) scale(12); filter: brightness(5) blur(15px); opacity: 0; }
-        }
-
-        /* RESTO DEL UI DE HOST */
-        .controls { 
-            padding: 20px; 
-            background: rgba(0,0,0,0.8); 
-            display: flex; 
-            justify-content: center; 
-            gap: 30px; 
-            border-top: 2px solid var(--gold); 
-            z-index: 10; 
-        }
+        .controls { padding: 20px; background: rgba(0,0,0,0.8); display: flex; justify-content: center; gap: 30px; border-top: 2px solid var(--gold); z-index: 10; }
         
-        #seed-tag { 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            min-width: 280px; 
-            background: rgba(0,0,0,0.5); 
-            padding: 10px; 
-            border-radius: 10px; 
-            border: 1px solid #444; 
-        }
-
+        /* TRAGAPERRAS HOST */
+        #seed-tag { display: flex; flex-direction: column; align-items: center; min-width: 280px; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 10px; border: 1px solid #444; }
         .slot-machine { display: flex; gap: 15px; margin-bottom: 5px; }
+        .slot-box { width: 60px; height: 75px; background: #050505; border: 3px solid #555; display: flex; justify-content: center; align-items: center; font-size: 5rem; font-weight: bold; color: #fff; box-shadow: inset 0 0 20px rgba(0,0,0,1), 0 5px 10px rgba(0,0,0,0.5); border-radius: 8px; transition: 0.3s; }
+        .slot-box.spinning { color: #444; filter: blur(2px); text-shadow: 0 15px 5px rgba(255,255,255,0.2), 0 -15px 5px rgba(255,255,255,0.2); }
+        .slot-box.locked { animation: lockImpact 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; border-color: #fff; box-shadow: 0 0 20px #fff; }
+        .slot-box.active-roll { border-color: #2ecc71; box-shadow: 0 0 30px #2ecc71, inset 0 0 15px rgba(46, 204, 113, 0.4); transform: scale(1.15); z-index: 50; }
+        .slot-box.jackpot { border-color: #e74c3c; color: #e74c3c; text-shadow: 0 0 30px #e74c3c; animation: jackpotPulse 0.5s infinite alternate; }
+        .slot-box.bonus { border-color: var(--gold); color: var(--gold); text-shadow: 0 0 25px var(--gold); }
+        @keyframes lockImpact { 0% { transform: scale(1.5) translateY(-20px); color: #fff; text-shadow: 0 0 30px #fff; } 100% { transform: scale(1) translateY(0); border-color: #555; box-shadow: none; } }
         
-        .slot-box { 
-            width: 60px; 
-            height: 75px; 
-            background: #050505; 
-            border: 3px solid #555; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            font-size: 5rem; 
-            font-weight: bold; 
-            color: #fff; 
-            box-shadow: inset 0 0 20px rgba(0,0,0,1), 0 5px 10px rgba(0,0,0,0.5); 
-            border-radius: 8px; 
-            transition: 0.3s; 
-        }
+        .room { position: absolute; width: 45px; height: 45px; background: linear-gradient(135deg, #3a3a3a, #1a1a1a); border: 2px solid #666; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 20px; z-index: 10; animation: roomPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; box-shadow: 2px 2px 10px rgba(0,0,0,0.8); }
+        .room.gold-room { border-color: var(--gold); background: linear-gradient(135deg, #5a4a00, #1a1a00); box-shadow: 0 0 15px rgba(255,204,0,0.5); }
+        .corridor { position: absolute; background: #555; z-index: 5; box-shadow: inset 0 0 5px rgba(0,0,0,0.8); }
+        @keyframes roomPop { 0% { transform: scale(0); opacity: 0; } 70% { transform: scale(1.2); } 100% { transform: scale(1); opacity: 1; } }
 
-        .slot-box.spinning { 
-            color: #444; 
-            filter: blur(2px); 
-            text-shadow: 0 15px 5px rgba(255,255,255,0.2), 0 -15px 5px rgba(255,255,255,0.2); 
-        }
+        .floating-text { position: absolute; font-size: 2.5rem; font-weight: bold; color: #2ecc71; text-shadow: 0 0 8px #000, 2px 2px 0 #000; z-index: 20; pointer-events: none; animation: floatUp 1.2s ease-out forwards; }
+        .floating-text.extra { color: #e74c3c; font-size: 3.5rem; text-shadow: 0 0 15px #e74c3c, 2px 2px 0 #000; }
+        @keyframes floatUp { 0% { transform: translateY(0) scale(0.5); opacity: 1; } 20% { transform: translateY(-15px) scale(1.2); } 100% { transform: translateY(-60px) scale(1); opacity: 0; } }
 
-        .slot-box.locked { 
-            animation: lockImpact 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; 
-            border-color: #fff; 
-            box-shadow: 0 0 20px #fff; 
-        }
-
-        .slot-box.active-roll { 
-            border-color: #2ecc71; 
-            box-shadow: 0 0 30px #2ecc71, inset 0 0 15px rgba(46, 204, 113, 0.4); 
-            transform: scale(1.15); 
-            z-index: 50; 
-        }
-
-        .slot-box.jackpot { 
-            border-color: #e74c3c; 
-            color: #e74c3c; 
-            text-shadow: 0 0 30px #e74c3c; 
-            animation: jackpotPulse 0.5s infinite alternate; 
-        }
-
-        .slot-box.bonus { 
-            border-color: var(--gold); 
-            color: var(--gold); 
-            text-shadow: 0 0 25px var(--gold); 
-        }
-
-        @keyframes lockImpact { 
-            0% { transform: scale(1.5) translateY(-20px); color: #fff; text-shadow: 0 0 30px #fff; } 
-            100% { transform: scale(1) translateY(0); border-color: #555; box-shadow: none; } 
-        }
-        
-        .room { 
-            position: absolute; 
-            width: 45px; 
-            height: 45px; 
-            background: linear-gradient(135deg, #3a3a3a, #1a1a1a); 
-            border: 2px solid #666; 
-            border-radius: 5px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-size: 20px; 
-            z-index: 10; 
-            animation: roomPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; 
-            box-shadow: 2px 2px 10px rgba(0,0,0,0.8); 
-        }
-
-        .room.gold-room { 
-            border-color: var(--gold); 
-            background: linear-gradient(135deg, #5a4a00, #1a1a00); 
-            box-shadow: 0 0 15px rgba(255,204,0,0.5); 
-        }
-
-        .corridor { 
-            position: absolute; 
-            background: #555; 
-            z-index: 5; 
-            box-shadow: inset 0 0 5px rgba(0,0,0,0.8); 
-        }
-
-        @keyframes roomPop { 
-            0% { transform: scale(0); opacity: 0; } 
-            70% { transform: scale(1.2); } 
-            100% { transform: scale(1); opacity: 1; } 
-        }
-
-        .floating-text { 
-            position: absolute; 
-            font-size: 2.5rem; 
-            font-weight: bold; 
-            color: #2ecc71; 
-            text-shadow: 0 0 8px #000, 2px 2px 0 #000; 
-            z-index: 20; 
-            pointer-events: none; 
-            animation: floatUp 1.2s ease-out forwards; 
-        }
-
-        .floating-text.extra { 
-            color: #e74c3c; 
-            font-size: 3.5rem; 
-            text-shadow: 0 0 15px #e74c3c, 2px 2px 0 #000; 
-        }
-
-        @keyframes floatUp { 
-            0% { transform: translateY(0) scale(0.5); opacity: 1; } 
-            20% { transform: translateY(-15px) scale(1.2); } 
-            100% { transform: translateY(-60px) scale(1); opacity: 0; } 
-        }
-
-        .shake-apocalyptic { 
-            animation: shakeApoc 0.8s cubic-bezier(.36,.07,.19,.97) both; 
-            filter: blur(2px); 
-        }
-
-        @keyframes shakeApoc { 
-            0%, 100% { transform: translate(0,0) rotate(0deg); } 
-            10%, 30%, 50%, 70%, 90% { transform: translate(-20px, -15px) rotate(-2deg); } 
-            20%, 40%, 60%, 80% { transform: translate(20px, 15px) rotate(2deg); } 
-        }
-
+        .shake-apocalyptic { animation: shakeApoc 0.8s cubic-bezier(.36,.07,.19,.97) both; filter: blur(2px); }
+        @keyframes shakeApoc { 0%, 100% { transform: translate(0,0) rotate(0deg); } 10%, 30%, 50%, 70%, 90% { transform: translate(-20px, -15px) rotate(-2deg); } 20%, 40%, 60%, 80% { transform: translate(20px, 15px) rotate(2deg); } }
         .shake-small { animation: shakeSmall 0.15s; }
-        @keyframes shakeSmall { 
-            0%, 100% { transform: translate(0,0); } 
-            50% { transform: translate(3px, 5px); } 
-        }
-
+        @keyframes shakeSmall { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(3px, 5px); } }
         .shake-heavy { animation: shakeHeavy 0.4s; filter: blur(1px); }
-        @keyframes shakeHeavy { 
-            0%, 100% { transform: translate(0,0); } 
-            25% { transform: translate(-12px, -10px); } 
-            50% { transform: translate(12px, 10px); } 
-            75% { transform: translate(-10px, 12px); } 
-        }
+        @keyframes shakeHeavy { 0%, 100% { transform: translate(0,0); } 25% { transform: translate(-12px, -10px); } 50% { transform: translate(12px, 10px); } 75% { transform: translate(-10px, 12px); } }
 
-        /* =========================================
-           PODIO DE RONDAS Y LEADERBOARD
-           ========================================= */
-        #winner-banner { 
-            position: absolute; 
-            top: 50%; 
-            left: 50%; 
-            transform: translate(-50%, -50%); 
-            background: rgba(10,10,15,0.95); 
-            border: 4px double var(--gold); 
-            padding: 40px; 
-            text-align: center; 
-            z-index: 1000; 
-            display: none; 
-            min-width: 650px; 
-            box-shadow: 0 0 80px rgba(0,0,0,1), inset 0 0 50px rgba(255,204,0,0.1); 
-            border-radius: 20px; 
-            max-height: 85vh; 
-            overflow-y: auto;
-        }
-        
-        .podium-container { 
-            display: flex; 
-            justify-content: center; 
-            flex-wrap: wrap; 
-            gap: 20px; 
-            margin: 25px 0; 
-        }
-
-        .winner-card { 
-            background: rgba(255,204,0,0.1); 
-            border: 2px solid var(--gold); 
-            padding: 15px; 
-            border-radius: 10px; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            box-shadow: 0 0 20px rgba(255,204,0,0.3); 
-            animation: popText 0.5s; 
-            width: 130px;
-        }
-
-        .winner-card.ghost { 
-            background: rgba(52, 152, 219, 0.1); 
-            border-color: var(--ghost); 
-            box-shadow: 0 0 20px rgba(52, 152, 219, 0.3); 
-        }
-
-        .winner-card .avatar { 
-            font-size: 5rem; 
-            margin-bottom: 5px; 
-            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.8)); 
-        }
-
-        .winner-card .name { 
-            font-size: 1.8rem; 
-            font-weight: bold; 
-            color: #fff; 
-            text-shadow: 0 2px 5px #000; 
-            word-break: break-all;
-        }
-
-        .winner-card .pts { 
-            font-size: 1.5rem; 
-            background: #000; 
-            padding: 4px 10px; 
-            border-radius: 10px; 
-            margin-top: 5px; 
-            font-weight: bold;
-        }
-
+        /* PODIO Y LEADERBOARD HOST */
+        #winner-banner { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(10,10,15,0.95); border: 4px double var(--gold); padding: 40px; text-align: center; z-index: 1000; display: none; min-width: 650px; box-shadow: 0 0 80px rgba(0,0,0,1), inset 0 0 50px rgba(255,204,0,0.1); border-radius: 20px; max-height: 85vh; overflow-y: auto;}
+        .podium-container { display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; margin: 25px 0; }
+        .winner-card { background: rgba(255,204,0,0.1); border: 2px solid var(--gold); padding: 15px; border-radius: 10px; display: flex; flex-direction: column; align-items: center; box-shadow: 0 0 20px rgba(255,204,0,0.3); animation: popText 0.5s; width: 140px;}
+        .winner-card.ghost { background: rgba(52, 152, 219, 0.1); border-color: var(--ghost); box-shadow: 0 0 20px rgba(52, 152, 219, 0.3); }
+        .winner-card .avatar { font-size: 5rem; margin-bottom: 5px; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.8)); }
+        .winner-card .name { font-size: 1.8rem; font-weight: bold; color: #fff; text-shadow: 0 2px 5px #000; word-break: break-all;}
+        .winner-card .pts { font-size: 1.5rem; background: #000; padding: 4px 10px; border-radius: 10px; margin-top: 5px; font-weight: bold;}
         .winner-card.ghost .pts { color: var(--ghost); }
         .winner-card:not(.ghost) .pts { color: var(--blood); }
 
-        .clown-list { 
-            margin-top: 20px; 
-            padding-top: 20px; 
-            border-top: 2px dashed #e74c3c; 
-            display: flex; 
-            flex-direction: column; 
-            gap: 10px; 
-        }
+        .clown-list { margin-top: 20px; padding-top: 20px; border-top: 2px dashed #e74c3c; display: flex; flex-direction: column; gap: 10px; }
+        .clown-item { font-size: 1.8rem; color: #ff9900; background: rgba(231,76,60,0.1); padding: 8px 15px; border-radius: 5px; animation: slideInLeft 0.5s;}
 
-        .clown-item { 
-            font-size: 1.8rem; 
-            color: #ff9900; 
-            background: rgba(231,76,60,0.1); 
-            padding: 8px 15px; 
-            border-radius: 5px; 
-            animation: slideInLeft 0.5s;
-        }
-
-        /* LEADERBOARD GLOBAL */
-        .lb-row { 
-            display: flex; 
-            align-items: center; 
-            background: rgba(255,255,255,0.05); 
-            margin: 5px 0; 
-            padding: 10px 20px; 
-            border-radius: 5px; 
-            font-size: 2rem; 
-            justify-content: space-between; 
-            border-left: 5px solid #555;
-        }
-
-        .lb-row.top-1 { 
-            border-left-color: var(--gold); 
-            background: rgba(255,204,0,0.15); 
-            font-size: 2.5rem; 
-            font-weight: bold; 
-            box-shadow: 0 0 15px rgba(255,204,0,0.2);
-        }
+        .lb-row { display: flex; align-items: center; background: rgba(255,255,255,0.05); margin: 5px 0; padding: 10px 20px; border-radius: 5px; font-size: 2rem; justify-content: space-between; border-left: 5px solid #555;}
+        .lb-row.top-1 { border-left-color: var(--gold); background: rgba(255,204,0,0.15); font-size: 2.5rem; font-weight: bold; box-shadow: 0 0 15px rgba(255,204,0,0.2);}
         .lb-row.top-2 { border-left-color: #bdc3c7; background: rgba(189, 195, 199, 0.1); }
         .lb-row.top-3 { border-left-color: #cd7f32; background: rgba(205, 127, 50, 0.1); }
 
-        #bet-timer { 
-            color: #e74c3c; 
-            font-size: 1.6rem; 
-            font-weight: bold; 
-            margin-top: 5px; 
-            height: 25px; 
-            letter-spacing: 1px;
-        }
-
-        button.host-btn { 
-            background: #111; 
-            color: var(--gold); 
-            border: 2px solid var(--gold); 
-            padding: 15px 30px; 
-            font-family: 'VT323'; 
-            font-size: 1.8rem; 
-            cursor: pointer; 
-            transition: 0.2s; 
-            border-radius: 5px; 
-            text-transform: uppercase; 
-            letter-spacing: 2px; 
-        }
-
-        button.host-btn:hover { 
-            background: var(--gold); 
-            color: #000; 
-            box-shadow: 0 0 20px var(--gold); 
-            transform: translateY(-2px); 
-        }
-
-        button.host-btn:active { 
-            transform: translateY(2px); 
-        }
+        #bet-timer { color: #e74c3c; font-size: 1.6rem; font-weight: bold; margin-top: 5px; height: 25px; letter-spacing: 1px;}
+        button.host-btn { background: #111; color: var(--gold); border: 2px solid var(--gold); padding: 15px 30px; font-family: 'VT323'; font-size: 1.8rem; cursor: pointer; transition: 0.2s; border-radius: 5px; text-transform: uppercase; letter-spacing: 2px; }
+        button.host-btn:hover { background: var(--gold); color: #000; box-shadow: 0 0 20px var(--gold); transform: translateY(-2px); }
+        button.host-btn:active { transform: translateY(2px); }
 
         /* =========================================
-           VISTA JUGADOR (MÓVIL) - UX MEJORADA
+           VISTA JUGADOR (MÓVIL) - EXPERIENCE DYNAMICS
            ========================================= */
-        #view-player { 
-            width: 95vw; 
-            max-width: 420px; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            z-index: 10; 
-            margin: 0 auto; 
-            position: relative;
-        }
+        #view-player { width: 95vw; max-width: 420px; display: flex; flex-direction: column; align-items: center; z-index: 10; margin: 0 auto; position: relative; }
+        .player-screen { display: none; flex-direction: column; align-items: center; width: 100%; background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%); border: 2px solid #444; border-top: 2px solid var(--gold); padding: 30px 20px; box-sizing: border-box; border-radius: 15px; box-shadow: 0 15px 40px rgba(0,0,0,0.9); position: relative; }
+        .player-screen.active { display: flex; animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes slideUp { 0% { transform: translateY(40px) scale(0.95); opacity: 0; } 100% { transform: translateY(0) scale(1); opacity: 1; } }
 
-        .player-screen { 
-            display: none; 
-            flex-direction: column; 
-            align-items: center; 
-            width: 100%; 
-            background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%); 
-            border: 2px solid #444; 
-            border-top: 2px solid var(--gold); 
-            padding: 30px 20px; 
-            box-sizing: border-box; 
-            border-radius: 15px; 
-            box-shadow: 0 15px 40px rgba(0,0,0,0.9); 
-            position: relative;
-        }
-
-        .player-screen.active { 
-            display: flex; 
-            animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-        }
-
-        @keyframes slideUp { 
-            0% { transform: translateY(40px) scale(0.95); opacity: 0; } 
-            100% { transform: translateY(0) scale(1); opacity: 1; } 
-        }
-
-        .player-title { 
-            color: var(--gold); 
-            font-size: 2.6rem; 
-            margin: 0 0 10px 0; 
-            text-align: center; 
-            text-shadow: 0 5px 10px rgba(0,0,0,0.5); 
-        }
-
-        .avatar-grid { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 15px; 
-            margin-bottom: 25px; 
-            width: 100%; 
-            padding: 0 10px; 
-            box-sizing: border-box;
-        }
-
-        .avatar-btn { 
-            font-size: 2.5rem; 
-            background: #111; 
-            border: 2px solid #333; 
-            border-radius: 15px; 
-            width: 100%; 
-            aspect-ratio: 1; 
-            cursor: pointer; 
-            transition: 0.2s; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            box-shadow: inset 0 -5px 10px rgba(0,0,0,0.5);
-        }
-
-        .avatar-btn.selected { 
-            border-color: var(--gold); 
-            background: rgba(255,204,0,0.15); 
-            transform: scale(1.05) translateY(-5px); 
-            box-shadow: 0 10px 15px rgba(0,0,0,0.5), inset 0 0 15px var(--gold); 
-        }
-
-        input.player-input { 
-            width: 100%; 
-            background: #000; 
-            border: 2px solid #444; 
-            border-radius: 10px; 
-            color: #fff; 
-            padding: 20px; 
-            font-family: 'VT323'; 
-            font-size: 1.8rem; 
-            text-align: center; 
-            margin-bottom: 25px; 
-            box-sizing: border-box; 
-            transition: 0.2s; 
-            box-shadow: inset 0 5px 10px rgba(0,0,0,0.5);
-        }
-
-        input.player-input:focus { 
-            outline: none; 
-            border-color: var(--gold); 
-            box-shadow: 0 0 15px rgba(255,204,0,0.3), inset 0 5px 10px rgba(0,0,0,0.5); 
-        }
+        .player-title { color: var(--gold); font-size: 2.6rem; margin: 0 0 10px 0; text-align: center; text-shadow: 0 5px 10px rgba(0,0,0,0.5); }
         
-        #player-info-tag { 
-            display: flex; 
-            align-items: center; 
-            justify-content: space-between; 
-            width: 100%; 
-            background: #000; 
-            border: 1px solid #444; 
-            padding: 10px 20px; 
-            border-radius: 10px; 
-            margin-bottom: 20px; 
-            box-sizing: border-box; 
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
-        }
+        .avatar-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 25px; width: 100%; padding: 0 10px; box-sizing: border-box;}
+        .avatar-btn { font-size: 2.5rem; background: #111; border: 2px solid #333; border-radius: 15px; width: 100%; aspect-ratio: 1; cursor: pointer; transition: 0.2s; display:flex; justify-content:center; align-items:center; box-shadow: inset 0 -5px 10px rgba(0,0,0,0.5);}
+        .avatar-btn.selected { border-color: var(--gold); background: rgba(255,204,0,0.15); transform: scale(1.05) translateY(-5px); box-shadow: 0 10px 15px rgba(0,0,0,0.5), inset 0 0 15px var(--gold); }
         
-        .bet-control-panel { 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            width: 100%; 
-            gap: 15px; 
-            margin-bottom: 20px; 
-            background: rgba(0,0,0,0.3); 
-            padding: 15px; 
-            border-radius: 15px; 
-            border: 1px solid #222;
-        }
-
-        .bet-row { 
-            display: flex; 
-            align-items: center; 
-            justify-content: space-between; 
-            width: 100%; 
-            gap: 10px; 
-        }
-
-        .bet-btn { 
-            flex: 1; 
-            background: linear-gradient(180deg, #333 0%, #111 100%); 
-            color: #fff; 
-            border: 2px solid #555; 
-            height: 60px; 
-            font-family: 'VT323'; 
-            font-size: 2.5rem; 
-            cursor: pointer; 
-            border-radius: 10px; 
-            transition: 0.1s; 
-            box-shadow: 0 5px 0 #000; 
-        }
-
-        .bet-btn:active { 
-            transform: translateY(5px); 
-            box-shadow: 0 0 0 #000; 
-            border-color: var(--gold); 
-            color: var(--gold); 
-        }
-
-        #bet-number-display { 
-            font-size: 5rem; 
-            font-weight: bold; 
-            color: var(--gold); 
-            text-align: center; 
-            text-shadow: 0 5px 15px rgba(0,0,0,0.8), 0 0 20px rgba(255,204,0,0.4); 
-            transition: 0.1s; 
-            width: 100%; 
-            margin: 5px 0;
-        }
-
-        .pop-anim { 
-            animation: popText 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-        }
-
-        @keyframes popText { 
-            0% { transform: scale(1); } 
-            50% { transform: scale(1.4); color: #fff; text-shadow: 0 0 30px #fff;} 
-            100% { transform: scale(1); } 
-        }
+        input.player-input { width: 100%; background: #000; border: 2px solid #444; border-radius: 10px; color: #fff; padding: 20px; font-family: 'VT323'; font-size: 1.8rem; text-align: center; margin-bottom: 25px; box-sizing: border-box; transition: 0.2s; box-shadow: inset 0 5px 10px rgba(0,0,0,0.5);}
+        input.player-input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 15px rgba(255,204,0,0.3), inset 0 5px 10px rgba(0,0,0,0.5); }
         
-        /* BOTONES DE PACTO (MEJOR EXPLICADOS) */
-        .pact-container { 
-            display: flex; 
-            width: 100%; 
-            gap: 10px; 
-        }
-
-        .action-btn { 
-            flex: 1; 
-            padding: 15px 5px; 
-            font-family: 'VT323'; 
-            font-size: 1.6rem; 
-            cursor: pointer; 
-            transition: 0.2s; 
-            text-transform: uppercase; 
-            border-radius: 10px; 
-            box-shadow: 0 8px 0 #000, 0 15px 20px rgba(0,0,0,0.4); 
-            text-shadow: 0 2px 5px rgba(0,0,0,0.8); 
-            color: #fff; 
-            border: 2px solid; 
-            line-height: 1.2;
-        }
-
-        .action-btn:active { 
-            transform: translateY(8px); 
-            box-shadow: 0 0 0 #000, 0 5px 10px rgba(0,0,0,0.4); 
-        }
+        #player-info-tag { display: flex; align-items: center; justify-content: space-between; width: 100%; background: #000; border: 1px solid #444; padding: 10px 20px; border-radius: 10px; margin-bottom: 20px; box-sizing: border-box; box-shadow: inset 0 0 10px rgba(0,0,0,0.5);}
         
+        .bet-control-panel { display: flex; flex-direction: column; align-items: center; width: 100%; gap: 15px; margin-bottom: 20px; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 15px; border: 1px solid #222;}
+        .bet-row { display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 10px; }
+        .bet-btn { flex: 1; background: linear-gradient(180deg, #333 0%, #111 100%); color: #fff; border: 2px solid #555; height: 60px; font-family: 'VT323'; font-size: 2.5rem; cursor: pointer; border-radius: 10px; transition: 0.1s; box-shadow: 0 5px 0 #000; }
+        .bet-btn:active { transform: translateY(5px); box-shadow: 0 0 0 #000; border-color: var(--gold); color: var(--gold); }
+        #bet-number-display { font-size: 5rem; font-weight: bold; color: var(--gold); text-align: center; text-shadow: 0 5px 15px rgba(0,0,0,0.8), 0 0 20px rgba(255,204,0,0.4); transition: 0.1s; width: 100%; margin: 5px 0;}
+        
+        .pop-anim { animation: popText 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes popText { 0% { transform: scale(1); } 50% { transform: scale(1.4); color: #fff; text-shadow: 0 0 30px #fff;} 100% { transform: scale(1); } }
+        
+        .pact-container { display: flex; width: 100%; gap: 10px; }
+        .action-btn { flex: 1; padding: 15px 5px; font-family: 'VT323'; font-size: 1.6rem; cursor: pointer; transition: 0.2s; text-transform: uppercase; border-radius: 10px; box-shadow: 0 8px 0 #000, 0 15px 20px rgba(0,0,0,0.4); text-shadow: 0 2px 5px rgba(0,0,0,0.8); color: #fff; border: 2px solid; line-height: 1.2;}
+        .action-btn:active { transform: translateY(8px); box-shadow: 0 0 0 #000, 0 5px 10px rgba(0,0,0,0.4); }
         .btn-blood { background: linear-gradient(180deg, #ff5e62 0%, #c0392b 100%); border-color: #e74c3c; }
         .btn-ghost { background: linear-gradient(180deg, #5dade2 0%, #154360 100%); border-color: #3498db; }
-        
-        .btn-gold { 
-            width: 100%; 
-            background: linear-gradient(180deg, #ffd700 0%, #d4af37 100%); 
-            color: #000; 
-            border-color: #aa8c2c; 
-            box-shadow: 0 8px 0 #806921, 0 15px 20px rgba(0,0,0,0.4); 
-            text-shadow: none;
-        }
+        .btn-gold { width: 100%; background: linear-gradient(180deg, #ffd700 0%, #d4af37 100%); color: #000; border-color: #aa8c2c; box-shadow: 0 8px 0 #806921, 0 15px 20px rgba(0,0,0,0.4); text-shadow: none;}
+        .btn-gold:active { box-shadow: 0 0 0 #806921, 0 5px 10px rgba(0,0,0,0.4); transform: translateY(8px); }
 
-        .btn-gold:active { 
-            box-shadow: 0 0 0 #806921, 0 5px 10px rgba(0,0,0,0.4); 
-            transform: translateY(8px); 
-        }
+        .waiting-spinner { font-size: 5rem; margin: 20px 0; animation: floatSpin 3s infinite ease-in-out; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.5));}
+        @keyframes floatSpin { 0% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-20px) rotate(10deg); } 100% { transform: translateY(0px) rotate(0deg); } }
 
-        .waiting-spinner { 
-            font-size: 5rem; 
-            margin: 20px 0; 
-            animation: floatSpin 3s infinite ease-in-out; 
-            filter: drop-shadow(0 10px 10px rgba(0,0,0,0.5));
-        }
+        /* Dados dinámicos en el móvil */
+        .mobile-dice-row { display: flex; gap: 15px; margin: 15px 0; justify-content: center;}
+        .m-dice { width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; font-size: 2rem; font-weight: bold; color: #fff; border-radius: 5px; box-shadow: 0 5px 10px rgba(0,0,0,0.5); }
+        .m-d4 { background: #2ecc71; clip-path: polygon(50% 0%, 0% 100%, 100% 100%); align-items: flex-end; padding-bottom: 5px;}
+        .m-d6 { background: #3498db; border-radius: 10px;}
+        .m-d8 { background: #9b59b6; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); }
 
-        @keyframes floatSpin { 
-            0% { transform: translateY(0px) rotate(0deg); } 
-            50% { transform: translateY(-20px) rotate(10deg); } 
-            100% { transform: translateY(0px) rotate(0deg); } 
-        }
-
-        /* MODAL DE TUTORIAL (NUEVO) */
-        .help-btn {
-            position: absolute;
-            top: -15px; right: -15px;
-            background: #222; border: 2px solid var(--gold); color: var(--gold);
-            width: 45px; height: 45px; border-radius: 50%;
-            font-size: 2.2rem; font-family: 'VT323'; font-weight: bold;
-            cursor: pointer; z-index: 50; display: flex; justify-content: center; align-items: center;
-            box-shadow: 0 5px 10px rgba(0,0,0,0.8);
-        }
-        
-        #tutorial-modal {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(0,0,0,0.9); z-index: 9999;
-            display: none; justify-content: center; align-items: center;
-        }
-        
-        .tutorial-content {
-            background: #111; border: 2px solid var(--gold);
-            width: 90%; max-width: 380px; padding: 25px; border-radius: 15px;
-            box-shadow: 0 0 30px rgba(255,204,0,0.2); text-align: left;
-        }
-        
-        .tutorial-content h3 { color: var(--gold); font-size: 2.2rem; margin-top: 0; text-align: center; border-bottom: 1px solid #444; padding-bottom: 10px;}
-        .tutorial-content ul { padding-left: 20px; font-size: 1.4rem; color: #ddd; line-height: 1.4; margin-bottom: 25px;}
-        .tutorial-content li { margin-bottom: 10px; }
+        /* PANTALLA FORJA MÓVIL */
+        #screen-forging { text-align: center; }
+        .eye-pulse { font-size: 6rem; animation: pulseExplode 1.5s infinite alternate; margin: 20px 0;}
     </style>
 </head>
 <body>
 
 <script>
     // ==========================================
-    // AUDIO ENGINE PROCEDURAL (JUICY SOUNDS)
+    // AUDIO ENGINE PROCEDURAL
     // ==========================================
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     let audioCtx = new AudioContext();
@@ -1019,124 +295,78 @@
         const now = audioCtx.currentTime;
 
         if (type === 'tick') { 
-            osc.type = 'sine'; 
-            osc.frequency.setValueAtTime(800, now); 
-            osc.frequency.exponentialRampToValueAtTime(1200, now + 0.05);
-            gain.gain.setValueAtTime(0.05, now); 
-            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
-            osc.start(now); 
-            osc.stop(now + 0.05);
+            osc.type = 'sine'; osc.frequency.setValueAtTime(800, now); osc.frequency.exponentialRampToValueAtTime(1200, now + 0.05);
+            gain.gain.setValueAtTime(0.05, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
+            osc.start(now); osc.stop(now + 0.05);
         } else if (type === 'click') { 
-            osc.type = 'square'; 
-            osc.frequency.setValueAtTime(400, now); 
-            osc.frequency.exponentialRampToValueAtTime(100, now + 0.05);
-            gain.gain.setValueAtTime(0.1, now); 
-            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
-            osc.start(now); 
-            osc.stop(now + 0.05);
+            osc.type = 'square'; osc.frequency.setValueAtTime(400, now); osc.frequency.exponentialRampToValueAtTime(100, now + 0.05);
+            gain.gain.setValueAtTime(0.1, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
+            osc.start(now); osc.stop(now + 0.05);
         } else if (type === 'lock') { 
-            osc.type = 'square'; 
-            osc.frequency.setValueAtTime(150, now); 
-            osc.frequency.exponentialRampToValueAtTime(40, now + 0.15);
-            gain.gain.setValueAtTime(0.2, now); 
-            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
-            osc.start(now); 
-            osc.stop(now + 0.15);
+            osc.type = 'square'; osc.frequency.setValueAtTime(150, now); osc.frequency.exponentialRampToValueAtTime(40, now + 0.15);
+            gain.gain.setValueAtTime(0.2, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+            osc.start(now); osc.stop(now + 0.15);
         } else if (type === 'coin') { 
-            osc.type = 'sine'; 
-            osc.frequency.setValueAtTime(987.77, now); 
-            osc.frequency.setValueAtTime(1318.51, now + 0.08); 
-            gain.gain.setValueAtTime(0.1, now); 
-            gain.gain.linearRampToValueAtTime(0, now + 0.3);
-            osc.start(now); 
-            osc.stop(now + 0.3);
+            osc.type = 'sine'; osc.frequency.setValueAtTime(987.77, now); osc.frequency.setValueAtTime(1318.51, now + 0.08); 
+            gain.gain.setValueAtTime(0.1, now); gain.gain.linearRampToValueAtTime(0, now + 0.3);
+            osc.start(now); osc.stop(now + 0.3);
         } else if (type === 'explode') { 
-            osc.type = 'sawtooth'; 
-            osc.frequency.setValueAtTime(80, now); 
-            osc.frequency.exponentialRampToValueAtTime(10, now + 1.0); 
-            gain.gain.setValueAtTime(0.6, now); 
-            gain.gain.exponentialRampToValueAtTime(0.01, now + 1.0);
-            osc.start(now); 
-            osc.stop(now + 1.0);
+            osc.type = 'sawtooth'; osc.frequency.setValueAtTime(80, now); osc.frequency.exponentialRampToValueAtTime(10, now + 1.0); 
+            gain.gain.setValueAtTime(0.6, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 1.0);
+            osc.start(now); osc.stop(now + 1.0);
         } else if (type === 'start') { 
-            osc.type = 'sawtooth'; 
-            osc.frequency.setValueAtTime(100, now); 
-            osc.frequency.exponentialRampToValueAtTime(10, now + 1.5);
-            gain.gain.setValueAtTime(0.5, now); 
-            gain.gain.exponentialRampToValueAtTime(0.01, now + 1.5);
-            osc.start(now); 
-            osc.stop(now + 1.5);
+            osc.type = 'sawtooth'; osc.frequency.setValueAtTime(100, now); osc.frequency.exponentialRampToValueAtTime(10, now + 1.5);
+            gain.gain.setValueAtTime(0.5, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 1.5);
+            osc.start(now); osc.stop(now + 1.5);
         } else if (type === 'win') { 
-            osc.type = 'triangle'; 
-            osc.frequency.setValueAtTime(440, now); 
-            osc.frequency.setValueAtTime(554.37, now + 0.2); 
-            osc.frequency.setValueAtTime(659.25, now + 0.4); 
-            osc.frequency.setValueAtTime(880, now + 0.6);
-            gain.gain.setValueAtTime(0, now); 
-            gain.gain.linearRampToValueAtTime(0.3, now+0.1); 
-            gain.gain.linearRampToValueAtTime(0, now + 1.5);
-            osc.start(now); 
-            osc.stop(now + 1.5);
+            osc.type = 'triangle'; osc.frequency.setValueAtTime(440, now); osc.frequency.setValueAtTime(554.37, now + 0.2); 
+            osc.frequency.setValueAtTime(659.25, now + 0.4); osc.frequency.setValueAtTime(880, now + 0.6);
+            gain.gain.setValueAtTime(0, now); gain.gain.linearRampToValueAtTime(0.3, now+0.1); gain.gain.linearRampToValueAtTime(0, now + 1.5);
+            osc.start(now); osc.stop(now + 1.5);
         } else if (type === 'fail') { 
-            osc.type = 'sawtooth'; 
-            osc.frequency.setValueAtTime(300, now); 
-            osc.frequency.linearRampToValueAtTime(100, now + 1.5);
-            gain.gain.setValueAtTime(0.2, now); 
-            gain.gain.linearRampToValueAtTime(0, now + 1.5);
-            osc.start(now); 
-            osc.stop(now + 1.5);
+            osc.type = 'sawtooth'; osc.frequency.setValueAtTime(300, now); osc.frequency.linearRampToValueAtTime(100, now + 1.5);
+            gain.gain.setValueAtTime(0.2, now); gain.gain.linearRampToValueAtTime(0, now + 1.5);
+            osc.start(now); osc.stop(now + 1.5);
         } else if (type === 'score') {
-            osc.type = 'sine'; 
-            osc.frequency.setValueAtTime(600, now); 
-            osc.frequency.exponentialRampToValueAtTime(1200, now + 0.1);
-            gain.gain.setValueAtTime(0.1, now); 
-            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
-            osc.start(now); 
-            osc.stop(now + 0.1);
+            osc.type = 'sine'; osc.frequency.setValueAtTime(600, now); osc.frequency.exponentialRampToValueAtTime(1200, now + 0.1);
+            gain.gain.setValueAtTime(0.1, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+            osc.start(now); osc.stop(now + 0.1);
         }
     }
 
-    if (new URLSearchParams(window.location.search).get('host') === 'true') {
-        document.body.classList.add('is-host');
-    } else {
-        document.body.classList.add('is-player');
-    }
+    if (new URLSearchParams(window.location.search).get('host') === 'true') document.body.classList.add('is-host');
+    else document.body.classList.add('is-player');
 </script>
 
 <div id="flash-overlay"></div>
 
-<div id="host-setup" class="host-only" style="display:none; flex-direction:column; justify-content:center; align-items:center; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(10,10,15,0.98); z-index:5000;">
+<div id="host-setup" class="host-only" style="display:none;">
     <h1 style="font-size: 5rem; margin-bottom: 0; color: var(--gold); text-shadow: 0 0 20px var(--gold);">DUNGEON LOTTO</h1>
     <h2 style="color:var(--blood); margin-top: 0; font-size: 3rem; letter-spacing: 5px;">TOURNAMENT EDITION</h2>
-    <div style="background: #000; border: 4px solid var(--gold); padding: 50px; text-align: center; border-radius: 10px; box-shadow: 0 0 50px rgba(255,204,0,0.2);">
-        <div style="font-size: 2.5rem; color:#fff; font-family:'VT323';">NÚMERO DE RONDAS</div>
-        <input type="number" id="host-rounds" value="5" min="1" max="50" style="background: #111; color: var(--gold); border: 2px solid var(--gold); font-size: 3rem; text-align: center; width: 100px; padding: 10px; font-family: 'VT323'; margin: 20px 0;">
+    <div class="setup-box">
+        <div style="font-size: 2.5rem; color:#fff; font-family:'VT323';">CÓDIGO DE SALA</div>
+        <div id="display-room-code" class="room-code-display">----</div>
+        <div style="font-size: 1.5rem; color:#aaa; margin-bottom: 20px;">Los jugadores deben introducir este código en sus móviles.</div>
+        <div style="font-size: 2rem; color:#fff; font-family:'VT323'; margin-top: 20px;">NÚMERO DE RONDAS</div>
+        <input type="number" id="host-rounds" value="5" min="1" max="50" class="setup-input">
         <br>
-        <p style="color:#aaa; font-size:1.5rem; margin-bottom:20px;">Diles a los jugadores que entren en esta misma web desde su móvil.</p>
-        <button style="background: linear-gradient(180deg, #ffd700 0%, #d4af37 100%); color: #000; border: 2px solid #aa8c2c; padding: 15px 40px; font-family: 'VT323'; font-size: 2.5rem; cursor: pointer; border-radius: 10px; text-transform: uppercase;" onmouseenter="playJuicySound('tick')" onclick="iniciarTorneo()">🔥 INICIAR TORNEO 🔥</button>
+        <button class="action-btn btn-gold" style="padding: 15px 40px; font-size: 2.5rem; width: auto;" onmouseenter="playJuicySound('tick')" onclick="iniciarTorneo()">🔥 INICIAR TORNEO 🔥</button>
     </div>
-    <button style="margin-top: 40px; background: transparent; border: 2px solid #e74c3c; color: #e74c3c; padding: 10px 20px; font-family: 'VT323'; font-size: 1.5rem; cursor: pointer;" onmouseenter="playJuicySound('tick')" onclick="limpiarBD()">🗑️ RESETEAR BASE DE DATOS (PELIGRO)</button>
 </div>
 
 <div id="game-container" class="host-only" style="display:none;">
     <header>
         <h1>DUNGEON LOTTO<br><span id="round-display">RONDA 0 / 0</span></h1>
-        <div id="room-counter">SALAS: 0</div>
-        
-        <div id="seed-tag">
-            <div class="slot-machine">
-                <div id="slot-1" class="slot-box">?</div>
-                <div id="slot-2" class="slot-box">?</div>
-                <div id="slot-3" class="slot-box">?</div>
+        <div style="display:flex; align-items:center; gap:20px;">
+            <div style="background:#222; padding:5px 15px; border-radius:5px; border:1px solid var(--gold); color:var(--gold); font-size:1.8rem;">
+                SALA: <span id="hud-room-code" style="font-weight:bold; letter-spacing:2px;">----</span>
             </div>
-            <span id="seed-bono" style="font-size: 1.4rem; font-weight: bold; height: 20px; margin-top:5px;"></span>
-            <span id="bet-timer"></span>
+            <div id="room-counter">SALAS: 0</div>
         </div>
     </header>
 
     <div id="view-host">
         <div id="dungeon-canvas"></div>
-        
         <div id="giant-dice-overlay">
             <div id="giant-dice-label">TIRANDO...</div>
             <div id="giant-dice" class="rpg-dice-container"></div>
@@ -1155,7 +385,6 @@
                 <div id="clown-club" class="clown-list"></div>
                 <button class="host-btn" id="btn-next-step" style="margin-top:30px;" onmouseenter="playJuicySound('tick')" onclick="playJuicySound('click'); mostrarClasificacion();">📊 VER CLASIFICACIÓN</button>
             </div>
-            
             <div id="leaderboard-view" style="display:none; width: 100%;">
                 <h2 style="color: var(--gold); margin-top: 0; font-size: 4rem; text-shadow: 0 0 20px var(--gold);">🏆 CLASIFICACIÓN GLOBAL 🏆</h2>
                 <div id="lb-content" style="display: flex; flex-direction: column; gap: 5px; margin: 20px 0;"></div>
@@ -1175,24 +404,11 @@
     </div>
 </div>
 
-<div id="tutorial-modal" onclick="toggleTutorial()">
-    <div class="tutorial-content" onclick="event.stopPropagation()">
-        <h3>📜 CÓMO JUGAR</h3>
-        <ul>
-            <li><strong>El Objetivo:</strong> Adivinar cuántas salas se van a dibujar en la pantalla principal.</li>
-            <li><strong>La Semilla:</strong> Primero verás qué 3 dados se van a usar (D4, D6 o D8).</li>
-            <li><strong>¡CUIDADO! Dados Explosivos:</strong> Si un dado saca su número máximo (ej. un 6 en un D6), ¡EXPLOTA, suma ese valor, y se vuelve a tirar!</li>
-            <li><strong>Dobles y Triples:</strong> Si se repiten letras en la semilla, el total se puede multiplicar por x2 o x3.</li>
-        </ul>
-        <button class="action-btn btn-gold" onclick="toggleTutorial()">¡ENTENDIDO!</button>
-    </div>
-</div>
-
 <div id="view-player">
+    
     <div id="screen-setup" class="player-screen active">
         <h2 class="player-title">Paso 1: CREA TU HÉROE</h2>
-        <p style="color:#aaa; text-align:center; margin-top:0; font-size: 1.2rem;">Elige tu avatar y nombre para el torneo.</p>
-        
+        <p style="color:#aaa; text-align:center; margin-top:0; font-size: 1.2rem;">Elige tu avatar y nombre.</p>
         <div class="avatar-grid" id="avatar-selector">
             <button class="avatar-btn selected" onclick="selectAvatar(this, '🧙‍♂️')">🧙‍♂️</button>
             <button class="avatar-btn" onclick="selectAvatar(this, '🧝‍♀️')">🧝‍♀️</button>
@@ -1201,21 +417,27 @@
             <button class="avatar-btn" onclick="selectAvatar(this, '👺')">👺</button>
             <button class="avatar-btn" onclick="selectAvatar(this, '🤖')">🤖</button>
         </div>
-        
         <input type="text" id="p-name" class="player-input" placeholder="Nombre (Ej. Gandalfo)" maxlength="15">
-        <button class="action-btn btn-gold" onclick="savePlayerProfile(); playJuicySound('start');">ENTRAR A LA TABERNA</button>
+        <input type="text" id="p-room" class="player-input" placeholder="CÓDIGO DE SALA" maxlength="4" style="text-transform:uppercase; font-size: 2.2rem; font-weight:bold; letter-spacing:5px;">
+        <button class="action-btn btn-gold" onclick="savePlayerProfile();">CONECTAR AL TORNEO</button>
+    </div>
+
+    <div id="screen-lobby" class="player-screen">
+        <div id="player-info-tag">
+            <div><span id="tag-avatar" style="font-size:1.8rem; margin-right:5px;">🧙‍♂️</span> <span id="tag-name" style="color:var(--gold); font-size:1.6rem; font-weight:bold;">Héroe</span></div>
+            <span style="font-size:1.2rem; color:#888; text-decoration:underline; cursor:pointer;" onclick="clearProfile(); playJuicySound('click');">Salir</span>
+        </div>
+        <h2 class="player-title" style="font-size:2.5rem; margin-top: 20px;">EN LA TABERNA...</h2>
+        <div class="waiting-spinner">🍺</div>
+        <p style="color:#aaa; text-align:center; font-size:1.4rem;">Esperando a que el Master inicie la ronda.</p>
     </div>
 
     <div id="screen-bet" class="player-screen">
-        <button class="help-btn" onclick="toggleTutorial()">?</button>
+        <h2 class="player-title" style="font-size:2.2rem; line-height:1.2; margin-bottom: 5px;">SEMILLA REVELADA</h2>
+        <p style="color:#aaa; text-align:center; font-size:1.3rem; margin-top:0;">Se lanzarán los siguientes dados:</p>
         
-        <div id="player-info-tag">
-            <div><span id="tag-avatar" style="font-size:1.8rem; margin-right:5px;">🧙‍♂️</span> <span id="tag-name" style="color:var(--gold); font-size:1.6rem; font-weight:bold;">Héroe</span></div>
-            <span style="font-size:1.2rem; color:#888; text-decoration:underline; cursor:pointer; background:#222; padding:5px 10px; border-radius:5px;" onclick="clearProfile(); playJuicySound('click');">Cambiar</span>
-        </div>
-        
-        <h2 class="player-title" style="font-size:2.2rem; line-height:1.2; margin-bottom: 5px;">¿CUÁNTAS SALAS<br>SE CONSTRUIRÁN?</h2>
-        <p style="color:#aaa; text-align:center; font-size:1.3rem; margin-top:0; line-height: 1.2;">Calcula el total mirando los dados de la pantalla principal.</p>
+        <div id="mobile-dice-display" class="mobile-dice-row">
+            </div>
         
         <div class="bet-control-panel">
             <div class="bet-row">
@@ -1231,34 +453,41 @@
         
         <div class="pact-container">
             <button class="action-btn btn-blood" id="btn-blood" onclick="sellarPacto('S')">
-                🎯 APUESTA EXACTA<br>
-                <span style="font-size:1rem; color:#ffcccc;">(Debes acertar clavado)</span><br>
-                <strong style="font-size:1.6rem;">Ganas +3 PTS</strong>
+                🎯 SANGRE<br><span style="font-size:1rem; color:#ffcccc;">(Nº Exacto)</span><br><strong style="font-size:1.6rem;">+3 PTS</strong>
             </button>
             <button class="action-btn btn-ghost" id="btn-ghost" onclick="sellarPacto('A')">
-                🛡️ APUESTA SEGURA<br>
-                <span style="font-size:1rem; color:#cce5ff;">(Vale pasarse por ±1)</span><br>
-                <strong style="font-size:1.6rem;">Ganas +1 PT</strong>
+                🛡️ ALMAS<br><span style="font-size:1rem; color:#cce5ff;">(Rango ±1)</span><br><strong style="font-size:1.6rem;">+1 PT</strong>
             </button>
         </div>
     </div>
 
     <div id="screen-wait" class="player-screen">
-        <h2 class="player-title" style="color:var(--blood); font-size:3rem; text-shadow: 0 0 20px rgba(231, 76, 60, 0.5);">APUESTA SELLADA</h2>
-        
-        <div style="background: rgba(0,0,0,0.5); border: 1px solid #333; padding: 20px; border-radius: 10px; width: 100%; box-sizing:border-box;">
-            <p id="wait-msg-type" style="color:#ccc; text-align:center; font-size:1.4rem; margin:0;">Has apostado por el número:</p>
-            <span id="wait-bet-val" style="color:var(--gold); font-size: 3.5rem; font-weight:bold; display:block; margin: 10px 0; text-align:center; text-shadow: 0 0 15px var(--gold);">0</span>
-        </div>
-        
-        <h3 style="color:#2ecc71; font-size:2rem; text-align:center; margin-top:30px; animation: pulseExplode 1.5s infinite alternate;">👀 MIRA A LA PANTALLA GIGANTE AHORA 👀</h3>
-        <p style="color:#888; text-align:center; font-size:1.2rem; margin-top:5px;">Los dados van a rodar.</p>
-        
-        <button class="action-btn btn-gold" style="margin-top: 30px; padding: 15px;" onclick="resetPlayerRound(); playJuicySound('click');">PREPARAR SIGUIENTE RONDA</button>
+        <h2 class="player-title" style="color:var(--blood); font-size:3rem;">PACTO SELLADO</h2>
+        <div class="waiting-spinner" style="font-size:4rem;">📜</div>
+        <p style="color:#aaa; text-align:center; font-size:1.4rem;">Apostaste <strong id="wait-bet-val" style="color:var(--gold);">0</strong>.<br>Esperando al Master...</p>
     </div>
+
+    <div id="screen-forging" class="player-screen">
+        <h2 class="player-title" style="color:#fff; font-size:3rem; text-shadow: 0 0 20px #fff;">¡FORJANDO!</h2>
+        <div class="eye-pulse">👁️</div>
+        <p style="color:#2ecc71; text-align:center; font-size:2rem; font-weight:bold;">MIRA AL PROYECTOR</p>
+    </div>
+
+    <div id="screen-results" class="player-screen">
+        <h2 id="p-res-title" class="player-title" style="font-size:3.5rem; color:#fff; text-shadow:0 0 10px rgba(0,0,0,0.8);">TITULO</h2>
+        <p id="p-res-sub" style="color:#eee; font-size:1.6rem; font-weight:bold; margin-bottom:30px;">Subtitulo</p>
+        <div id="p-res-score" style="background:#000; color:var(--gold); padding:10px 20px; border:2px solid var(--gold); border-radius:10px; font-size:2.5rem; font-weight:bold; box-shadow: 0 0 20px rgba(255,204,0,0.4);">
+            TOTAL: 0 PTS
+        </div>
+        <p style="color:#aaa; text-align:center; font-size:1.2rem; margin-top:30px;">Espera a que el Master inicie la siguiente ronda.</p>
+    </div>
+
 </div>
 
 <script>
+    // ==========================================
+    // CONFIGURACIÓN SUPABASE Y UTILIDADES
+    // ==========================================
     const SB_URL = 'https://mzlamrxvtvxbuamyfplz.supabase.co';
     const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im16bGFtcnh2dHZ4YnVhbXlmcGx6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczNTAxNjEsImV4cCI6MjA5MjkyNjE2MX0.fdebTvX68sDHUbIjCFDhfipauXap4qabWko7U8gLyxg';
     const miSupabase = supabase.createClient(SB_URL, SB_KEY);
@@ -1266,16 +495,44 @@
 
     const IS_HOST = new URLSearchParams(window.location.search).get('host') === 'true';
 
-    // ESTADO DEL TORNEO (Solo Host)
-    let currentRound = 0;
-    let maxRounds = 5;
-    let globalScores = {}; 
+    // VARIABLES GLOBALES DE RED
+    let currentRoomCode = "";
+    let roomChannel = null;
 
+    // GENERADOR DE CÓDIGO
+    function generateRoomCode() {
+        const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+        let result = '';
+        for (let i = 0; i < 4; i++) result += chars.charAt(Math.floor(Math.random() * chars.length));
+        return result;
+    }
+
+    // BROADCAST HELPER
+    function broadcastState(stateName, payload = {}) {
+        if(!IS_HOST || !roomChannel) return;
+        roomChannel.send({
+            type: 'broadcast',
+            event: 'gameState',
+            payload: { state: stateName, ...payload }
+        });
+    }
+
+    // ==========================================
+    // INICIO
+    // ==========================================
     window.onload = () => {
         if (IS_HOST) {
             document.getElementById('host-setup').style.display = 'flex';
             
-            // Recuperar torneo si se le dio a F5 accidentalmente
+            // Generar o cargar Room Code
+            let savedRoom = localStorage.getItem('dl_roomCode');
+            if (savedRoom) currentRoomCode = savedRoom;
+            else currentRoomCode = generateRoomCode();
+            
+            document.getElementById('display-room-code').innerText = currentRoomCode;
+            document.getElementById('hud-room-code').innerText = currentRoomCode;
+
+            // Recuperar torneo
             let savedScores = localStorage.getItem('dl_globalScores');
             let savedRound = localStorage.getItem('dl_currentRound');
             let savedMax = localStorage.getItem('dl_maxRounds');
@@ -1284,34 +541,36 @@
                 globalScores = JSON.parse(savedScores);
                 currentRound = parseInt(savedRound);
                 maxRounds = parseInt(savedMax);
-                
                 if(currentRound > 0 && currentRound <= maxRounds) {
                     iniciarTorneo(true);
                 }
             }
-            cargarApuestas(); 
-            escucharApuestas();
+            cargarApuestasHost(); 
+            escucharApuestasHost();
         } else {
             initPlayerMode();
         }
     };
 
     // ==========================================
-    // LÓGICA DEL JUGADOR (MÓVIL)
+    // LÓGICA DEL JUGADOR (MÓVIL DINÁMICO)
     // ==========================================
     let playerAvatar = '🧙‍♂️';
     let currentBet = 15;
+    let myCurrentPact = '';
 
     function initPlayerMode() {
         const savedName = localStorage.getItem('dl_playerName');
         const savedAvatar = localStorage.getItem('dl_playerAvatar');
+        const savedRoom = localStorage.getItem('dl_playerRoom');
         
-        if (savedName && savedAvatar) {
+        if (savedName && savedAvatar && savedRoom) {
             playerAvatar = savedAvatar;
             document.getElementById('tag-name').innerText = savedName;
             document.getElementById('tag-avatar').innerText = playerAvatar;
             document.getElementById('p-name').value = savedName;
-            showScreen('screen-bet');
+            document.getElementById('p-room').value = savedRoom;
+            conectarSalaJugador(); // Reconecta auto
         } else {
             showScreen('screen-setup');
         }
@@ -1321,6 +580,7 @@
     function showScreen(screenId) {
         document.querySelectorAll('.player-screen').forEach(s => s.classList.remove('active'));
         document.getElementById(screenId).classList.add('active');
+        document.getElementById('screen-results').style.background = ""; // Reset BG
     }
 
     function selectAvatar(btn, emoji) {
@@ -1333,127 +593,198 @@
 
     function savePlayerProfile() {
         const name = document.getElementById('p-name').value.trim();
+        const room = document.getElementById('p-room').value.toUpperCase().trim();
+        let valid = true;
+        
         if (!name) { 
-            let input = document.getElementById('p-name');
-            input.style.borderColor = "var(--blood)"; 
-            input.classList.add('shake-small');
-            setTimeout(()=> { 
-                input.classList.remove('shake-small'); 
-                input.style.borderColor = "#444"; 
-            }, 300); 
-            return; 
+            document.getElementById('p-name').style.borderColor = "var(--blood)"; valid = false; 
+            setTimeout(()=> document.getElementById('p-name').style.borderColor = "#444", 300);
         }
+        if (!room || room.length !== 4) { 
+            document.getElementById('p-room').style.borderColor = "var(--blood)"; valid = false;
+            setTimeout(()=> document.getElementById('p-room').style.borderColor = "#444", 300);
+        }
+        if(!valid) { playJuicySound('fail'); return; }
+
         localStorage.setItem('dl_playerName', name); 
         localStorage.setItem('dl_playerAvatar', playerAvatar);
+        localStorage.setItem('dl_playerRoom', room);
         
         document.getElementById('tag-name').innerText = name; 
         document.getElementById('tag-avatar').innerText = playerAvatar;
         
-        if(navigator.vibrate) navigator.vibrate(50); 
-        showScreen('screen-bet');
+        playJuicySound('start');
+        conectarSalaJugador();
     }
 
     function clearProfile() { 
         localStorage.removeItem('dl_playerName'); 
-        localStorage.removeItem('dl_playerAvatar'); 
+        localStorage.removeItem('dl_playerRoom'); 
+        if(roomChannel) roomChannel.unsubscribe();
         showScreen('screen-setup'); 
     }
 
+    // CONEXIÓN DEL JUGADOR Y GESTIÓN DE ESTADOS DEL HOST
+    function conectarSalaJugador() {
+        currentRoomCode = localStorage.getItem('dl_playerRoom');
+        roomChannel = miSupabase.channel('room-' + currentRoomCode);
+        
+        roomChannel.on('broadcast', { event: 'gameState' }, ({ payload }) => {
+            handleGameState(payload);
+        }).subscribe((status) => {
+            if (status === 'SUBSCRIBED') {
+                if(navigator.vibrate) navigator.vibrate(50); 
+                showScreen('screen-lobby'); // Por defecto va al lobby a esperar
+            }
+        });
+    }
+
+    function handleGameState(payload) {
+        if (payload.state === 'lobby') {
+            showScreen('screen-lobby');
+        } 
+        else if (payload.state === 'betting') {
+            document.getElementById('btn-blood').disabled = false; 
+            document.getElementById('btn-ghost').disabled = false;
+            myCurrentPact = '';
+            
+            // Construir UI de dados
+            let diceHtml = "";
+            for(let l of payload.seed) {
+                if(l === 'A') diceHtml += `<div class="m-dice m-d4">4</div>`;
+                if(l === 'B') diceHtml += `<div class="m-dice m-d6">6</div>`;
+                if(l === 'C') diceHtml += `<div class="m-dice m-d8">8</div>`;
+            }
+            document.getElementById('mobile-dice-display').innerHTML = diceHtml;
+            playJuicySound('coin');
+            showScreen('screen-bet');
+        } 
+        else if (payload.state === 'forging') {
+            showScreen('screen-forging');
+        } 
+        else if (payload.state === 'forge_event') {
+            if (payload.action === 'explode') {
+                const screen = document.getElementById('screen-forging');
+                screen.classList.add('flash-blood');
+                if(navigator.vibrate) navigator.vibrate([200, 100, 200]);
+                playJuicySound('explode');
+                setTimeout(()=> screen.classList.remove('flash-blood'), 500);
+            }
+        } 
+        else if (payload.state === 'results') {
+            renderPlayerResultCard(payload.total, payload.scores);
+            showScreen('screen-results');
+        }
+    }
+
+    function renderPlayerResultCard(total, scores) {
+        if(!myCurrentPact) {
+            // No apostó
+            document.getElementById('p-res-title').innerText = "💤 AUSENTE";
+            document.getElementById('p-res-sub').innerText = "No sellaste ningún pacto.";
+            document.getElementById('screen-results').style.background = "linear-gradient(180deg, #333, #111)";
+            return;
+        }
+
+        let myKey = `${playerAvatar}|${localStorage.getItem('dl_playerName')}`;
+        let myScore = scores[myKey] || 0;
+        let diff = Math.abs(currentBet - total);
+
+        let title = "", sub = "", bg = "";
+        
+        if (myCurrentPact === 'S' && diff === 0) {
+            title = "¡GLORIA ABSOLUTA!"; sub = "+3 PUNTOS GANADOS"; bg = "linear-gradient(180deg, #ffd700, #b8860b)";
+            if(navigator.vibrate) navigator.vibrate([100, 50, 100, 50, 500]);
+            playJuicySound('win');
+        } else if (myCurrentPact === 'S' && diff === 1) {
+            title = "🤡 ERES UN PAYASO"; sub = "Fallaste por 1 misera sala..."; bg = "linear-gradient(180deg, #e74c3c, #900)";
+            if(navigator.vibrate) navigator.vibrate([500]);
+            playJuicySound('fail');
+        } else if (myCurrentPact === 'A' && diff <= 1) {
+            title = "¡SUPERVIVIENTE!"; sub = "+1 PUNTO GANADO"; bg = "linear-gradient(180deg, #3498db, #154360)";
+            if(navigator.vibrate) navigator.vibrate([100, 50, 100]);
+            playJuicySound('win');
+        } else {
+            title = "💀 HAS MUERTO"; sub = "Tus cálculos fueron basura."; bg = "linear-gradient(180deg, #333, #000)";
+            if(navigator.vibrate) navigator.vibrate([200]);
+            playJuicySound('fail');
+        }
+
+        document.getElementById('p-res-title').innerText = title;
+        document.getElementById('p-res-sub').innerText = sub;
+        document.getElementById('screen-results').style.background = bg;
+        document.getElementById('p-res-score').innerText = `TOTAL TORNEO: ${myScore} PTS`;
+    }
+
+    // CONTROLES DE APUESTA
     function modifyBet(amount) {
         playJuicySound('tick'); 
         currentBet += amount;
-        
-        if (currentBet < 1) currentBet = 1; 
-        if (currentBet > 999) currentBet = 999; 
-        
-        updateBetDisplay(); 
-        if(navigator.vibrate) navigator.vibrate(20);
+        if (currentBet < 1) currentBet = 1; if (currentBet > 999) currentBet = 999; 
+        updateBetDisplay(); if(navigator.vibrate) navigator.vibrate(20);
     }
-
     function updateBetDisplay() {
         const display = document.getElementById('bet-number-display');
-        display.innerText = currentBet; 
-        display.classList.remove('pop-anim');
-        void display.offsetWidth; 
-        display.classList.add('pop-anim');
+        display.innerText = currentBet; display.classList.remove('pop-anim');
+        void display.offsetWidth; display.classList.add('pop-anim');
     }
 
     async function sellarPacto(tipo) {
         playJuicySound('lock');
-        document.getElementById('btn-blood').disabled = true; 
-        document.getElementById('btn-ghost').disabled = true;
+        document.getElementById('btn-blood').disabled = true; document.getElementById('btn-ghost').disabled = true;
+        myCurrentPact = tipo;
 
-        // Formato: Avatar|Nombre|TipoPacto
-        const finalName = `${playerAvatar}|${localStorage.getItem('dl_playerName')}|${tipo}`;
+        // Inyectamos el RoomCode para que el Host filtre
+        const finalName = `${currentRoomCode}|${playerAvatar}|${localStorage.getItem('dl_playerName')}|${tipo}`;
         const { error } = await miSupabase.from('apuestas').insert([{ name: finalName, cantidad: currentBet }]);
         
         if(!error) {
-            let flash = document.getElementById('flash-overlay'); 
-            flash.classList.remove('flash-anim'); 
+            let flash = document.getElementById('flash-overlay'); flash.classList.remove('flash-anim'); 
             flash.classList.add(tipo === 'S' ? 'flash-blood' : 'flash-ghost');
-            
             if(navigator.vibrate) navigator.vibrate([100, 50, 100]);
             
             setTimeout(() => {
                 flash.classList.remove('flash-blood', 'flash-ghost');
-                
-                document.getElementById('wait-msg-type').innerText = tipo === 'S' ? "APUESTA EXACTA:" : "APUESTA SEGURA (Rango ±1):";
-                document.getElementById('wait-bet-val').innerText = tipo === 'S' ? currentBet : `[ ${currentBet-1} - ${currentBet} - ${currentBet+1} ]`;
-                document.getElementById('wait-bet-val').style.color = tipo === 'S' ? "var(--blood)" : "var(--ghost)";
-                
+                document.getElementById('wait-bet-val').innerText = currentBet;
                 showScreen('screen-wait');
-                document.getElementById('btn-blood').disabled = false; 
-                document.getElementById('btn-ghost').disabled = false;
             }, 300);
         } else {
             alert("Los Dioses rechazan tu conexión.");
-            document.getElementById('btn-blood').disabled = false; 
-            document.getElementById('btn-ghost').disabled = false;
+            document.getElementById('btn-blood').disabled = false; document.getElementById('btn-ghost').disabled = false;
         }
     }
 
-    function resetPlayerRound() { 
-        if(navigator.vibrate) navigator.vibrate(30); 
-        showScreen('screen-bet'); 
-    }
-
-    function toggleTutorial() {
-        const modal = document.getElementById('tutorial-modal');
-        if (modal.style.display === 'flex') {
-            modal.style.display = 'none';
-        } else {
-            playJuicySound('click');
-            modal.style.display = 'flex';
-        }
-    }
 
     // ==========================================
-    // LÓGICA DEL HOST (TORNEO)
+    // LÓGICA DEL HOST (TORNEO Y SINCRONIZACIÓN)
     // ==========================================
-    let roomsData = []; 
-    const tileSize = 55; 
-    let timerIntervalHost; 
-    let globalRoomCount = 0;
+    let roomsData = []; const tileSize = 55; let timerIntervalHost; let globalRoomCount = 0;
 
     async function limpiarBD() {
-        if(confirm("¿Estás seguro? Esto borrará todas las apuestas de la base de datos y la clasificación.")) {
+        if(confirm("¿Estás seguro? Esto borrará TODAS las apuestas de Supabase y el ranking local.")) {
             await miSupabase.from('apuestas').delete().neq('id', 0);
-            localStorage.removeItem('dl_globalScores'); 
-            localStorage.removeItem('dl_currentRound'); 
-            localStorage.removeItem('dl_maxRounds');
-            alert("Base de datos limpia.");
+            localStorage.clear(); // Limpia todo
+            alert("Base de datos limpia. Recarga la página.");
+            window.location.reload();
         }
     }
 
     function iniciarTorneo(retomar = false) {
         if(!retomar) {
             maxRounds = parseInt(document.getElementById('host-rounds').value) || 5;
-            currentRound = 0; 
-            globalScores = {};
+            currentRound = 0; globalScores = {};
+            localStorage.setItem('dl_roomCode', currentRoomCode);
             localStorage.setItem('dl_maxRounds', maxRounds);
             localStorage.setItem('dl_globalScores', JSON.stringify(globalScores));
             playJuicySound('start');
         }
+        
+        // Host se une a su propio canal para emitir
+        roomChannel = miSupabase.channel('room-' + currentRoomCode);
+        roomChannel.subscribe((status) => {
+            if(status === 'SUBSCRIBED') broadcastState('lobby');
+        });
+
         document.getElementById('host-setup').style.display = 'none';
         document.getElementById('game-container').style.display = 'flex';
         actualizarHUDTorneo();
@@ -1463,180 +794,111 @@
         document.getElementById('round-display').innerText = `RONDA ${currentRound} / ${maxRounds}`;
     }
 
-    function formatPlayerName(dbName) {
-        let parts = dbName.split('|');
-        if(parts.length >= 2) {
-            let icon = parts[2] === 'S' ? '🩸' : (parts[2] === 'A' ? '🛡️' : '');
-            return `<span style="font-size:1.6rem">${parts[0]}</span> ${parts[1]} ${icon}`;
-        }
-        return dbName;
+    function formatPlayerNameForHost(parts) {
+        // parts = [roomCode, avatar, nombre, pacto]
+        let icon = parts[3] === 'S' ? '🩸' : (parts[3] === 'A' ? '🛡️' : '');
+        return `<span style="font-size:1.6rem">${parts[1]}</span> ${parts[2]} ${icon}`;
     }
 
-    async function cargarApuestas() {
+    async function cargarApuestasHost() {
         if(!IS_HOST) return;
-        const { data } = await miSupabase.from('apuestas').select('*');
-        
+        // Obtenemos todas y filtramos por Room Code cliente
+        const { data } = await miSupabase.from('apuestas').select('*').ilike('name', `${currentRoomCode}|%`);
         if (data) {
-            const lista = document.getElementById('list-bets'); 
-            lista.innerHTML = "";
+            const lista = document.getElementById('list-bets'); lista.innerHTML = "";
             data.forEach(p => {
-                const li = document.createElement('li'); 
-                li.style.padding = "8px 5px"; 
-                li.style.borderBottom = "1px solid #333";
-                li.innerHTML = `<span style="font-weight:bold; color:#ddd;">${formatPlayerName(p.name)}</span>: <span style="color:var(--gold); font-weight:bold; float:right;">${p.cantidad}</span>`;
+                let parts = p.name.split('|');
+                const li = document.createElement('li'); li.style.padding = "8px 5px"; li.style.borderBottom = "1px solid #333";
+                li.innerHTML = `<span style="font-weight:bold; color:#ddd;">${formatPlayerNameForHost(parts)}</span>: <span style="color:var(--gold); font-weight:bold; float:right;">${p.cantidad}</span>`;
                 lista.prepend(li);
             });
         }
     }
 
-    function escucharApuestas() {
+    function escucharApuestasHost() {
         if(!IS_HOST) return;
         miSupabase.channel('l').on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'apuestas' }, p => {
-            const li = document.createElement('li'); 
-            li.style.padding = "8px 5px"; 
-            li.style.borderBottom = "1px solid #333";
-            li.innerHTML = `<span style="font-weight:bold; color:#ddd;">${formatPlayerName(p.new.name)}</span>: <span style="color:var(--gold); font-weight:bold; float:right;">${p.new.cantidad}</span>`;
+            let parts = p.new.name.split('|');
+            if(parts[0] !== currentRoomCode) return; // Ignorar apuestas de otras salas!
+
+            const li = document.createElement('li'); li.style.padding = "8px 5px"; li.style.borderBottom = "1px solid #333";
+            li.innerHTML = `<span style="font-weight:bold; color:#ddd;">${formatPlayerNameForHost(parts)}</span>: <span style="color:var(--gold); font-weight:bold; float:right;">${p.new.cantidad}</span>`;
             document.getElementById('list-bets').prepend(li);
             
-            playJuicySound('tick'); 
-            li.style.background = "rgba(255,204,0,0.3)"; 
-            li.style.transition = "background 0.5s";
+            playJuicySound('tick'); li.style.background = "rgba(255,204,0,0.3)"; li.style.transition = "background 0.5s";
             setTimeout(()=> li.style.background = "transparent", 500);
         }).subscribe();
     }
 
     function logMsg(text, typeClass="log-system") {
-        const logContent = document.getElementById('log-content'); 
-        const entry = document.createElement('div');
-        entry.className = `log-entry ${typeClass}`; 
-        entry.innerHTML = text;
-        logContent.appendChild(entry); 
-        logContent.scrollTop = logContent.scrollHeight; 
+        const logContent = document.getElementById('log-content'); const entry = document.createElement('div');
+        entry.className = `log-entry ${typeClass}`; entry.innerHTML = text;
+        logContent.appendChild(entry); logContent.scrollTop = logContent.scrollHeight; 
     }
-
-    function clearLog() { 
-        document.getElementById('log-content').innerHTML = ""; 
-    }
+    function clearLog() { document.getElementById('log-content').innerHTML = ""; }
 
     async function nuevaRonda() {
         if(!IS_HOST) return;
+        if(currentRound >= maxRounds) { alert("El Torneo ha terminado."); return; }
         
-        if(currentRound >= maxRounds) {
-            alert("El Torneo ha terminado. Pulsa F5 o limpia BD para reiniciar."); 
-            return;
-        }
-        
-        currentRound++;
-        localStorage.setItem('dl_currentRound', currentRound);
-        actualizarHUDTorneo();
+        currentRound++; localStorage.setItem('dl_currentRound', currentRound); actualizarHUDTorneo();
 
         document.getElementById('btn-seed').disabled = true;
         if(audioCtx.state === 'suspended') audioCtx.resume();
 
-        const letras = ['A', 'B', 'C']; 
-        let seed = ""; 
-        for(let i=0; i<3; i++) seed += letras[Math.floor(Math.random() * 3)];
+        const letras = ['A', 'B', 'C']; let seed = ""; for(let i=0; i<3; i++) seed += letras[Math.floor(Math.random() * 3)];
         window.currentSeed = seed;
+        
+        // Avisar a los móviles que empieza la apuesta y darles la semilla
+        broadcastState('betting', { seed: seed });
 
-        document.getElementById('dungeon-canvas').innerHTML = ""; 
-        actualizarContador(0);
-        document.getElementById('winner-banner').style.display = 'none'; 
-        document.getElementById('live-log').style.display = 'none';
-        document.getElementById('seed-bono').innerText = ""; 
-        document.getElementById('bet-timer').innerText = "";
+        document.getElementById('dungeon-canvas').innerHTML = ""; actualizarContador(0);
+        document.getElementById('winner-banner').style.display = 'none'; document.getElementById('live-log').style.display = 'none';
+        document.getElementById('seed-bono').innerText = ""; document.getElementById('bet-timer').innerText = "";
         
         let slots = [document.getElementById('slot-1'), document.getElementById('slot-2'), document.getElementById('slot-3')];
-        slots.forEach(s => { 
-            s.className = "slot-box spinning"; 
-            s.innerText = "?"; 
-        });
+        slots.forEach(s => { s.className = "slot-box spinning"; s.innerText = "?"; });
 
-        await miSupabase.from('apuestas').delete().neq('id', 0); 
+        // Ya no borramos la BD, porque filtramos por RoomCode. 
+        // Solo limpiamos la lista visual.
         document.getElementById('list-bets').innerHTML = "";
 
         const stopTimes = [2000, 4000, 6500]; 
         slots.forEach((slot, index) => {
-            let spinInterval = setInterval(() => { 
-                slot.innerText = letras[Math.floor(Math.random() * 3)]; 
-                slot.style.transform = `translateY(${Math.random() * 10 - 5}px)`; 
-                playJuicySound('tick'); 
-            }, 60);
-            
+            let spinInterval = setInterval(() => { slot.innerText = letras[Math.floor(Math.random() * 3)]; slot.style.transform = `translateY(${Math.random() * 10 - 5}px)`; playJuicySound('tick'); }, 60);
             setTimeout(() => {
-                clearInterval(spinInterval); 
-                slot.style.transform = `translateY(0)`; 
-                slot.innerText = seed[index]; 
-                slot.className = "slot-box locked"; 
-                playJuicySound('lock');
-                
-                if(index < 2) { 
-                    document.getElementById('game-container').classList.add('shake-small'); 
-                    setTimeout(()=> document.getElementById('game-container').classList.remove('shake-small'), 150); 
-                } else { 
-                    document.getElementById('game-container').classList.add('shake-heavy'); 
-                    setTimeout(()=> document.getElementById('game-container').classList.remove('shake-heavy'), 300); 
-                    setTimeout(()=> aplicarEstilosBonoHost(seed), 1500); 
-                }
+                clearInterval(spinInterval); slot.style.transform = `translateY(0)`; slot.innerText = seed[index]; slot.className = "slot-box locked"; playJuicySound('lock');
+                if(index < 2) { document.getElementById('game-container').classList.add('shake-small'); setTimeout(()=> document.getElementById('game-container').classList.remove('shake-small'), 150); } 
+                else { document.getElementById('game-container').classList.add('shake-heavy'); setTimeout(()=> document.getElementById('game-container').classList.remove('shake-heavy'), 300); setTimeout(()=> aplicarEstilosBonoHost(seed), 1500); }
             }, stopTimes[index]);
         });
     }
 
     function aplicarEstilosBonoHost(seed) {
-        let counts = { 'A':0, 'B':0, 'C':0 }; 
-        for(let l of seed) counts[l]++;
-        
-        let slots = [document.getElementById('slot-1'), document.getElementById('slot-2'), document.getElementById('slot-3')]; 
-        let tagBono = document.getElementById('seed-bono');
+        let counts = { 'A':0, 'B':0, 'C':0 }; for(let l of seed) counts[l]++;
+        let slots = [document.getElementById('slot-1'), document.getElementById('slot-2'), document.getElementById('slot-3')]; let tagBono = document.getElementById('seed-bono');
         
         if(counts['A']==3||counts['B']==3||counts['C']==3) {
-            slots.forEach(s => s.className = "slot-box jackpot"); 
-            tagBono.innerText = "🎰 ¡FRENESÍ DE SANGRE x3! 🎰"; 
-            tagBono.style.color = "#e74c3c";
-            
-            let flash = document.getElementById('flash-overlay'); 
-            flash.classList.add('flash-anim'); 
-            playJuicySound('explode'); 
-            setTimeout(() => flash.classList.remove('flash-anim'), 800);
-            
+            slots.forEach(s => s.className = "slot-box jackpot"); tagBono.innerText = "🎰 ¡FRENESÍ DE SANGRE x3! 🎰"; tagBono.style.color = "#e74c3c";
+            let flash = document.getElementById('flash-overlay'); flash.classList.add('flash-anim'); playJuicySound('explode'); setTimeout(() => flash.classList.remove('flash-anim'), 800);
         } else if(counts['A']==2||counts['B']==2||counts['C']==2) {
             let letraDoble = Object.keys(counts).find(k => counts[k] === 2);
-            slots.forEach((s, i) => { 
-                if(seed[i] === letraDoble) s.className = "slot-box bonus"; 
-                else s.className = "slot-box"; 
-            });
-            tagBono.innerText = `✨ ECO ARCANO [${letraDoble}] x2 ✨`; 
-            tagBono.style.color = "var(--gold)"; 
-            playJuicySound('win');
+            slots.forEach((s, i) => { if(seed[i] === letraDoble) s.className = "slot-box bonus"; else s.className = "slot-box"; });
+            tagBono.innerText = `✨ ECO ARCANO [${letraDoble}] x2 ✨`; tagBono.style.color = "var(--gold)"; playJuicySound('win');
         } else {
-            slots.forEach(s => s.className = "slot-box"); 
-            tagBono.innerText = "MAZMORRA ESTÁNDAR"; 
-            tagBono.style.color = "#888";
+            slots.forEach(s => s.className = "slot-box"); tagBono.innerText = "MAZMORRA ESTÁNDAR"; tagBono.style.color = "#888";
         }
 
-        document.getElementById('btn-reveal').style.display = 'block'; 
-        document.getElementById('btn-seed').style.display = 'none'; 
-        document.getElementById('btn-seed').disabled = false;
-        
+        document.getElementById('btn-reveal').style.display = 'block'; document.getElementById('btn-seed').style.display = 'none'; document.getElementById('btn-seed').disabled = false;
         iniciarTemporizadorHost();
     }
 
     function iniciarTemporizadorHost() {
-        let timeLeft = 30; 
-        document.getElementById('bet-timer').innerText = "⏱️ TIEMPO: " + timeLeft + "s"; 
-        clearInterval(timerIntervalHost);
-        
+        let timeLeft = 30; document.getElementById('bet-timer').innerText = "⏱️ TIEMPO: " + timeLeft + "s"; clearInterval(timerIntervalHost);
         timerIntervalHost = setInterval(() => {
-            timeLeft--; 
-            document.getElementById('bet-timer').innerText = "⏱️ TIEMPO: " + timeLeft + "s";
-            
-            if(timeLeft <= 5 && timeLeft > 0) {
-                playJuicySound('tick');
-            }
-            if(timeLeft <= 0) { 
-                clearInterval(timerIntervalHost); 
-                document.getElementById('bet-timer').innerText = "¡APUESTAS CERRADAS!"; 
-                playJuicySound('lock'); 
-            }
+            timeLeft--; document.getElementById('bet-timer').innerText = "⏱️ TIEMPO: " + timeLeft + "s";
+            if(timeLeft <= 5 && timeLeft > 0) playJuicySound('tick');
+            if(timeLeft <= 0) { clearInterval(timerIntervalHost); document.getElementById('bet-timer').innerText = "¡APUESTAS CERRADAS!"; playJuicySound('lock'); }
         }, 1000);
     }
 
@@ -1645,273 +907,117 @@
         let color = caras === 4 ? '#2ecc71' : (caras === 6 ? '#3498db' : '#9b59b6');
         let darkColor = caras === 4 ? '#114e2a' : (caras === 6 ? '#154360' : '#4a235a');
         let html = `<div id="dice-body" class="rpg-dice-volumetric">`;
-        
-        for(let i=20; i>=1; i--) { 
-            let z = i * -3; 
-            let brightness = 100 - (i * 2); 
-            html += `<div class="dice-layer ${shape}" style="transform: translateZ(${z}px); background: ${darkColor}; filter: brightness(${brightness}%);"></div>`; 
-        }
-        
-        html += `<div class="dice-layer front-face ${shape}" style="transform: translateZ(0px); background: ${color}; border: 3px solid rgba(255,255,255,0.4);">
-                    <span id="dice-text">?</span>
-                 </div>
-                 </div>`;
+        for(let i=20; i>=1; i--) { let z = i * -3; let brightness = 100 - (i * 2); html += `<div class="dice-layer ${shape}" style="transform: translateZ(${z}px); background: ${darkColor}; filter: brightness(${brightness}%);"></div>`; }
+        html += `<div class="dice-layer front-face ${shape}" style="transform: translateZ(0px); background: ${color}; border: 3px solid rgba(255,255,255,0.4);"><span id="dice-text">?</span></div></div>`;
         return html;
     }
 
     async function forjarMazmorraEnVivo() {
         if(!IS_HOST) return;
+        clearInterval(timerIntervalHost); document.getElementById('bet-timer').innerText = ""; document.getElementById('btn-reveal').style.display = 'none';
         
-        clearInterval(timerIntervalHost); 
-        document.getElementById('bet-timer').innerText = ""; 
-        document.getElementById('btn-reveal').style.display = 'none';
-        
-        let giantOverlay = document.getElementById('giant-dice-overlay'); 
-        let diceContainer = document.getElementById('giant-dice'); 
-        let giantLabel = document.getElementById('giant-dice-label');
-        
-        document.getElementById('live-log').style.display = 'flex'; 
-        clearLog(); 
-        logMsg("El tablero está limpio. Invocando la mazmorra...");
-        
-        let seed = window.currentSeed; 
-        let slots = [document.getElementById('slot-1'), document.getElementById('slot-2'), document.getElementById('slot-3')];
-        
-        roomsData = []; 
-        globalRoomCount = 0; 
-        const canvas = document.getElementById('dungeon-canvas');
-        const startX = Math.floor(canvas.offsetWidth / 2 / tileSize) * tileSize; 
-        const startY = Math.floor(canvas.offsetHeight / 2 / tileSize) * tileSize;
-        
-        colocarRoom(startX, startY, "🏰", 0, false); 
-        playJuicySound('coin');
+        // Bloquear móviles
+        broadcastState('forging');
 
-        let totalSalasFinales = 0; 
-        let basePorLetra = {A:0, B:0, C:0}; 
-        let counts = {A:0, B:0, C:0}; 
+        let giantOverlay = document.getElementById('giant-dice-overlay'); let diceContainer = document.getElementById('giant-dice'); let giantLabel = document.getElementById('giant-dice-label');
+        document.getElementById('live-log').style.display = 'flex'; clearLog(); logMsg("El tablero está limpio. Invocando la mazmorra...");
         
-        for(let l of seed) counts[l]++;
+        let seed = window.currentSeed; let slots = [document.getElementById('slot-1'), document.getElementById('slot-2'), document.getElementById('slot-3')];
+        roomsData = []; globalRoomCount = 0; const canvas = document.getElementById('dungeon-canvas');
+        const startX = Math.floor(canvas.offsetWidth / 2 / tileSize) * tileSize; const startY = Math.floor(canvas.offsetHeight / 2 / tileSize) * tileSize;
+        colocarRoom(startX, startY, "🏰", 0, false); playJuicySound('coin');
+
+        let totalSalasFinales = 0; let basePorLetra = {A:0, B:0, C:0}; let counts = {A:0, B:0, C:0}; for(let l of seed) counts[l]++;
 
         for(let i=0; i<3; i++) {
-            let letra = seed[i]; 
-            let caras = (letra==='A') ? 4 : (letra==='B') ? 6 : 8; 
-            let claseCSS = (letra==='A') ? 'log-d4' : (letra==='B') ? 'log-d6' : 'log-d8';
+            let letra = seed[i]; let caras = (letra==='A') ? 4 : (letra==='B') ? 6 : 8; let claseCSS = (letra==='A') ? 'log-d4' : (letra==='B') ? 'log-d6' : 'log-d8'; let shapeClase = (letra==='A') ? 'shape-d4' : (letra==='B') ? 'shape-d6' : 'shape-d8';
+            slots.forEach(s => s.classList.remove('active-roll')); slots[i].classList.add('active-roll');
             
-            slots.forEach(s => s.classList.remove('active-roll')); 
-            slots[i].classList.add('active-roll');
-            
-            giantOverlay.style.display = 'flex'; 
-            diceContainer.innerHTML = createVolumetricDice(caras);
-            
-            let diceBody = document.getElementById('dice-body'); 
-            let diceText = document.getElementById('dice-text');
-            
-            giantLabel.innerText = `SLOT ${i+1} [D${caras}]`; 
-            giantLabel.style.color = "var(--gold)";
+            giantOverlay.style.display = 'flex'; diceContainer.innerHTML = createVolumetricDice(caras);
+            let diceBody = document.getElementById('dice-body'); let diceText = document.getElementById('dice-text');
+            giantLabel.innerText = `SLOT ${i+1} [D${caras}]`; giantLabel.style.color = "var(--gold)";
 
-            logMsg(`Preparando <span class="log-highlight">Slot ${i+1} (${letra})</span>...`, claseCSS); 
-            await sleep(1500); 
+            logMsg(`Preparando <span class="log-highlight">Slot ${i+1} (${letra})</span>...`, claseCSS); await sleep(1500); 
 
-            let sumaDado = 0; 
-            let tiradas = []; 
-            let tirada;
-            
+            let sumaDado = 0; let tiradas = []; let tirada;
             do {
-                diceBody.className = "rpg-dice-volumetric dice-rolling"; 
-                diceContainer.classList.remove('dice-explode');
+                diceBody.className = "rpg-dice-volumetric dice-rolling"; diceContainer.classList.remove('dice-explode');
+                let rollAnim = setInterval(() => { diceText.innerText = Math.floor(Math.random() * caras) + 1; playJuicySound('tick'); }, 80);
+                await sleep(1500); clearInterval(rollAnim); diceBody.className = "rpg-dice-volumetric dice-land";
                 
-                let rollAnim = setInterval(() => { 
-                    diceText.innerText = Math.floor(Math.random() * caras) + 1; 
-                    playJuicySound('tick'); 
-                }, 80);
-                
-                await sleep(1500); 
-                clearInterval(rollAnim); 
-                diceBody.className = "rpg-dice-volumetric dice-land";
-                
-                tirada = Math.floor(Math.random() * caras) + 1; 
-                sumaDado += tirada; 
-                diceText.innerText = tirada;
+                tirada = Math.floor(Math.random() * caras) + 1; sumaDado += tirada; diceText.innerText = tirada;
                 
                 if(tirada === caras) {
-                    tiradas.push(`<span class="log-explode-text">${tirada}💥</span>`); 
-                    diceContainer.classList.add('dice-explode');
-                    
-                    giantLabel.innerText = "¡EXPLOSIÓN CRÍTICA!"; 
-                    giantLabel.style.color = "#e74c3c";
-                    
-                    document.getElementById('game-container').classList.add('shake-apocalyptic'); 
-                    setTimeout(()=> { 
-                        document.getElementById('game-container').classList.remove('shake-apocalyptic'); 
-                    }, 800);
+                    tiradas.push(`<span class="log-explode-text">${tirada}💥</span>`); diceContainer.classList.add('dice-explode');
+                    giantLabel.innerText = "¡EXPLOSIÓN CRÍTICA!"; giantLabel.style.color = "#e74c3c";
+                    document.getElementById('game-container').classList.add('shake-apocalyptic'); setTimeout(()=> { document.getElementById('game-container').classList.remove('shake-apocalyptic'); }, 800);
                     
                     playJuicySound('explode'); 
+                    broadcastState('forge_event', { action: 'explode' }); // Hace vibrar los móviles
+                    
                     logMsg(`¡Saca un <span class="log-explode-text">${tirada}</span>! Tirando de nuevo...`, claseCSS);
-                    
-                    await sleep(3500); 
-                    diceContainer.classList.remove('dice-explode'); 
-                    giantLabel.innerText = "OTRA VEZ..."; 
-                    giantLabel.style.color = "var(--gold)"; 
-                    await sleep(500);
-                    
+                    await sleep(3500); diceContainer.classList.remove('dice-explode'); giantLabel.innerText = "OTRA VEZ..."; giantLabel.style.color = "var(--gold)"; await sleep(500);
                 } else {
-                    tiradas.push(tirada); 
-                    giantLabel.innerText = `+${tirada}`; 
-                    giantLabel.style.color = "#2ecc71";
-                    
-                    playJuicySound('lock'); 
-                    logMsg(`Se detiene en <strong>${tirada}</strong>.`, claseCSS); 
-                    await sleep(2000); 
+                    tiradas.push(tirada); giantLabel.innerText = `+${tirada}`; giantLabel.style.color = "#2ecc71";
+                    playJuicySound('lock'); logMsg(`Se detiene en <strong>${tirada}</strong>.`, claseCSS); await sleep(2000); 
                 }
             } while(tirada === caras);
             
-            giantOverlay.style.display = 'none'; 
-            basePorLetra[letra] += sumaDado; 
-            totalSalasFinales += sumaDado;
-            
+            giantOverlay.style.display = 'none'; basePorLetra[letra] += sumaDado; totalSalasFinales += sumaDado;
             logMsg(`Resultado Slot ${i+1}: <span class="log-highlight">${sumaDado} salas</span>. {${tiradas.join(' + ')}}`, claseCSS);
-            
-            await sleep(1000); 
-            await spawnSalasVisuallyHost(sumaDado, false, claseCSS); 
-            
-            slots[i].classList.remove('active-roll'); 
-            await sleep(2000); 
+            await sleep(1000); await spawnSalasVisuallyHost(sumaDado, false, claseCSS); slots[i].classList.remove('active-roll'); await sleep(2000); 
         }
 
-        let esJackpot = (counts['A']===3 || counts['B']===3 || counts['C']===3); 
-        let letraDoble = Object.keys(counts).find(k => counts[k] === 2);
-        
+        let esJackpot = (counts['A']===3 || counts['B']===3 || counts['C']===3); let letraDoble = Object.keys(counts).find(k => counts[k] === 2);
         if(esJackpot) {
-            logMsg(`<span style="color:#e74c3c; font-size:1.6rem; font-weight:bold;">🚨 CALCULANDO FRENESÍ... 🚨</span>`, "log-system"); 
-            await sleep(3500); 
-            
-            let salasExtra = totalSalasFinales * 2; 
-            let flash = document.getElementById('flash-overlay'); 
-            flash.classList.add('flash-anim'); 
-            playJuicySound('explode'); 
-            setTimeout(() => flash.classList.remove('flash-anim'), 800);
-            
+            logMsg(`<span style="color:#e74c3c; font-size:1.6rem; font-weight:bold;">🚨 CALCULANDO FRENESÍ... 🚨</span>`, "log-system"); await sleep(3500); 
+            let salasExtra = totalSalasFinales * 2; let flash = document.getElementById('flash-overlay'); flash.classList.add('flash-anim'); playJuicySound('explode'); setTimeout(() => flash.classList.remove('flash-anim'), 800);
             logMsg(`<span style="color:#e74c3c; font-size:1.6rem; font-weight:bold;">¡FRENESÍ DE SANGRE x3!<br>Inyectando +${salasExtra} salas...</span>`, "log-system");
-            
-            await spawnSalasVisuallyHost(salasExtra, true, "log-d8"); 
-            totalSalasFinales *= 3; 
-            await sleep(2000);
-            
+            await spawnSalasVisuallyHost(salasExtra, true, "log-d8"); totalSalasFinales *= 3; await sleep(2000);
         } else if (letraDoble) {
-            logMsg(`<span style="color:var(--gold); font-weight:bold;">✨ CALCULANDO ECO ARCANO... ✨</span>`, "log-system"); 
-            await sleep(2500); 
-            
-            let salasExtra = basePorLetra[letraDoble]; 
-            playJuicySound('win');
+            logMsg(`<span style="color:var(--gold); font-weight:bold;">✨ CALCULANDO ECO ARCANO... ✨</span>`, "log-system"); await sleep(2500); 
+            let salasExtra = basePorLetra[letraDoble]; playJuicySound('win');
             logMsg(`<span style="color:var(--gold); font-weight:bold;">¡ECO ARCANO [${letraDoble}] x2!<br>Añadiendo +${salasExtra} salas...</span>`, "log-system");
-            
-            await spawnSalasVisuallyHost(salasExtra, true, "log-d6"); 
-            totalSalasFinales += salasExtra; 
-            await sleep(2000);
+            await spawnSalasVisuallyHost(salasExtra, true, "log-d6"); totalSalasFinales += salasExtra; await sleep(2000);
         }
 
-        playJuicySound('lock'); 
-        logMsg(`<div class="log-final">TOTAL FINAL: ${totalSalasFinales} SALAS</div>`, "log-system");
-        
-        await sleep(3000); 
-        processWinnersHost(totalSalasFinales);
+        playJuicySound('lock'); logMsg(`<div class="log-final">TOTAL FINAL: ${totalSalasFinales} SALAS</div>`, "log-system");
+        await sleep(3000); processWinnersHost(totalSalasFinales);
     }
 
-    function actualizarContador(val) { 
-        let counterUI = document.getElementById('room-counter'); 
-        counterUI.innerText = "SALAS: " + val; 
-        counterUI.classList.remove('counter-bump'); 
-        void counterUI.offsetWidth; 
-        counterUI.classList.add('counter-bump'); 
-        setTimeout(() => counterUI.classList.remove('counter-bump'), 200); 
-    }
-
-    function showFloatingText(x, y, text, isExtra) { 
-        const floatEl = document.createElement('div'); 
-        floatEl.className = `floating-text ${isExtra ? 'extra' : ''}`; 
-        floatEl.style.left = (x + 10) + 'px'; 
-        floatEl.style.top = (y - 10) + 'px'; 
-        floatEl.innerText = text; 
-        document.getElementById('dungeon-canvas').appendChild(floatEl); 
-        setTimeout(() => floatEl.remove(), 1200); 
-    }
+    function actualizarContador(val) { let counterUI = document.getElementById('room-counter'); counterUI.innerText = "SALAS: " + val; counterUI.classList.remove('counter-bump'); void counterUI.offsetWidth; counterUI.classList.add('counter-bump'); setTimeout(() => counterUI.classList.remove('counter-bump'), 200); }
+    function showFloatingText(x, y, text, isExtra) { const floatEl = document.createElement('div'); floatEl.className = `floating-text ${isExtra ? 'extra' : ''}`; floatEl.style.left = (x + 10) + 'px'; floatEl.style.top = (y - 10) + 'px'; floatEl.innerText = text; document.getElementById('dungeon-canvas').appendChild(floatEl); setTimeout(() => floatEl.remove(), 1200); }
 
     async function spawnSalasVisuallyHost(cantidad, frenesi, colorClass) {
         let container = document.getElementById('game-container');
         for(let i=0; i<cantidad; i++) {
-            let ok = false; 
-            let tries = 0; 
-            let finalX, finalY;
-            
+            let ok = false; let tries = 0; let finalX, finalY;
             while(!ok && tries < 100) {
-                const parent = roomsData[Math.floor(Math.random() * roomsData.length)]; 
-                const dir = [[0,1], [0,-1], [1,0], [-1,0]][Math.floor(Math.random()*4)];
-                finalX = parent.x + (dir[0] * tileSize); 
-                finalY = parent.y + (dir[1] * tileSize);
-                if(!roomsData.some(r => r.x === finalX && r.y === finalY)) { 
-                    colocarPasillo(parent.x, parent.y, finalX, finalY); 
-                    colocarRoom(finalX, finalY, (frenesi && Math.random()>0.5)? "🔥" : "🪨", globalRoomCount + 1, frenesi); 
-                    ok = true; 
-                }
+                const parent = roomsData[Math.floor(Math.random() * roomsData.length)]; const dir = [[0,1], [0,-1], [1,0], [-1,0]][Math.floor(Math.random()*4)];
+                finalX = parent.x + (dir[0] * tileSize); finalY = parent.y + (dir[1] * tileSize);
+                if(!roomsData.some(r => r.x === finalX && r.y === finalY)) { colocarPasillo(parent.x, parent.y, finalX, finalY); colocarRoom(finalX, finalY, (frenesi && Math.random()>0.5)? "🔥" : "🪨", globalRoomCount + 1, frenesi); ok = true; }
                 tries++;
             }
-            
-            globalRoomCount++; 
-            actualizarContador(globalRoomCount);
+            globalRoomCount++; actualizarContador(globalRoomCount);
             if(frenesi) document.getElementById('room-counter').style.color = "#e74c3c";
-            
-            if(ok) { 
-                showFloatingText(finalX, finalY, "+1", frenesi); 
-                playJuicySound('coin'); 
-            }
-            
-            container.classList.add('shake-small'); 
-            setTimeout(() => container.classList.remove('shake-small'), 50);
-            
+            if(ok) { showFloatingText(finalX, finalY, "+1", frenesi); playJuicySound('coin'); }
+            container.classList.add('shake-small'); setTimeout(() => container.classList.remove('shake-small'), 50);
             let delay = frenesi ? 80 : (cantidad - i === 1 ? 1200 : (cantidad - i === 2 ? 800 : (cantidad - i === 3 ? 500 : 200)));
             await sleep(delay);
         }
     }
 
-    function colocarRoom(x, y, icon, idx, isFrenesi = false) { 
-        const room = document.createElement('div'); 
-        room.className = 'room'; 
-        if(isFrenesi || (idx > 0 && Math.random() > 0.85)) { 
-            room.classList.add('gold-room'); 
-            icon = isFrenesi ? icon : "💰"; 
-        } 
-        room.style.left = x + 'px'; 
-        room.style.top = y + 'px'; 
-        room.innerHTML = icon; 
-        document.getElementById('dungeon-canvas').appendChild(room); 
-        roomsData.push({x, y}); 
-    }
-
-    function colocarPasillo(x1, y1, x2, y2) { 
-        const corr = document.createElement('div'); 
-        corr.className = 'corridor'; 
-        const p = 24; 
-        if(x1 === x2) { 
-            corr.style.width = '8px'; 
-            corr.style.height = tileSize + 'px'; 
-            corr.style.left = (x1 + p) + 'px'; 
-            corr.style.top = Math.min(y1, y2) + p + 'px'; 
-        } else { 
-            corr.style.height = '8px'; 
-            corr.style.width = tileSize + 'px'; 
-            corr.style.top = (y1 + p) + 'px'; 
-            corr.style.left = Math.min(x1, x2) + p + 'px'; 
-        } 
-        document.getElementById('dungeon-canvas').appendChild(corr); 
-    }
+    function colocarRoom(x, y, icon, idx, isFrenesi = false) { const room = document.createElement('div'); room.className = 'room'; if(isFrenesi || (idx > 0 && Math.random() > 0.85)) { room.classList.add('gold-room'); icon = isFrenesi ? icon : "💰"; } room.style.left = x + 'px'; room.style.top = y + 'px'; room.innerHTML = icon; document.getElementById('dungeon-canvas').appendChild(room); roomsData.push({x, y}); }
+    function colocarPasillo(x1, y1, x2, y2) { const corr = document.createElement('div'); corr.className = 'corridor'; const p = 24; if(x1 === x2) { corr.style.width = '8px'; corr.style.height = tileSize + 'px'; corr.style.left = (x1 + p) + 'px'; corr.style.top = Math.min(y1, y2) + p + 'px'; } else { corr.style.height = '8px'; corr.style.width = tileSize + 'px'; corr.style.top = (y1 + p) + 'px'; corr.style.left = Math.min(x1, x2) + p + 'px'; } document.getElementById('dungeon-canvas').appendChild(corr); }
 
     // ==========================================
-    // SISTEMA DE PUNTOS Y CLASIFICACIÓN
+    // SISTEMA DE PUNTOS Y RESULTADOS
     // ==========================================
     async function processWinnersHost(total) {
-        const { data: b } = await miSupabase.from('apuestas').select('*');
-        const banner = document.getElementById('winner-banner');
+        // Filtrar datos de ESTA sala
+        const { data: b } = await miSupabase.from('apuestas').select('*').ilike('name', `${currentRoomCode}|%`);
         
+        const banner = document.getElementById('winner-banner');
         document.getElementById('round-results-view').style.display = 'block';
         document.getElementById('leaderboard-view').style.display = 'none';
         
@@ -1921,41 +1027,23 @@
         const clowns = document.getElementById('clown-club');
         
         banner.style.display = 'block';
-        podium.innerHTML = ""; 
-        clowns.innerHTML = "";
+        podium.innerHTML = ""; clowns.innerHTML = "";
         
-        let winnersSangre = []; 
-        let winnersAlmas = []; 
-        let payasos = [];
-        let someoneWon = false;
+        let winnersSangre = []; let winnersAlmas = []; let payasos = []; let someoneWon = false;
 
         b.forEach(bet => {
             let parts = bet.name.split('|');
-            let av = parts[0] || '🧙‍♂️'; 
-            let nm = parts[1] || bet.name; 
-            let pact = parts[2] || 'S';
+            let av = parts[1] || '🧙‍♂️'; let nm = parts[2] || bet.name; let pact = parts[3] || 'S';
             let val = parseInt(bet.cantidad);
             let key = `${av}|${nm}`;
 
-            if(!globalScores[key]) {
-                globalScores[key] = 0;
-            }
+            if(!globalScores[key]) globalScores[key] = 0;
 
             if(pact === 'S') {
-                if(val === total) { 
-                    winnersSangre.push({av, nm, val}); 
-                    globalScores[key] += 3; 
-                    someoneWon = true; 
-                } 
-                else if (Math.abs(val - total) === 1) { 
-                    payasos.push({av, nm, val}); 
-                }
+                if(val === total) { winnersSangre.push({av, nm, val}); globalScores[key] += 3; someoneWon = true; } 
+                else if (Math.abs(val - total) === 1) { payasos.push({av, nm, val}); }
             } else if (pact === 'A') {
-                if(Math.abs(val - total) <= 1) { 
-                    winnersAlmas.push({av, nm, val}); 
-                    globalScores[key] += 1; 
-                    someoneWon = true; 
-                }
+                if(Math.abs(val - total) <= 1) { winnersAlmas.push({av, nm, val}); globalScores[key] += 1; someoneWon = true; }
             }
         });
 
@@ -1963,50 +1051,27 @@
         pSub.innerHTML = `LA MAZMORRA GENERÓ EXACTAMENTE <strong style="color:var(--gold)">${total}</strong> SALAS`;
 
         if(someoneWon) {
-            playJuicySound('win'); 
-            pTitle.innerText = "🏆 GLORIA EN LA SALA 🏆"; 
-            pTitle.style.color = "#2ecc71";
-            
-            winnersSangre.forEach(w => { 
-                podium.innerHTML += `
-                <div class="winner-card">
-                    <div class="avatar">${w.av}</div>
-                    <div class="name">${w.nm}</div>
-                    <div class="pts" style="font-size: 1.5rem; color: var(--blood); background: #000; padding: 2px 10px; border-radius: 10px; margin-top: 5px; font-weight:bold;">+3 PTS (Sangre)</div>
-                </div>`; 
-            });
-            
-            winnersAlmas.forEach(w => { 
-                podium.innerHTML += `
-                <div class="winner-card ghost" style="background: rgba(52, 152, 219, 0.1); border-color: var(--ghost); box-shadow: 0 0 20px rgba(52, 152, 219, 0.3);">
-                    <div class="avatar">${w.av}</div>
-                    <div class="name">${w.nm}</div>
-                    <div class="pts" style="font-size: 1.5rem; color: var(--ghost); background: #000; padding: 2px 10px; border-radius: 10px; margin-top: 5px; font-weight:bold;">+1 PT (Almas)</div>
-                </div>`; 
-            });
+            playJuicySound('win'); pTitle.innerText = "🏆 GLORIA EN LA SALA 🏆"; pTitle.style.color = "#2ecc71";
+            winnersSangre.forEach(w => { podium.innerHTML += `<div class="winner-card"><div class="avatar">${w.av}</div><div class="name">${w.nm}</div><div class="pts" style="font-size: 1.5rem; color: var(--blood); background: #000; padding: 2px 10px; border-radius: 10px; margin-top: 5px; font-weight:bold;">+3 PTS (Sangre)</div></div>`; });
+            winnersAlmas.forEach(w => { podium.innerHTML += `<div class="winner-card ghost" style="background: rgba(52, 152, 219, 0.1); border-color: var(--ghost); box-shadow: 0 0 20px rgba(52, 152, 219, 0.3);"><div class="avatar">${w.av}</div><div class="name">${w.nm}</div><div class="pts" style="font-size: 1.5rem; color: var(--ghost); background: #000; padding: 2px 10px; border-radius: 10px; margin-top: 5px; font-weight:bold;">+1 PT (Almas)</div></div>`; });
         } else {
-            playJuicySound('fail'); 
-            pTitle.innerText = "💀 TODOS MUERTOS 💀"; 
-            pTitle.style.color = "#e74c3c";
+            playJuicySound('fail'); pTitle.innerText = "💀 TODOS MUERTOS 💀"; pTitle.style.color = "#e74c3c";
         }
 
         if(payasos.length > 0) {
             clowns.innerHTML = `<div style="font-size:2rem; color:#ff9900; font-weight:bold; margin-bottom:15px; text-shadow:0 0 10px rgba(0,0,0,0.8);">🎪 EL CLUB DE LOS PAYASOS (Sangre Fallida ±1) 🎪</div>`;
-            payasos.forEach(w => { 
-                clowns.innerHTML += `<div class="clown-item">🤡 ${w.nm} (Apostó ${w.val})</div>`; 
-            });
+            payasos.forEach(w => { clowns.innerHTML += `<div class="clown-item">🤡 ${w.nm} (Apostó ${w.val})</div>`; });
         }
 
         let nextBtn = document.getElementById('btn-next-step');
         if(currentRound >= maxRounds) {
-            nextBtn.innerText = "🏆 VER GANADOR DEL TORNEO 🏆";
-            nextBtn.style.background = "var(--gold)"; 
-            nextBtn.style.color = "#000";
+            nextBtn.innerText = "🏆 VER GANADOR DEL TORNEO 🏆"; nextBtn.style.background = "var(--gold)"; nextBtn.style.color = "#000";
         } else {
-            nextBtn.innerText = "📊 VER CLASIFICACIÓN";
-            nextBtn.style.background = "#111"; 
-            nextBtn.style.color = "var(--gold)";
+            nextBtn.innerText = "📊 VER CLASIFICACIÓN"; nextBtn.style.background = "#111"; nextBtn.style.color = "var(--gold)";
         }
+        
+        // Enviar resultados a los móviles
+        broadcastState('results', { total: total, scores: globalScores });
     }
 
     function mostrarClasificacion() {
@@ -2014,61 +1079,41 @@
         document.getElementById('leaderboard-view').style.display = 'block';
         playJuicySound('score');
 
-        const lbContent = document.getElementById('lb-content');
-        lbContent.innerHTML = "";
+        const lbContent = document.getElementById('lb-content'); lbContent.innerHTML = "";
         
         let sortable = [];
-        for (var key in globalScores) { 
-            sortable.push([key, globalScores[key]]); 
-        }
-        sortable.sort(function(a, b) { return b[1] - a[1]; }); // Descendente
+        for (var key in globalScores) { sortable.push([key, globalScores[key]]); }
+        sortable.sort(function(a, b) { return b[1] - a[1]; }); 
 
         let maxToDisplay = Math.min(5, sortable.length);
-        
-        if(sortable.length === 0) {
-            lbContent.innerHTML = "<div style='font-size:2rem; color:#888;'>Nadie tiene puntos aún...</div>";
-        }
+        if(sortable.length === 0) lbContent.innerHTML = "<div style='font-size:2rem; color:#888;'>Nadie tiene puntos aún...</div>";
 
         for(let i=0; i<maxToDisplay; i++) {
-            let pData = sortable[i][0].split('|');
-            let av = pData[0]; 
-            let nm = pData[1]; 
-            let pts = sortable[i][1];
-            
+            let pData = sortable[i][0].split('|'); let av = pData[0]; let nm = pData[1]; let pts = sortable[i][1];
             let topClass = i === 0 ? 'top-1' : (i === 1 ? 'top-2' : (i === 2 ? 'top-3' : ''));
             let rankStr = i === 0 ? '🥇' : (i === 1 ? '🥈' : (i === 2 ? '🥉' : `${i+1}º`));
             
-            lbContent.innerHTML += `
-                <div class="lb-row ${topClass}">
-                    <div style="display:flex; align-items:center; gap:15px;">
-                        <span style="font-size:2.5rem; width:40px; text-align:center;">${rankStr}</span>
-                        <span>${av}</span> <span style="font-weight:bold;">${nm}</span>
-                    </div>
-                    <div style="color:var(--gold); font-weight:bold;">${pts} PTS</div>
-                </div>`;
+            lbContent.innerHTML += `<div class="lb-row ${topClass}"><div style="display:flex; align-items:center; gap:15px;"><span style="font-size:2.5rem; width:40px; text-align:center;">${rankStr}</span><span>${av}</span> <span style="font-weight:bold;">${nm}</span></div><div style="color:var(--gold); font-weight:bold;">${pts} PTS</div></div>`;
         }
 
         const closeBtn = document.getElementById('btn-close-banner');
         if(currentRound >= maxRounds) {
-            closeBtn.innerText = "FINALIZAR TORNEO";
-            closeBtn.style.background = "var(--blood)"; 
-            closeBtn.style.color = "#fff";
+            closeBtn.innerText = "FINALIZAR TORNEO"; closeBtn.style.background = "var(--blood)"; closeBtn.style.color = "#fff";
         } else {
-            closeBtn.innerText = "SIGUIENTE RONDA";
-            closeBtn.style.background = "#111"; 
-            closeBtn.style.color = "var(--gold)";
+            closeBtn.innerText = "SIGUIENTE RONDA"; closeBtn.style.background = "#111"; closeBtn.style.color = "var(--gold)";
         }
     }
 
     function cerrarBanner() { 
         document.getElementById('winner-banner').style.display = 'none';
-        document.getElementById('btn-seed').style.display = 'block'; 
-        document.getElementById('btn-seed').disabled = false;
+        document.getElementById('btn-seed').style.display = 'block'; document.getElementById('btn-seed').disabled = false;
         
         if(currentRound >= maxRounds) {
-            // El torneo ha acabado, volver al lobby
             document.getElementById('game-container').style.display = 'none';
             document.getElementById('host-setup').style.display = 'flex';
+            broadcastState('lobby');
+        } else {
+            broadcastState('lobby');
         }
     }
 </script>
