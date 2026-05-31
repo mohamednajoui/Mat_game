@@ -398,7 +398,7 @@
             <button class="avatar-btn" onclick="selectAvatar(this, '🤖')">🤖</button>
         </div>
         
-        <input type="text" id="p-name" class="player-input" placeholder="Nom" maxlength="15">
+        <input type="text" id="p-name" class="player-input" placeholder="Nom (Ex. Joan)" maxlength="15">
         <input type="text" id="p-room" class="player-input" placeholder="CODI DE SALA" maxlength="4" style="text-transform:uppercase; font-size: 2.2rem; font-weight:bold; letter-spacing:5px;">
         <button class="btn-gold" style="width:100%; padding:15px; font-size:2rem; border-radius:10px;" onclick="savePlayerProfile();">CONNECTAR-SE</button>
     </div>
@@ -747,7 +747,13 @@
                 let icon = '🎯';
                 const li = document.createElement('li'); li.style.padding = "8px 5px"; li.style.borderBottom = "1px solid #333";
                 li.innerHTML = `<span style="font-weight:bold; color:#ddd;"><span style="font-size:1.6rem">${av}</span> ${nm} ${icon}</span>: <span style="color:var(--gold); font-weight:bold; float:right;">${p.new.cantidad}</span>`;
-                document.getElementById('list-bets').prepend(li);
+                
+                // Keep only the latest 3 bets in the UI
+                const listBets = document.getElementById('list-bets');
+                listBets.prepend(li);
+                while (listBets.children.length > 3) {
+                    listBets.removeChild(listBets.lastChild);
+                }
 
                 playJuicySound('tick'); li.style.background = "rgba(255,204,0,0.3)"; li.style.transition = "background 0.5s";
                 setTimeout(()=> li.style.background = "transparent", 500);
@@ -833,7 +839,7 @@
     }
 
     function iniciarTemporizadorHost() {
-        let timeLeft = 30; document.getElementById('bet-timer').innerText = "⏱️ TEMPS: " + timeLeft + "s"; clearInterval(timerIntervalHost);
+        let timeLeft = 90; document.getElementById('bet-timer').innerText = "⏱️ TEMPS: " + timeLeft + "s"; clearInterval(timerIntervalHost);
         timerIntervalHost = setInterval(() => {
             timeLeft--; document.getElementById('bet-timer').innerText = "⏱️ TEMPS: " + timeLeft + "s";
             if(timeLeft <= 5 && timeLeft > 0) playJuicySound('tick');
