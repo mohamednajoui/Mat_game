@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Dungeon Master: KAHOOT EDITION 🏆</title>
+    <title>Dungeon Lotto: FIRA DE JOCS 🏆</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
@@ -101,7 +101,7 @@
         .log-final { background: var(--gold); color: #000; text-align: center; font-weight: bold; font-size: 2.2rem; border-radius: 5px; padding: 15px; margin-top: 15px; box-shadow: 0 0 20px var(--gold); }
         @keyframes slideInLeft { 0% { transform: translateX(-50px); opacity: 0; } 100% { transform: translateX(0); opacity: 1; } }
 
-        /* DADOS GIGANTES */
+        /* DAUS GEGANTS */
         #giant-dice-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.95) 100%); z-index: 400; display: none; flex-direction: column; justify-content: center; align-items: center; backdrop-filter: blur(8px); perspective: 1200px; }
         #giant-dice-label { font-size: 5rem; color: var(--gold); font-weight: bold; margin-bottom: 60px; text-shadow: 0 5px 15px #000, 0 0 20px var(--gold); text-align: center; letter-spacing: 2px; transition: 0.2s;}
         
@@ -301,23 +301,23 @@
 
 <div id="host-setup" class="host-only" style="display:none;">
     <h1 style="font-size: 5rem; margin-bottom: 0; color: var(--gold); text-shadow: 0 0 20px var(--gold);">DUNGEON LOTTO</h1>
-    <h2 style="color:var(--blood); margin-top: 0; font-size: 3rem; letter-spacing: 5px;">TOURNAMENT EDITION</h2>
+    <h2 style="color:var(--blood); margin-top: 0; font-size: 3rem; letter-spacing: 5px;">FIRA DE JOCS</h2>
     
     <div class="setup-box">
-        <div style="font-size: 2.5rem; color:#fff; font-family:'VT323';">CÓDIGO DE SALA</div>
+        <div style="font-size: 2.5rem; color:#fff; font-family:'VT323';">CODI DE SALA</div>
         <div id="display-room-code" class="room-code-display">----</div>
         <div style="font-size: 1.5rem; color:#aaa; margin-bottom: 20px;"></div>
         
-        <div style="font-size: 2rem; color:#fff; font-family:'VT323'; margin-top: 20px;">NÚMERO DE RONDAS</div>
+        <div style="font-size: 2rem; color:#fff; font-family:'VT323'; margin-top: 20px;">NÚMERO DE RONDES</div>
         <input type="number" id="host-rounds" value="5" min="1" max="50" class="setup-input">
         <br>
-        <button class="btn-gold" style="padding: 15px 40px; font-size: 2.5rem; border-radius: 10px;" onmouseenter="playJuicySound('tick')" onclick="iniciarTorneo()">🔥 INICIAR TORNEO 🔥</button>
+        <button class="btn-gold" style="padding: 15px 40px; font-size: 2.5rem; border-radius: 10px;" onmouseenter="playJuicySound('tick')" onclick="iniciarTorneo()">🔥 INICIAR JOC 🔥</button>
     </div>
     
-    <button style="margin-top: 40px; background: transparent; border: 2px solid #e74c3c; color: #e74c3c; padding: 10px 20px; font-family: 'VT323'; font-size: 1.5rem; cursor: pointer;" onmouseenter="playJuicySound('tick')" onclick="limpiarBD()">🗑️ RESETEAR BASE DE DATOS (PELIGRO)</button>
+    <button style="margin-top: 40px; background: transparent; border: 2px solid #e74c3c; color: #e74c3c; padding: 10px 20px; font-family: 'VT323'; font-size: 1.5rem; cursor: pointer;" onmouseenter="playJuicySound('tick')" onclick="limpiarBD()">🗑️ RESETEJAR BASE DE DADES</button>
     
     <div style="width: 100%; text-align: center; margin-top: 30px;">
-        <h3 style="color: var(--gold); font-size: 2rem; margin-bottom: 5px;">HÉROES CONECTADOS</h3>
+        <h3 style="color: var(--gold); font-size: 2rem; margin-bottom: 5px;">JUGADORS CONNECTATS</h3>
         <div id="lobby-players-grid"></div>
     </div>
 </div>
@@ -329,7 +329,7 @@
             <div style="background:#222; padding:5px 15px; border-radius:5px; border:1px solid var(--gold); color:var(--gold); font-size:1.8rem;">
                 SALA: <span id="hud-room-code" style="font-weight:bold; letter-spacing:2px;">----</span>
             </div>
-            <div id="room-counter">SALAS: 0</div>
+            <div id="room-counter">SALES: 0</div>
         </div>
         
         <div id="seed-tag" style="display:none;">
@@ -347,23 +347,23 @@
         <div id="dungeon-canvas"></div>
         
         <div id="giant-dice-overlay">
-            <div id="giant-dice-label">TIRANDO...</div>
+            <div id="giant-dice-label">LLANÇANT DAUS...</div>
             <div id="giant-dice" class="rpg-dice-container"></div>
         </div>
         
         <div id="live-log">
-            <h3 style="margin:0 0 10px 0; color:var(--gold); border-bottom:2px solid var(--gold); text-align:center; padding-bottom:10px;">📜 CRÓNICA DE FORJA</h3>
-            <div id="log-content"><div class="log-system">El tablero está limpio. Esperando a los dioses...</div></div>
+            <h3 style="margin:0 0 10px 0; color:var(--gold); border-bottom:2px solid var(--gold); text-align:center; padding-bottom:10px;">📜 REGISTRE DE TIRADES</h3>
+            <div id="log-content"><div class="log-system">El taulell està buit. Esperant tirada...</div></div>
         </div>
         
         <div id="side-panel">
-            <h3 style="color: var(--gold); margin: 0 0 10px 0; border-bottom: 2px solid var(--gold); padding-bottom:5px;">📜 APUESTAS</h3>
+            <h3 style="color: var(--gold); margin: 0 0 10px 0; border-bottom: 2px solid var(--gold); padding-bottom:5px;">📜 APOSTES</h3>
             <ul id="list-bets" style="list-style: none; padding: 0; margin: 0; font-size: 1.3rem; line-height: 1.6;"></ul>
         </div>
 
         <div class="controls">
-            <button class="btn-host-action" id="btn-seed" onmouseenter="playJuicySound('tick')" onclick="playJuicySound('coin'); nuevaRonda()">🎰 REVELAR SEMILLA</button>
-            <button class="btn-host-action" id="btn-reveal" style="display:none; background:var(--blood); border-color:#fff; color:#fff;" onmouseenter="playJuicySound('tick')" onclick="playJuicySound('start'); forjarMazmorraEnVivo()">⚔️ FORJAR MAZMORRA</button>
+            <button class="btn-host-action" id="btn-seed" onmouseenter="playJuicySound('tick')" onclick="playJuicySound('coin'); nuevaRonda()">🎰 REVELAR COMBINACIÓ</button>
+            <button class="btn-host-action" id="btn-reveal" style="display:none; background:var(--blood); border-color:#fff; color:#fff;" onmouseenter="playJuicySound('tick')" onclick="playJuicySound('start'); forjarMazmorraEnVivo()">⚔️ LLANÇAR DAUS</button>
         </div>
     </div>
 </div>
@@ -374,21 +374,21 @@
         <div id="win-subtitle" style="font-size: 2rem; color: #fff; margin-bottom: 10px;"></div>
         <div id="podium" class="podium-container"></div>
         <div id="clown-club" class="clown-list"></div>
-        <button class="btn-host-action" id="btn-next-step" style="margin-top:30px; width:100%;" onmouseenter="playJuicySound('tick')" onclick="playJuicySound('click'); mostrarClasificacion();">📊 VER CLASIFICACIÓN</button>
+        <button class="btn-host-action" id="btn-next-step" style="margin-top:30px; width:100%;" onmouseenter="playJuicySound('tick')" onclick="playJuicySound('click'); mostrarClasificacion();">📊 VEURE CLASSIFICACIÓ</button>
     </div>
     
     <div id="leaderboard-view" style="display:none; width: 100%;">
-        <h2 style="color: var(--gold); margin-top: 0; font-size: 4rem; text-shadow: 0 0 20px var(--gold);">🏆 CLASIFICACIÓN GLOBAL 🏆</h2>
+        <h2 style="color: var(--gold); margin-top: 0; font-size: 4rem; text-shadow: 0 0 20px var(--gold);">🏆 CLASSIFICACIÓ GLOBAL 🏆</h2>
         <div id="lb-content" style="display: flex; flex-direction: column; gap: 5px; margin: 20px 0;"></div>
-        <button class="btn-host-action" id="btn-close-banner" style="margin-top:20px; width:100%;" onmouseenter="playJuicySound('tick')" onclick="playJuicySound('click'); cerrarBanner();">SIGUIENTE RONDA</button>
+        <button class="btn-host-action" id="btn-close-banner" style="margin-top:20px; width:100%;" onmouseenter="playJuicySound('tick')" onclick="playJuicySound('click'); cerrarBanner();">SEGÜENT RONDA</button>
     </div>
 </div>
 
 <div id="view-player">
     
     <div id="screen-setup" class="player-screen active">
-        <h2 class="player-title">Paso 1: CREA TU HÉROE</h2>
-        <p style="color:#aaa; text-align:center; margin-top:0; font-size: 1.2rem;">Elige tu avatar y nombre.</p>
+        <h2 class="player-title">1: CREA EL TEU JUGADOR</h2>
+        <p style="color:#aaa; text-align:center; margin-top:0; font-size: 1.2rem;">Tria el teu avatar i nom.</p>
         
         <div class="avatar-grid" id="avatar-selector">
             <button class="avatar-btn selected" onclick="selectAvatar(this, '🧙‍♂️')">🧙‍♂️</button>
@@ -399,25 +399,25 @@
             <button class="avatar-btn" onclick="selectAvatar(this, '🤖')">🤖</button>
         </div>
         
-        <input type="text" id="p-name" class="player-input" placeholder="Nombre (Ej. Gandalfo)" maxlength="15">
-        <input type="text" id="p-room" class="player-input" placeholder="CÓDIGO DE SALA" maxlength="4" style="text-transform:uppercase; font-size: 2.2rem; font-weight:bold; letter-spacing:5px;">
-        <button class="btn-gold" style="width:100%; padding:15px; font-size:2rem; border-radius:10px;" onclick="savePlayerProfile();">CONECTAR AL TORNEO</button>
+        <input type="text" id="p-name" class="player-input" placeholder="Nom (Ex. Joan)" maxlength="15">
+        <input type="text" id="p-room" class="player-input" placeholder="CODI DE SALA" maxlength="4" style="text-transform:uppercase; font-size: 2.2rem; font-weight:bold; letter-spacing:5px;">
+        <button class="btn-gold" style="width:100%; padding:15px; font-size:2rem; border-radius:10px;" onclick="savePlayerProfile();">CONNECTAR-SE</button>
     </div>
 
     <div id="screen-lobby" class="player-screen">
         <div id="player-info-tag">
-            <div><span id="tag-avatar" style="font-size:1.8rem; margin-right:5px;">🧙‍♂️</span> <span id="tag-name" style="color:var(--gold); font-size:1.6rem; font-weight:bold;">Héroe</span></div>
-            <span style="font-size:1.2rem; color:#888; text-decoration:underline; cursor:pointer;" onclick="clearProfile(); playJuicySound('click');">Salir</span>
+            <div><span id="tag-avatar" style="font-size:1.8rem; margin-right:5px;">🧙‍♂️</span> <span id="tag-name" style="color:var(--gold); font-size:1.6rem; font-weight:bold;">Jugador</span></div>
+            <span style="font-size:1.2rem; color:#888; text-decoration:underline; cursor:pointer;" onclick="clearProfile(); playJuicySound('click');">Sortir</span>
         </div>
         
-        <h2 class="player-title" style="font-size:2.5rem; margin-top: 20px;">EN LA TABERNA...</h2>
-        <div class="waiting-spinner">🍺</div>
-        <p style="color:#aaa; text-align:center; font-size:1.4rem;">Conectado a la sala <span id="lobby-room-code" style="color:var(--gold); font-weight:bold;"></span>.<br><br>Esperando a que el Master actúe en la pantalla grande.</p>
+        <h2 class="player-title" style="font-size:2.5rem; margin-top: 20px;">ESPERANT A LA SALA...</h2>
+        <div class="waiting-spinner">⌛</div>
+        <p style="color:#aaa; text-align:center; font-size:1.4rem;">Connectat a la sala <span id="lobby-room-code" style="color:var(--gold); font-weight:bold;"></span>.<br><br>Espera que el professor iniciï la ronda.</p>
     </div>
 
     <div id="screen-bet" class="player-screen">
-        <h2 class="player-title" id="p-bet-main-title" style="font-size:2.2rem; line-height:1.2; margin-bottom: 5px;">SEMILLA REVELADA</h2>
-        <p style="color:#aaa; text-align:center; font-size:1.3rem; margin-top:0;">Se lanzarán los siguientes dados:</p>
+        <h2 class="player-title" id="p-bet-main-title" style="font-size:2.2rem; line-height:1.2; margin-bottom: 5px;">COMBINACIÓ REVELADA</h2>
+        <p style="color:#aaa; text-align:center; font-size:1.3rem; margin-top:0;">Es llançaran aquests daus:</p>
         
         <div id="mobile-dice-display" class="mobile-dice-row"></div>
         
@@ -435,44 +435,44 @@
         
         <div class="pact-container">
             <button class="action-btn btn-blood" id="btn-blood" onclick="sellarPacto('S')">
-                🎯 SANGRE<br><span style="font-size:1rem; color:#ffcccc;">(Exacto o Cercano)</span><br><strong style="font-size:1.6rem;">+1 / +0.5 PT</strong>
+                🎯 EXACTA<br><span style="font-size:1rem; color:#ffcccc;">(Aposta pel número just)</span><br><strong style="font-size:1.6rem;">+1 / +0.5 PT</strong>
             </button>
             <button class="action-btn btn-ghost" id="btn-ghost" onclick="sellarPacto('A')">
-                🛡️ ALMAS<br><span style="font-size:1rem; color:#cce5ff;">(Rango ±1)</span><br><strong style="font-size:1.6rem;">+0.5 / +0.25 PT</strong>
+                🛡️ APROXIMADA<br><span style="font-size:1rem; color:#cce5ff;">(Marge ±1 sala)</span><br><strong style="font-size:1.6rem;">+0.5 / +0.25 PT</strong>
             </button>
         </div>
     </div>
 
     <div id="screen-wait" class="player-screen">
-        <h2 class="player-title" style="color:var(--blood); font-size:3rem; text-shadow: 0 0 20px rgba(231, 76, 60, 0.5);">PACTO SELLADO</h2>
-        <div class="waiting-spinner" style="font-size:4rem;">📜</div>
+        <h2 class="player-title" style="color:var(--blood); font-size:3rem; text-shadow: 0 0 20px rgba(231, 76, 60, 0.5);">APOSTA FETA</h2>
+        <div class="waiting-spinner" style="font-size:4rem;">✅</div>
         <div style="background: rgba(0,0,0,0.5); border: 1px solid #333; padding: 20px; border-radius: 10px; width: 100%; box-sizing:border-box;">
-            <p id="wait-msg-type" style="color:#ccc; text-align:center; font-size:1.4rem; margin:0;">Apuesta enviada:</p>
+            <p id="wait-msg-type" style="color:#ccc; text-align:center; font-size:1.4rem; margin:0;">El teu número:</p>
             <span id="wait-bet-val" style="color:var(--gold); font-size: 3.5rem; font-weight:bold; display:block; margin: 10px 0; text-align:center;">0</span>
         </div>
-        <p style="color:#888; text-align:center; font-size:1.2rem; margin-top:20px;">Esperando al Master para forjar...</p>
+        <p style="color:#888; text-align:center; font-size:1.2rem; margin-top:20px;">Esperant al Master...</p>
     </div>
 
     <div id="screen-forging" class="player-screen">
-        <h2 class="player-title" style="color:#fff; font-size:3rem; text-shadow: 0 0 20px #fff;">¡FORJANDO!</h2>
-        <div class="eye-pulse">👁️</div>
-        <p style="color:#2ecc71; text-align:center; font-size:2rem; font-weight:bold;">MIRA AL PROYECTOR</p>
+        <h2 class="player-title" style="color:#fff; font-size:3rem; text-shadow: 0 0 20px #fff;">CALCULANT...</h2>
+        <div class="eye-pulse">🎲</div>
+        <p style="color:#2ecc71; text-align:center; font-size:2rem; font-weight:bold;">MIRA AL PROJECTOR</p>
     </div>
 
     <div id="screen-results" class="player-screen">
-        <h2 id="p-res-title" class="player-title" style="font-size:3.5rem; color:#fff; text-shadow:0 0 10px rgba(0,0,0,0.8);">TITULO</h2>
-        <p id="p-res-sub" style="color:#eee; font-size:1.6rem; font-weight:bold; margin-bottom:30px;">Subtitulo</p>
+        <h2 id="p-res-title" class="player-title" style="font-size:3.5rem; color:#fff; text-shadow:0 0 10px rgba(0,0,0,0.8);">TITOL</h2>
+        <p id="p-res-sub" style="color:#eee; font-size:1.6rem; font-weight:bold; margin-bottom:30px;">Subtitol</p>
         <div id="p-res-score" style="background:#000; color:var(--gold); padding:10px 20px; border:2px solid var(--gold); border-radius:10px; font-size:2.5rem; font-weight:bold; box-shadow: 0 0 20px rgba(255,204,0,0.4);">
             TOTAL: 0 PTS
         </div>
-        <p style="color:#aaa; text-align:center; font-size:1.2rem; margin-top:30px;">Espera a que el Master inicie la siguiente ronda.</p>
+        <p style="color:#aaa; text-align:center; font-size:1.2rem; margin-top:30px;">Espera a la següent ronda.</p>
     </div>
 
 </div>
 
 <script>
     // ==========================================
-    // CONFIGURACIÓN SUPABASE (ARQUITECTURA HÍBRIDA)
+    // CONFIGURACIÓ SUPABASE (ARQUITECTURA HÍBRIDA)
     // ==========================================
     const SB_URL = 'https://mzlamrxvtvxbuamyfplz.supabase.co';
     const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im16bGFtcnh2dHZ4YnVhbXlmcGx6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczNTAxNjEsImV4cCI6MjA5MjkyNjE2MX0.fdebTvX68sDHUbIjCFDhfipauXap4qabWko7U8gLyxg';
@@ -482,11 +482,11 @@
     let currentRoomCode = "";
     let roomChannel = null;
 
-    // ESTADO DEL HOST EN MEMORIA RAM
+    // ESTAT DEL HOST EN MEMÒRIA RAM
     let globalScores = {}; 
     let currentRoundBets = {}; 
     let connectedPlayers = {}; 
-    let isBettingOpen = false; // FLAG DE SEGURIDAD PARA BLOQUEAR APUESTAS
+    let isBettingOpen = false; // FLAG DE SEGURETAT
 
     window.onload = () => {
         if (IS_HOST) {
@@ -510,7 +510,7 @@
     }
 
     // ==========================================
-    // LÓGICA DEL JUGADOR (MÓVIL)
+    // LÒGICA DEL JUGADOR (MÒBIL)
     // ==========================================
     let playerAvatar = '🧙‍♂️'; let currentBet = 15; let myCurrentPact = '';
 
@@ -545,7 +545,7 @@
     }
 
     function savePlayerProfile() {
-        const name = document.getElementById('p-name').value.trim().replace(/\|/g, ''); // SANITIZAR NOMBRE
+        const name = document.getElementById('p-name').value.trim().replace(/\|/g, '');
         const room = document.getElementById('p-room').value.toUpperCase().trim();
         let valid = true;
         
@@ -569,17 +569,14 @@
         showScreen('screen-setup'); 
     }
 
-    // CONEXIÓN DEL JUGADOR
     async function conectarSalaJugador() {
         currentRoomCode = localStorage.getItem('dl_playerRoom');
         document.getElementById('lobby-room-code').innerText = currentRoomCode;
         
-        // Ingreso por DB
         let safeName = localStorage.getItem('dl_playerName').replace(/\|/g, '');
         const joinPayload = `${currentRoomCode}|JOIN|${playerAvatar}|${safeName}`;
         await miSupabase.from('apuestas').insert([{ name: joinPayload, cantidad: -1 }]);
 
-        // Conexión WebSockets
         if(roomChannel) roomChannel.unsubscribe();
         roomChannel = miSupabase.channel('room-' + currentRoomCode);
         
@@ -595,7 +592,7 @@
 
     function handleGameState(payload) {
         if (payload.state === 'lobby') {
-            document.getElementById('p-bet-main-title').innerText = "SEMILLA REVELADA";
+            document.getElementById('p-bet-main-title').innerText = "COMBINACIÓ REVELADA";
             document.getElementById('bet-number-display').style.color = "var(--gold)";
             showScreen('screen-lobby');
             myCurrentPact = ''; 
@@ -603,7 +600,7 @@
         else if (payload.state === 'betting') {
             document.getElementById('btn-blood').disabled = false; 
             document.getElementById('btn-ghost').disabled = false;
-            document.getElementById('p-bet-main-title').innerText = "SEMILLA REVELADA";
+            document.getElementById('p-bet-main-title').innerText = "COMBINACIÓ REVELADA";
             document.getElementById('p-bet-main-title').style.color = "var(--gold)";
             document.getElementById('bet-number-display').style.color = "var(--gold)";
             updateBetDisplay();
@@ -619,10 +616,9 @@
             playJuicySound('coin'); showScreen('screen-bet');
         }
         else if (payload.state === 'time_up') {
-            // BLOQUEO VISUAL CUANDO SE ACABA EL TIEMPO
             document.getElementById('btn-blood').disabled = true; 
             document.getElementById('btn-ghost').disabled = true;
-            document.getElementById('p-bet-main-title').innerText = "¡TIEMPO AGOTADO!";
+            document.getElementById('p-bet-main-title').innerText = "TEMPS ESGOTAT!";
             document.getElementById('p-bet-main-title').style.color = "#e74c3c";
             document.getElementById('bet-number-display').innerText = "🔒";
             document.getElementById('bet-number-display').style.color = "#555";
@@ -648,7 +644,7 @@
 
     function renderPlayerResultCard(total, scores, exactSangre, minDiffSangre) {
         if(!myCurrentPact) {
-            document.getElementById('p-res-title').innerText = "💤 AUSENTE"; document.getElementById('p-res-sub').innerText = "No apostaste o llegaste tarde.";
+            document.getElementById('p-res-title').innerText = "💤 AUSENT"; document.getElementById('p-res-sub').innerText = "No has apostat a temps.";
             document.getElementById('screen-results').style.background = "linear-gradient(180deg, #333, #111)"; return;
         }
 
@@ -659,18 +655,18 @@
 
         let title = "", sub = "", bg = "";
         if (myCurrentPact === 'S') {
-            if (diff === 0) { title = "¡GLORIA ABSOLUTA!"; sub = "+1 PUNTO GANADO"; bg = "linear-gradient(180deg, #ffd700, #b8860b)"; if(navigator.vibrate) navigator.vibrate([100, 50, 100, 50, 500]); playJuicySound('win'); dispararConfeti(); } 
-            else if (!exactSangre && diff === minDiffSangre) { title = "¡POR LOS PELOS!"; sub = "+0.5 PUNTOS (El más cercano)"; bg = "linear-gradient(180deg, #d35400, #873600)"; if(navigator.vibrate) navigator.vibrate([100, 50, 100]); playJuicySound('win'); } 
-            else if (exactSangre && diff === 1) { title = "🤡 ERES UN PAYASO"; sub = "Alguien acertó y tú fallaste por 1..."; bg = "linear-gradient(180deg, #e74c3c, #900)"; if(navigator.vibrate) navigator.vibrate([500]); playJuicySound('fail'); } 
-            else { title = "💀 HAS MUERTO"; sub = "Tus cálculos fueron basura."; bg = "linear-gradient(180deg, #333, #000)"; if(navigator.vibrate) navigator.vibrate([200]); playJuicySound('fail'); }
+            if (diff === 0) { title = "¡ENCERT PERFECTE!"; sub = "+1 PUNT GUANYAT"; bg = "linear-gradient(180deg, #ffd700, #b8860b)"; if(navigator.vibrate) navigator.vibrate([100, 50, 100, 50, 500]); playJuicySound('win'); dispararConfeti(); } 
+            else if (!exactSangre && diff === minDiffSangre) { title = "¡MOLT A PROP!"; sub = "+0.5 PUNTS (El més proper)"; bg = "linear-gradient(180deg, #d35400, #873600)"; if(navigator.vibrate) navigator.vibrate([100, 50, 100]); playJuicySound('win'); } 
+            else if (exactSangre && diff === 1) { title = "⚠️ GAIREBÉ..."; sub = "Algú l'ha encertat i tu has fallat per 1."; bg = "linear-gradient(180deg, #e74c3c, #900)"; if(navigator.vibrate) navigator.vibrate([500]); playJuicySound('fail'); } 
+            else { title = "❌ HAS FALLAT"; sub = "Càlculs incorrectes."; bg = "linear-gradient(180deg, #333, #000)"; if(navigator.vibrate) navigator.vibrate([200]); playJuicySound('fail'); }
         } else if (myCurrentPact === 'A') {
-            if (diff === 0) { title = "¡PRECISIÓN ESPIRITUAL!"; sub = "+0.5 PUNTOS GANADOS"; bg = "linear-gradient(180deg, #3498db, #154360)"; if(navigator.vibrate) navigator.vibrate([100, 50, 100]); playJuicySound('win'); } 
-            else if (diff === 1) { title = "¡SUPERVIVIENTE!"; sub = "+0.25 PUNTOS GANADOS"; bg = "linear-gradient(180deg, #2980b9, #1a5276)"; if(navigator.vibrate) navigator.vibrate([50]); playJuicySound('coin'); } 
-            else { title = "💀 HAS MUERTO"; sub = "Demasiado lejos del resultado."; bg = "linear-gradient(180deg, #333, #000)"; if(navigator.vibrate) navigator.vibrate([200]); playJuicySound('fail'); }
+            if (diff === 0) { title = "¡BONA APOSTA!"; sub = "+0.5 PUNTS GUANYATS"; bg = "linear-gradient(180deg, #3498db, #154360)"; if(navigator.vibrate) navigator.vibrate([100, 50, 100]); playJuicySound('win'); } 
+            else if (diff === 1) { title = "¡SALVAT PER PELS!"; sub = "+0.25 PUNTS GUANYATS"; bg = "linear-gradient(180deg, #2980b9, #1a5276)"; if(navigator.vibrate) navigator.vibrate([50]); playJuicySound('coin'); } 
+            else { title = "❌ HAS FALLAT"; sub = "Massa lluny del resultat."; bg = "linear-gradient(180deg, #333, #000)"; if(navigator.vibrate) navigator.vibrate([200]); playJuicySound('fail'); }
         }
 
         document.getElementById('p-res-title').innerText = title; document.getElementById('p-res-sub').innerText = sub;
-        document.getElementById('screen-results').style.background = bg; document.getElementById('p-res-score').innerText = `TOTAL TORNEO: ${myScore} PTS`;
+        document.getElementById('screen-results').style.background = bg; document.getElementById('p-res-score').innerText = `PUNTUACIÓ TOTAL: ${myScore} PTS`;
     }
 
     function modifyBet(amount) {
@@ -697,26 +693,26 @@
             
             setTimeout(() => {
                 flash.classList.remove('flash-blood', 'flash-ghost');
-                document.getElementById('wait-msg-type').innerText = tipo === 'S' ? "PACTO SANGRE (Exacto):" : "PACTO ALMAS (Rango ±1):";
+                document.getElementById('wait-msg-type').innerText = tipo === 'S' ? "APOSTA EXACTA:" : "APOSTA APROXIMADA:";
                 document.getElementById('wait-bet-val').innerText = tipo === 'S' ? currentBet : `[ ${currentBet-1} - ${currentBet} - ${currentBet+1} ]`;
                 document.getElementById('wait-bet-val').style.color = tipo === 'S' ? "var(--blood)" : "var(--ghost)";
                 showScreen('screen-wait');
             }, 300);
         } else {
-            alert("Error de conexión al sellar el pacto.");
+            alert("Error de connexió.");
             document.getElementById('btn-blood').disabled = false; document.getElementById('btn-ghost').disabled = false;
         }
     }
 
     // ==========================================
-    // LÓGICA DEL HOST
+    // LÒGICA DEL HOST
     // ==========================================
     let roomsData = []; const tileSize = 55; let timerIntervalHost; let globalRoomCount = 0; let currentRound = 0; let maxRounds = 5;
 
     async function limpiarBD() {
-        if(confirm("¿Estás seguro? Esto borrará TODAS las apuestas de Supabase y el ranking local.")) {
+        if(confirm("Segur? Això esborrarà TOTES les apostes de Supabase.")) {
             await miSupabase.from('apuestas').delete().neq('id', 0);
-            localStorage.clear(); alert("Base de datos limpia. Recarga la página."); window.location.reload();
+            localStorage.clear(); alert("Base de dades neta. Recarrega la pàgina."); window.location.reload();
         }
     }
 
@@ -737,16 +733,11 @@
             let parts = p.new.name.split('|');
             if(parts[0] !== currentRoomCode) return; 
 
-            let action = parts[1];
-            let av = parts[2]; 
-            // Extraer de forma segura ignorando separadores mal puestos
-            let nm = parts.slice(3, parts.length - (action==='BET'?1:0)).join(' ') || "Héroe"; 
+            let action = parts[1]; let av = parts[2]; 
+            let nm = parts.slice(3, parts.length - (action==='BET'?1:0)).join(' ') || "Jugador"; 
             let key = `${av}|${nm}`;
 
-            // FORZAR INICIALIZACIÓN DE SCORE SIEMPRE (Evita el NaN)
-            if (typeof globalScores[key] === 'undefined' || isNaN(globalScores[key])) {
-                globalScores[key] = 0;
-            }
+            if (typeof globalScores[key] === 'undefined' || isNaN(globalScores[key])) { globalScores[key] = 0; }
 
             if (action === 'JOIN') {
                 if(!connectedPlayers[key]) {
@@ -757,16 +748,13 @@
                 }
             }
             else if (action === 'BET') {
-                // BUG 1 SOLUCIONADO: Si se acabó el tiempo, la apuesta es rechazada.
                 if(!isBettingOpen) return; 
-
-                // BUG 3 SOLUCIONADO: Asegurar la extracción correcta del Pacto ('S' o 'A')
                 let pact = parts[parts.length - 1]; 
-                if (pact !== 'S' && pact !== 'A') pact = 'S'; // Fallback por si acaso
+                if (pact !== 'S' && pact !== 'A') pact = 'S'; 
 
                 currentRoundBets[key] = { bet: parseInt(p.new.cantidad), pact: pact, avatar: av, name: nm }; 
 
-                let icon = pact === 'S' ? '🩸' : '🛡️';
+                let icon = pact === 'S' ? '🎯' : '🛡️';
                 const li = document.createElement('li'); li.style.padding = "8px 5px"; li.style.borderBottom = "1px solid #333";
                 li.innerHTML = `<span style="font-weight:bold; color:#ddd;"><span style="font-size:1.6rem">${av}</span> ${nm} ${icon}</span>: <span style="color:var(--gold); font-weight:bold; float:right;">${p.new.cantidad}</span>`;
                 document.getElementById('list-bets').prepend(li);
@@ -801,11 +789,10 @@
 
     async function nuevaRonda() {
         if(!IS_HOST) return;
-        if(currentRound >= maxRounds) { alert("El Torneo ha terminado."); return; }
+        if(currentRound >= maxRounds) { alert("El joc ha acabat."); return; }
         
         currentRound++; actualizarHUDTorneo();
-        currentRoundBets = {}; 
-        isBettingOpen = false;
+        currentRoundBets = {}; isBettingOpen = false;
         document.getElementById('list-bets').innerHTML = ""; 
 
         document.getElementById('btn-seed').disabled = true;
@@ -839,32 +826,32 @@
         let slots = [document.getElementById('slot-1'), document.getElementById('slot-2'), document.getElementById('slot-3')]; let tagBono = document.getElementById('seed-bono');
         
         if(counts['A']==3||counts['B']==3||counts['C']==3) {
-            slots.forEach(s => s.className = "slot-box jackpot"); tagBono.innerText = "🎰 ¡FRENESÍ DE SANGRE x3! 🎰"; tagBono.style.color = "#e74c3c";
+            slots.forEach(s => s.className = "slot-box jackpot"); tagBono.innerText = "🎰 MULTIPLICADOR x3! 🎰"; tagBono.style.color = "#e74c3c";
             let flash = document.getElementById('flash-overlay'); flash.classList.add('flash-anim'); playJuicySound('explode'); setTimeout(() => flash.classList.remove('flash-anim'), 800);
         } else if(counts['A']==2||counts['B']==2||counts['C']==2) {
             let letraDoble = Object.keys(counts).find(k => counts[k] === 2);
             slots.forEach((s, i) => { if(seed[i] === letraDoble) s.className = "slot-box bonus"; else s.className = "slot-box"; });
-            tagBono.innerText = `✨ ECO ARCANO [${letraDoble}] x2 ✨`; tagBono.style.color = "var(--gold)"; playJuicySound('win');
+            tagBono.innerText = `✨ DOBLE DAU [${letraDoble}] x2 ✨`; tagBono.style.color = "var(--gold)"; playJuicySound('win');
         } else {
-            slots.forEach(s => s.className = "slot-box"); tagBono.innerText = "MAZMORRA ESTÁNDAR"; tagBono.style.color = "#888";
+            slots.forEach(s => s.className = "slot-box"); tagBono.innerText = "SENSE MULTIPLICADORS"; tagBono.style.color = "#888";
         }
 
         document.getElementById('btn-reveal').style.display = 'block'; document.getElementById('btn-seed').style.display = 'none'; document.getElementById('btn-seed').disabled = false;
         
-        isBettingOpen = true; // SE ABREN LAS APUESTAS AL SERVIDOR
+        isBettingOpen = true; 
         iniciarTemporizadorHost();
     }
 
     function iniciarTemporizadorHost() {
-        let timeLeft = 30; document.getElementById('bet-timer').innerText = "⏱️ TIEMPO: " + timeLeft + "s"; clearInterval(timerIntervalHost);
+        let timeLeft = 30; document.getElementById('bet-timer').innerText = "⏱️ TEMPS: " + timeLeft + "s"; clearInterval(timerIntervalHost);
         timerIntervalHost = setInterval(() => {
-            timeLeft--; document.getElementById('bet-timer').innerText = "⏱️ TIEMPO: " + timeLeft + "s";
+            timeLeft--; document.getElementById('bet-timer').innerText = "⏱️ TEMPS: " + timeLeft + "s";
             if(timeLeft <= 5 && timeLeft > 0) playJuicySound('tick');
             if(timeLeft <= 0) { 
                 clearInterval(timerIntervalHost); 
-                document.getElementById('bet-timer').innerText = "¡APUESTAS CERRADAS!"; 
-                isBettingOpen = false; // SE CIERRAN LAS APUESTAS AL SERVIDOR
-                broadcastState('time_up'); // SE CIERRAN LAS APUESTAS EN LOS MÓVILES
+                document.getElementById('bet-timer').innerText = "APOSTES TANCADES!"; 
+                isBettingOpen = false; 
+                broadcastState('time_up'); 
                 playJuicySound('lock'); 
             }
         }, 1000);
@@ -883,12 +870,12 @@
     async function forjarMazmorraEnVivo() {
         if(!IS_HOST) return;
         clearInterval(timerIntervalHost); document.getElementById('bet-timer').innerText = ""; document.getElementById('btn-reveal').style.display = 'none';
-        isBettingOpen = false; // Bloqueo extra de seguridad
+        isBettingOpen = false; 
         
         broadcastState('forging');
 
         let giantOverlay = document.getElementById('giant-dice-overlay'); let diceContainer = document.getElementById('giant-dice'); let giantLabel = document.getElementById('giant-dice-label');
-        document.getElementById('live-log').style.display = 'flex'; clearLog(); logMsg("El tablero está limpio. Invocando la mazmorra...");
+        document.getElementById('live-log').style.display = 'flex'; clearLog(); logMsg("Iniciant càlcul dels daus...");
         
         let seed = window.currentSeed; let slots = [document.getElementById('slot-1'), document.getElementById('slot-2'), document.getElementById('slot-3')];
         roomsData = []; globalRoomCount = 0; const canvas = document.getElementById('dungeon-canvas');
@@ -903,9 +890,9 @@
             
             giantOverlay.style.display = 'flex'; diceContainer.innerHTML = createVolumetricDice(caras);
             let diceBody = document.getElementById('dice-body'); let diceText = document.getElementById('dice-text');
-            giantLabel.innerText = `SLOT ${i+1} [D${caras}]`; giantLabel.style.color = "var(--gold)";
+            giantLabel.innerText = `DAU ${i+1} [D${caras}]`; giantLabel.style.color = "var(--gold)";
 
-            logMsg(`Preparando <span class="log-highlight">Slot ${i+1} (${letra})</span>...`, claseCSS); await sleep(1500); 
+            logMsg(`Preparant <span class="log-highlight">Dau ${i+1} (${letra})</span>...`, claseCSS); await sleep(1500); 
 
             let sumaDado = 0; let tiradas = []; let tirada; let haExplotado = false;
             
@@ -919,43 +906,43 @@
                 if(tirada === caras && !haExplotado) { 
                     haExplotado = true;
                     tiradas.push(`<span class="log-explode-text">${tirada}💥</span>`); diceContainer.classList.add('dice-explode');
-                    giantLabel.innerText = "¡EXPLOSIÓN CRÍTICA!"; giantLabel.style.color = "#e74c3c";
+                    giantLabel.innerText = "¡EXPLOSIÓ!"; giantLabel.style.color = "#e74c3c";
                     document.getElementById('game-container').classList.add('shake-apocalyptic'); setTimeout(()=> { document.getElementById('game-container').classList.remove('shake-apocalyptic'); }, 800);
                     
                     playJuicySound('explode'); broadcastState('forge_event', { action: 'explode' }); 
                     
-                    logMsg(`¡Saca un <span class="log-explode-text">${tirada}</span>! Tirando de nuevo...`, claseCSS);
-                    await sleep(3500); diceContainer.classList.remove('dice-explode'); giantLabel.innerText = "OTRA VEZ..."; giantLabel.style.color = "var(--gold)"; await sleep(500);
+                    logMsg(`¡Treu un <span class="log-explode-text">${tirada}</span>! Tirant de nou...`, claseCSS);
+                    await sleep(3500); diceContainer.classList.remove('dice-explode'); giantLabel.innerText = "TORNANT A TIRAR..."; giantLabel.style.color = "var(--gold)"; await sleep(500);
                 } else {
                     tiradas.push(tirada); giantLabel.innerText = `+${tirada}`; giantLabel.style.color = "#2ecc71";
-                    playJuicySound('lock'); logMsg(`Se detiene en <strong>${tirada}</strong>.`, claseCSS); await sleep(2000); 
+                    playJuicySound('lock'); logMsg(`S'atura en <strong>${tirada}</strong>.`, claseCSS); await sleep(2000); 
                     break; 
                 }
             } while(true);
             
             giantOverlay.style.display = 'none'; basePorLetra[letra] += sumaDado; totalSalasFinales += sumaDado;
-            logMsg(`Resultado Slot ${i+1}: <span class="log-highlight">${sumaDado} salas</span>. {${tiradas.join(' + ')}}`, claseCSS);
+            logMsg(`Resultat Dau ${i+1}: <span class="log-highlight">${sumaDado} sales</span>. {${tiradas.join(' + ')}}`, claseCSS);
             await sleep(1000); await spawnSalasVisuallyHost(sumaDado, false, claseCSS); slots[i].classList.remove('active-roll'); await sleep(2000); 
         }
 
         let esJackpot = (counts['A']===3 || counts['B']===3 || counts['C']===3); let letraDoble = Object.keys(counts).find(k => counts[k] === 2);
         if(esJackpot) {
-            logMsg(`<span style="color:#e74c3c; font-size:1.6rem; font-weight:bold;">🚨 CALCULANDO FRENESÍ... 🚨</span>`, "log-system"); await sleep(3500); 
+            logMsg(`<span style="color:#e74c3c; font-size:1.6rem; font-weight:bold;">🚨 APLICANT MULTIPLICADOR... 🚨</span>`, "log-system"); await sleep(3500); 
             let salasExtra = totalSalasFinales * 2; let flash = document.getElementById('flash-overlay'); flash.classList.add('flash-anim'); playJuicySound('explode'); setTimeout(() => flash.classList.remove('flash-anim'), 800);
-            logMsg(`<span style="color:#e74c3c; font-size:1.6rem; font-weight:bold;">¡FRENESÍ DE SANGRE x3!<br>Inyectando +${salasExtra} salas...</span>`, "log-system");
+            logMsg(`<span style="color:#e74c3c; font-size:1.6rem; font-weight:bold;">¡MULTIPLICADOR x3!<br>Sumant +${salasExtra} sales...</span>`, "log-system");
             await spawnSalasVisuallyHost(salasExtra, true, "log-d8"); totalSalasFinales *= 3; await sleep(2000);
         } else if (letraDoble) {
-            logMsg(`<span style="color:var(--gold); font-weight:bold;">✨ CALCULANDO ECO ARCANO... ✨</span>`, "log-system"); await sleep(2500); 
+            logMsg(`<span style="color:var(--gold); font-weight:bold;">✨ APLICANT MULTIPLICADOR... ✨</span>`, "log-system"); await sleep(2500); 
             let salasExtra = basePorLetra[letraDoble]; playJuicySound('win');
-            logMsg(`<span style="color:var(--gold); font-weight:bold;">¡ECO ARCANO [${letraDoble}] x2!<br>Añadiendo +${salasExtra} salas...</span>`, "log-system");
+            logMsg(`<span style="color:var(--gold); font-weight:bold;">¡MULTIPLICADOR x2!<br>Sumant +${salasExtra} sales...</span>`, "log-system");
             await spawnSalasVisuallyHost(salasExtra, true, "log-d6"); totalSalasFinales += salasExtra; await sleep(2000);
         }
 
-        playJuicySound('lock'); logMsg(`<div class="log-final">TOTAL FINAL: ${totalSalasFinales} SALAS</div>`, "log-system");
+        playJuicySound('lock'); logMsg(`<div class="log-final">TOTAL FINAL: ${totalSalasFinales} SALES</div>`, "log-system");
         await sleep(3000); processWinnersHost(totalSalasFinales);
     }
 
-    function actualizarContador(val) { let counterUI = document.getElementById('room-counter'); counterUI.innerText = "SALAS: " + val; counterUI.classList.remove('counter-bump'); void counterUI.offsetWidth; counterUI.classList.add('counter-bump'); setTimeout(() => counterUI.classList.remove('counter-bump'), 200); }
+    function actualizarContador(val) { let counterUI = document.getElementById('room-counter'); counterUI.innerText = "SALES: " + val; counterUI.classList.remove('counter-bump'); void counterUI.offsetWidth; counterUI.classList.add('counter-bump'); setTimeout(() => counterUI.classList.remove('counter-bump'), 200); }
     function showFloatingText(x, y, text, isExtra) { const floatEl = document.createElement('div'); floatEl.className = `floating-text ${isExtra ? 'extra' : ''}`; floatEl.style.left = (x + 10) + 'px'; floatEl.style.top = (y - 10) + 'px'; floatEl.innerText = text; document.getElementById('dungeon-canvas').appendChild(floatEl); setTimeout(() => floatEl.remove(), 1200); }
 
     async function spawnSalasVisuallyHost(cantidad, frenesi, colorClass) {
@@ -981,7 +968,7 @@
     function colocarPasillo(x1, y1, x2, y2) { const corr = document.createElement('div'); corr.className = 'corridor'; const p = 24; if(x1 === x2) { corr.style.width = '8px'; corr.style.height = tileSize + 'px'; corr.style.left = (x1 + p) + 'px'; corr.style.top = Math.min(y1, y2) + p + 'px'; } else { corr.style.height = '8px'; corr.style.width = tileSize + 'px'; corr.style.top = (y1 + p) + 'px'; corr.style.left = Math.min(x1, x2) + p + 'px'; } document.getElementById('dungeon-canvas').appendChild(corr); }
 
     // ==========================================
-    // SISTEMA DE PUNTOS Y RESULTADOS (CORREGIDO NaN Y PACTOS)
+    // SISTEMA DE PUNTS I RESULTATS
     // ==========================================
     function processWinnersHost(total) {
         const banner = document.getElementById('winner-banner');
@@ -996,7 +983,6 @@
 
         let minDiffSangre = Infinity; let exactSangre = false;
         
-        // PASO 1: Calcular la diferencia mínima solo para Pactos de Sangre (S)
         Object.keys(currentRoundBets).forEach(key => {
             let p = currentRoundBets[key];
             if (p.pact === 'S') {
@@ -1006,16 +992,12 @@
             }
         });
 
-        // PASO 2: Repartir puntos estrictamente
         Object.keys(currentRoundBets).forEach(key => {
             let p = currentRoundBets[key];
             let val = p.bet; let av = p.avatar; let nm = p.name;
             let diff = Math.abs(val - total);
 
-            // DOBLE SEGURIDAD ANTI-NaN ANTES DE SUMAR
-            if (typeof globalScores[key] === 'undefined' || isNaN(globalScores[key])) {
-                globalScores[key] = 0;
-            }
+            if (typeof globalScores[key] === 'undefined' || isNaN(globalScores[key])) { globalScores[key] = 0; }
 
             if(p.pact === 'S') {
                 if(diff === 0) { winnersSangreExact.push({av, nm, val}); globalScores[key] += 1; someoneWon = true; } 
@@ -1026,32 +1008,31 @@
                 else if(diff === 1) { winnersAlmasAprox.push({av, nm, val}); globalScores[key] += 0.25; someoneWon = true; }
             }
             
-            // REDONDEO PERFECTO PARA EVITAR DECIMALES ROTOS DE JAVASCRIPT (ej: 0.500000001)
             globalScores[key] = parseFloat(globalScores[key].toFixed(2));
         });
 
-        pSub.innerHTML = `LA MAZMORRA GENERÓ EXACTAMENTE <strong style="color:var(--gold)">${total}</strong> SALAS`;
+        pSub.innerHTML = `EL RESULTAT FINAL ÉS EXACTAMENT <strong style="color:var(--gold)">${total}</strong> SALES`;
 
         if(someoneWon) {
-            playJuicySound('win'); pTitle.innerText = "🏆 GLORIA EN LA SALA 🏆"; pTitle.style.color = "#2ecc71";
+            playJuicySound('win'); pTitle.innerText = "🏆 GUANYADORS DE LA RONDA 🏆"; pTitle.style.color = "#2ecc71";
             if(exactSangre) dispararConfeti(); 
 
-            winnersSangreExact.forEach(w => { podium.innerHTML += `<div class="winner-card"><div class="avatar">${w.av}</div><div class="name">${w.nm}</div><div class="pts" style="font-size: 1.5rem; color: var(--blood); background: #000; padding: 2px 10px; border-radius: 10px; margin-top: 5px; font-weight:bold;">+1 PT (Exacto)</div></div>`; });
-            winnersSangreAprox.forEach(w => { podium.innerHTML += `<div class="winner-card"><div class="avatar">${w.av}</div><div class="name">${w.nm}</div><div class="pts" style="font-size: 1.5rem; color: #ff9900; background: #000; padding: 2px 10px; border-radius: 10px; margin-top: 5px; font-weight:bold;">+0.5 PT (Cercano)</div></div>`; });
-            winnersAlmasExact.forEach(w => { podium.innerHTML += `<div class="winner-card ghost" style="background: rgba(52, 152, 219, 0.1); border-color: var(--ghost); box-shadow: 0 0 20px rgba(52, 152, 219, 0.3);"><div class="avatar">${w.av}</div><div class="name">${w.nm}</div><div class="pts" style="font-size: 1.5rem; color: var(--ghost); background: #000; padding: 2px 10px; border-radius: 10px; margin-top: 5px; font-weight:bold;">+0.5 PT (Exacto)</div></div>`; });
+            winnersSangreExact.forEach(w => { podium.innerHTML += `<div class="winner-card"><div class="avatar">${w.av}</div><div class="name">${w.nm}</div><div class="pts" style="font-size: 1.5rem; color: var(--blood); background: #000; padding: 2px 10px; border-radius: 10px; margin-top: 5px; font-weight:bold;">+1 PT (Exacte)</div></div>`; });
+            winnersSangreAprox.forEach(w => { podium.innerHTML += `<div class="winner-card"><div class="avatar">${w.av}</div><div class="name">${w.nm}</div><div class="pts" style="font-size: 1.5rem; color: #ff9900; background: #000; padding: 2px 10px; border-radius: 10px; margin-top: 5px; font-weight:bold;">+0.5 PT (A prop)</div></div>`; });
+            winnersAlmasExact.forEach(w => { podium.innerHTML += `<div class="winner-card ghost" style="background: rgba(52, 152, 219, 0.1); border-color: var(--ghost); box-shadow: 0 0 20px rgba(52, 152, 219, 0.3);"><div class="avatar">${w.av}</div><div class="name">${w.nm}</div><div class="pts" style="font-size: 1.5rem; color: var(--ghost); background: #000; padding: 2px 10px; border-radius: 10px; margin-top: 5px; font-weight:bold;">+0.5 PT (Exacte)</div></div>`; });
             winnersAlmasAprox.forEach(w => { podium.innerHTML += `<div class="winner-card ghost" style="background: rgba(52, 152, 219, 0.1); border-color: var(--ghost); box-shadow: 0 0 20px rgba(52, 152, 219, 0.3);"><div class="avatar">${w.av}</div><div class="name">${w.nm}</div><div class="pts" style="font-size: 1.5rem; color: #a9cce3; background: #000; padding: 2px 10px; border-radius: 10px; margin-top: 5px; font-weight:bold;">+0.25 PT (Aprox)</div></div>`; });
         } else {
-            playJuicySound('fail'); pTitle.innerText = "💀 TODOS MUERTOS 💀"; pTitle.style.color = "#e74c3c";
+            playJuicySound('fail'); pTitle.innerText = "💀 TOTS HAN FALLAT 💀"; pTitle.style.color = "#e74c3c";
         }
 
         if(payasos.length > 0) {
-            clowns.innerHTML = `<div style="font-size:2rem; color:#ff9900; font-weight:bold; margin-bottom:15px; text-shadow:0 0 10px rgba(0,0,0,0.8);">🎪 EL CLUB DE LOS PAYASOS (Sangre Fallida ±1) 🎪</div>`;
-            payasos.forEach(w => { clowns.innerHTML += `<div class="clown-item">🤡 ${w.nm} (Apostó ${w.val})</div>`; });
+            clowns.innerHTML = `<div style="font-size:2rem; color:#ff9900; font-weight:bold; margin-bottom:15px; text-shadow:0 0 10px rgba(0,0,0,0.8);">⚠️ GAIREBÉ... (Fall per 1 sala) ⚠️</div>`;
+            payasos.forEach(w => { clowns.innerHTML += `<div class="clown-item">🤡 ${w.nm} (Va apostar ${w.val})</div>`; });
         }
 
         let nextBtn = document.getElementById('btn-next-step');
-        if(currentRound >= maxRounds) { nextBtn.innerText = "🏆 VER GANADOR DEL TORNEO 🏆"; nextBtn.style.background = "var(--gold)"; nextBtn.style.color = "#000"; } 
-        else { nextBtn.innerText = "📊 VER CLASIFICACIÓN"; nextBtn.style.background = "#111"; nextBtn.style.color = "var(--gold)"; }
+        if(currentRound >= maxRounds) { nextBtn.innerText = "🏆 VEURE GUANYADOR FINAL 🏆"; nextBtn.style.background = "var(--gold)"; nextBtn.style.color = "#000"; } 
+        else { nextBtn.innerText = "📊 VEURE CLASSIFICACIÓ"; nextBtn.style.background = "#111"; nextBtn.style.color = "var(--gold)"; }
         
         broadcastState('results', { total: total, scores: globalScores, exactSangre: exactSangre, minDiffSangre: minDiffSangre });
     }
@@ -1065,7 +1046,7 @@
         sortable.sort(function(a, b) { return b[1] - a[1]; }); 
 
         let maxToDisplay = Math.min(10, sortable.length);
-        if(sortable.length === 0) lbContent.innerHTML = "<div style='font-size:2rem; color:#888;'>Nadie tiene puntos aún...</div>";
+        if(sortable.length === 0) lbContent.innerHTML = "<div style='font-size:2rem; color:#888;'>Ningú té punts encara...</div>";
 
         for(let i=0; i<maxToDisplay; i++) {
             let pData = sortable[i][0].split('|'); let av = pData[0]; let nm = pData[1]; let pts = sortable[i][1];
@@ -1075,8 +1056,8 @@
         }
 
         const closeBtn = document.getElementById('btn-close-banner');
-        if(currentRound >= maxRounds) { closeBtn.innerText = "FINALIZAR TORNEO Y CERRAR SALA"; closeBtn.style.background = "var(--blood)"; closeBtn.style.color = "#fff"; } 
-        else { closeBtn.innerText = "CERRAR Y PREPARAR SIGUIENTE RONDA"; closeBtn.style.background = "#111"; closeBtn.style.color = "var(--gold)"; }
+        if(currentRound >= maxRounds) { closeBtn.innerText = "FINALITZAR I TANCAR SALA"; closeBtn.style.background = "var(--blood)"; closeBtn.style.color = "#fff"; } 
+        else { closeBtn.innerText = "PREPARAR SEGÜENT RONDA"; closeBtn.style.background = "#111"; closeBtn.style.color = "var(--gold)"; }
     }
 
     function cerrarBanner() { 
