@@ -300,7 +300,6 @@
 
 <div id="host-setup" class="host-only" style="display:none;">
     <h1 style="font-size: 5rem; margin-bottom: 0; color: var(--gold); text-shadow: 0 0 20px var(--gold);">DUNGEON LOTTO</h1>
-    <h2 style="color:var(--blood); margin-top: 0; font-size: 3rem; letter-spacing: 5px;">FIRA DE JOCS</h2>
     
     <div class="setup-box">
         <div style="font-size: 2.5rem; color:#fff; font-family:'VT323';">CODI DE SALA</div>
@@ -409,9 +408,11 @@
             <span style="font-size:1.2rem; color:#888; text-decoration:underline; cursor:pointer;" onclick="clearProfile(); playJuicySound('click');">Sortir</span>
         </div>
         
-        <h2 class="player-title" style="font-size:2.5rem; margin-top: 20px;">ESPERANT A LA SALA...</h2>
-        <div class="waiting-spinner">⌛</div>
-        <p style="color:#aaa; text-align:center; font-size:1.4rem;">Connectat a la sala <span id="lobby-room-code" style="color:var(--gold); font-weight:bold;"></span>.<br><br>Espera que el professor iniciï la ronda.</p>
+        <h2 id="lobby-title" class="player-title" style="font-size:2.5rem; margin-top: 20px;">ESPERANT A LA SALA...</h2>
+        <div id="lobby-icon" class="waiting-spinner">⌛</div>
+        <p style="color:#aaa; text-align:center; font-size:1.4rem;">
+            <span id="lobby-status-text">Connectat a la sala</span> <span id="lobby-room-code" style="color:var(--gold); font-weight:bold;"></span>.<br><br><span id="lobby-sub-text">Espera que el professor iniciï la ronda.</span>
+        </p>
     </div>
 
     <div id="screen-bet" class="player-screen">
@@ -591,9 +592,26 @@
         if (payload.state === 'lobby') {
             document.getElementById('p-bet-main-title').innerText = "COMBINACIÓ REVELADA";
             document.getElementById('bet-number-display').style.color = "var(--gold)";
+            
+            // Restaura els textos del lobby normals
+            document.getElementById('lobby-title').innerText = "ESPERANT A LA SALA...";
+            document.getElementById('lobby-icon').innerText = "⌛";
+            document.getElementById('lobby-status-text').innerText = "Connectat a la sala";
+            document.getElementById('lobby-room-code').innerText = currentRoomCode;
+            document.getElementById('lobby-sub-text').innerText = "Espera que el professor iniciï la ronda.";
+            
             showScreen('screen-lobby');
             myCurrentPact = ''; 
         } 
+        else if (payload.state === 'spinning') {
+            // Nova pantalla per quan els daus estan girant al proyector
+            document.getElementById('lobby-title').innerText = "🎰 GENERANT SEED... 🎰";
+            document.getElementById('lobby-icon').innerText = "👀";
+            document.getElementById('lobby-status-text').innerText = "Mira la pantalla del";
+            document.getElementById('lobby-room-code').innerText = "PROJECTOR";
+            document.getElementById('lobby-sub-text').innerText = "Els daus estan girant...";
+            showScreen('screen-lobby');
+        }
         else if (payload.state === 'betting') {
             document.getElementById('btn-blood').disabled = false; 
             document.getElementById('p-bet-main-title').innerText = "COMBINACIÓ REVELADA";
@@ -632,7 +650,7 @@
             }
         } 
         else if (payload.state === 'results') {
-            renderPlayerResultCard(payload.total, payload.scores, exactSangre, minDiffSangre);
+            renderPlayerResultCard(payload.total, payload.scores, payload.exactSangre, payload.minDiffSangre);
             showScreen('screen-results');
         }
     }
@@ -804,7 +822,8 @@
         const letras = ['A', 'B', 'C']; let seed = ""; for(let i=0; i<3; i++) seed += letras[Math.floor(Math.random() * 3)];
         window.currentSeed = seed;
         
-        broadcastState('betting', { seed: seed });
+        // CANVI CLAU: Enviem un estat "spinning" perquè els jugadors mirin la pantalla
+        broadcastState('spinning');
 
         document.getElementById('dungeon-canvas').innerHTML = ""; actualizarContador(0);
         document.getElementById('winner-banner').style.display = 'none'; document.getElementById('live-log').style.display = 'none';
@@ -843,6 +862,9 @@
         
         isBettingOpen = true; 
         iniciarTemporizadorHost();
+        
+        // CANVI CLAU: Un cop revelada la seed a la pantalla gran, activem les apostes als mòbils
+        broadcastState('betting', { seed: seed });
     }
 
     function iniciarTemporizadorHost() {
