@@ -398,7 +398,7 @@
             <button class="avatar-btn" onclick="selectAvatar(this, '🤖')">🤖</button>
         </div>
         
-        <input type="text" id="p-name" class="player-input" placeholder="Nom" maxlength="15">
+        <input type="text" id="p-name" class="player-input" placeholder="Nom (Ex. Joan)" maxlength="15">
         <input type="text" id="p-room" class="player-input" placeholder="CODI DE SALA" maxlength="4" style="text-transform:uppercase; font-size: 2.2rem; font-weight:bold; letter-spacing:5px;">
         <button class="btn-gold" style="width:100%; padding:15px; font-size:2rem; border-radius:10px;" onclick="savePlayerProfile();">CONNECTAR-SE</button>
     </div>
@@ -744,6 +744,7 @@
 
                 currentRoundBets[key] = { bet: parseInt(p.new.cantidad), pact: pact, avatar: av, name: nm }; 
 
+                // Mostrar la apuesta en la interfaz del profesor (Host) con nombre completo y sin límite
                 const li = document.createElement('li'); 
                 li.style.padding = "10px 5px"; 
                 li.style.borderBottom = "1px solid #444";
@@ -754,7 +755,7 @@
                 li.innerHTML = `
                     <div style="display:flex; align-items:center; gap:10px; font-weight:bold; color:#ddd; overflow:hidden;">
                         <span style="font-size:1.8rem">${av}</span> 
-                        <span style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width: 130px;">${nm}</span>
+                        <span>${nm} 🎯</span>
                     </div>
                     <div style="color:#2ecc71; font-weight:bold; font-size: 1.2rem; white-space:nowrap;">
                         Registrada ✔️
@@ -762,7 +763,7 @@
                 `;
                 
                 document.getElementById('list-bets').prepend(li);
-
+                
                 playJuicySound('tick'); li.style.background = "rgba(255,204,0,0.3)"; li.style.transition = "background 0.5s";
                 setTimeout(()=> li.style.background = "transparent", 500);
             }
